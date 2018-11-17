@@ -5,4 +5,4 @@ repositories:
   - ppa:plt/racket jessie main
 tasks:
   - hello: |
-    racket -v
+      racket -v
