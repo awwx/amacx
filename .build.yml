@@ -2,7 +2,7 @@ image: debian
 packages:
   - racket
 repositories:
-  - ppa:plt/racket jessie main
+  racket: ppa:plt/racket jessie main
 tasks:
   - hello: |
       racket -v
