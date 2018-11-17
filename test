@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+(cd xcompile; racket -f expand.scm)
+
+racket rkt/boot.rkt

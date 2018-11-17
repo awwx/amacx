@@ -1,0 +1,10 @@
+(ar-assert (is (caar '((a)))   'a))
+(ar-assert (is (cadr '(a b c)) 'b))
+(ar-assert (is (car (cddr '(a b c d))) 'c))
+
+(ar-assert (is (ar-apply list '()) nil))
+(ar-assert (is (car (ar-apply list '(1))) 1))
+(ar-assert (is (cdr (ar-apply list '(1))) nil))
+(ar-assert (is (car (ar-apply list '(1 2))) 1))
+(ar-assert (is (cadr (ar-apply list '(1 2))) 2))
+(ar-assert (is (cddr (ar-apply list '(1 2))) nil))
