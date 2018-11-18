@@ -169,5 +169,7 @@
     (λ (x)
       (arc-eval2 module x))))
 
-(when include-tests
-  (aload module2 "perftest.arc"))
+; (when include-tests
+;   (aload module2 "perftest.arc"))
+
+(printf "all done\n")
