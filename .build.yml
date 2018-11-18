@@ -1,4 +1,8 @@
 image: debian/stretch
+
+sources:
+  - https://git.sr.ht/~awwx/ame
+
 tasks:
   - install_racket: |
       wget -nv https://mirror.racket-lang.org/installers/7.1/racket-7.1-x86_64-linux.sh
@@ -7,4 +11,5 @@ tasks:
 
   - test: |
       ls
+      cd ame
       ./test
