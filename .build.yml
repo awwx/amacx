@@ -1,8 +1,8 @@
-image: debian
-packages:
-  - racket
-repositories:
-  racket: ppa:plt/racket jessie main
+image: debian/stretch
 tasks:
+  - install_racket: |
+      wget -nv https://mirror.racket-lang.org/installers/7.1/racket-7.1-x86_64-linux.sh
+      sudo sh racket-7.1-x86_64-linux.sh --unix-style --dest /usr/local
+
   - hello: |
       racket -v
