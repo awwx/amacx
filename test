@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+raco pkg install --skip-installed rackunit-chk
+
 (cd xcompile; racket -f expand.scm)
 
 racket rkt/boot.rkt
