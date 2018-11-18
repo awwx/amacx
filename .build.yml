@@ -5,8 +5,8 @@ sources:
 
 tasks:
   - install_racket: |
-      wget -nv https://download.racket-lang.org/releases/7.1/installers/racket-minimal-7.1-x86_64-linux.sh
-      sudo sh racket-minimal-7.1-x86_64-linux.sh --unix-style --dest /usr/local
+      wget -nv https://mirror.racket-lang.org/installers/7.1/racket-7.1-x86_64-linux.sh
+      sudo sh racket-7.1-x86_64-linux.sh --unix-style --dest /usr/local
       racket -v
 
   - test: |
