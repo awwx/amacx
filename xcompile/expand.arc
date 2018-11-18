@@ -413,13 +413,8 @@
 
 (= out (outfile "boot.expanded"))
 
-(def load-test (testname)
-  (readfile (+ "../tests/" testname ".t")))
-
-(def include (x)
-  (if (caris x 'test)
-       (if include-tests (load-test (cadr x)))
-       (list x)))
+(def load-test (out testname)
+  (xload out (+ "../tests/" testname ".t")))
 
 (def execf (out x)
   (let x (replace-tree x $renames)
@@ -430,10 +425,14 @@
         (disp "\n\n" out))
       (eval (ailarc m)))))
 
+(def process (out x)
+  (if (caris x 'test)
+       (load-test out (cadr x))
+       (execf out x)))
+
 (def xload (out filename)
   (each x (readfile filename)
-    (each y (include x)
-      (execf out y))))
+    (process out x)))
 
 (xload out "../src/boot.arc")
 (xload out "../qq/qq.arc")
