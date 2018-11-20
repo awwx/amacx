@@ -1,18 +1,26 @@
+; (equals (fn-complex-opt 'f 'list '(cdr g1))
+;   '((f (if (acons (cdr g1)) (car (cdr g1)) list))))
 
-(equals ((fn ())) nil)
+(equals (cadar  '((a b c) d e)) 'b)
+(equals (caddar '((a b c) d e)) 'c)
 
-(equals ((fn (a b) a) 33 44) 33)
-(equals ((fn (a b) b) 33 44) 44)
+; (equals (fn-complex-args 'xs '(car gs1))
+;   '((xs (car gs1))))
 
-(equals (((fn (a)
-            (fn ()
-              a))
-          42))
-        42)
+; (equals (fn-complex-args '(xs (o f list)) 'gs1)
+;   `((xs (,car gs1))
+;     (f  (if (acons (,cdr gs1))
+;              (car (,cdr gs1))
+;              list))))
 
-(equals (car           ((fn args args) 1 2 3))   1)
-(equals (car (cdr      ((fn args args) 1 2 3)))  2)
-(equals (car (cdr (cdr ((fn args args) 1 2 3)))) 3)
+(equals (fn-complex-args? '())      nil)
+(equals (fn-complex-args? 'a)       nil)
+(equals (fn-complex-args? '(a))     nil)
+(equals (fn-complex-args? '(a . b)) nil)
+(equals (fn-complex-args? '((a)))   t)
+
+; todo not a runtime test
+; (equals (let fn + (fn 6 7)) 13)
 
 (equals ((fn ((o a 3)) a))
         3)
@@ -26,7 +34,3 @@
            (list a b c d))
          '(1 (2 3) 4))
         '(1 2 3 4))
-
-(equals ("abcd" 2) #\c)
-
-(equals (apply "abcd" '(2)) #\c)

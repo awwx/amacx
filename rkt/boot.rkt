@@ -13,6 +13,9 @@
 
 (define expanded-boot-path (from-here "../xcompile/boot.expanded"))
 
+(define (px msg x)
+  (printf "~a: ~s~n" msg x)
+  x)
 
 ;; Phase one
 
@@ -73,7 +76,7 @@
       '()
       (arcail x)))
 
-(print-hash-table #f)
+;(print-hash-table #f)
 
 (define (exec1 x)
   (let ((a (demunch x)))
@@ -105,6 +108,36 @@
 
 ;; Phase two
 
+(define convert-filename-chars
+  (hash #\/ "slash"
+        #\\ "backslash"
+        #\_ "underline"))
+
+(define (tostr s)
+  (cond ((string? s)
+         s)
+        ((char? s)
+         (string s))
+        ((symbol? s)
+         (symbol->string s))
+        (else
+         (error "can't convert to string" s))))
+
+(define (str . args)
+  (apply string-append (map tostr args)))
+
+(module+ test (require rackunit/chk)
+  (chk (str "a" #\b 'c "d") "abcd"))
+
+(define (asfilename s)
+  (apply str
+    (map (λ (c)
+           (cond ((hash-has-key? convert-filename-chars c)
+                  (str "_" (hash-ref convert-filename-chars c) "_"))
+                 (else
+                  (string c))))
+         (string->list (str s)))))
+
 (define include-tests #t)
 
 (when include-tests
@@ -131,43 +164,103 @@
 
 (define module2 (new-symtab (builtins)))
 
+((λ ()
+  (sref module2 '*loaded* (make-hash))
+  (sref module2 '*provisional* (make-hash))
+  (void)))
+
 (define (exec2 x)
   (arc-eval1 module2 (rename$ x)))
 
-(define (load-test filename)
-  (file-each
-    (from-here (string-append "../tests/" (symbol->string filename) ".t"))
-    (λ (x)
-      (exec2 x))))
+(define (loaded module sym)
+  (let ((*loaded* (ref module '*loaded* 'nil)))
+    (and (ar-true? *loaded*)
+         (ar-true? (ref *loaded* sym 'nil)))))
 
-(define (include2 x)
-  (cond ((caris x 'test)
-         (when include-tests
-           (load-test (cadr x))))
+(define (process-use module features)
+  (for ((feature features))
+    (unless (or (and (not (ar-true? (ref (ref module '*provisional*) feature)))
+                     (ar-true? (ref module feature 'nil)))
+                (loaded module feature))
+      (load2 module feature))))
+
+(define (process module x)
+  (cond ((caris x 'use)
+         (process-use module (cdr x)))
+        ((caris x 'provisional)
+         (sref (ref module '*provisional*) (cadr x) 't))
+        ((caris x 'provides)
+         (sref (ref module '*loaded*) (cadr x) 't))
         (else
          (exec2 x))))
 
-(define (load2 filename)
-  (file-each (from-here filename) include2))
+(define srcdirs '("../qq" "../src"))
 
-(load2 "../src/boot.arc")
-(load2 "../qq/qq.arc")
-(load2 "../src/two.arc")
+(define testdirs '("../tests"))
+
+(define (some test seq)
+  (if (null? seq)
+       #f
+       (let ((r (test (car seq))))
+         (or r (some test (cdr seq))))))
+
+(define (file-exists name)
+  (if (file-exists? name) name #f))
+
+(define (findfile dirs name extension)
+  (some (λ (dir)
+          (file-exists
+            (from-here (string-append dir "/" name extension))))
+        dirs))
+
+(define (findsrc name)
+  (findfile srcdirs (asfilename name) ".arc"))
+
+(define (findtest name)
+  (findfile testdirs (asfilename name) ".t"))
+
+(define (loadfile module src)
+  (display src)
+  (newline)
+  (file-each src (λ (x) (process module x))))
+
+(define (runtest-if-exists module name)
+  (let ((src (findtest name)))
+    (when src
+      (loadfile module src))))
+
+(define (load2 module name)
+  (let ((*loaded* (ref module '*loaded* #f)))
+    (when (and (symbol? name) *loaded*)
+      (sref *loaded* name 't)))
+  (let ((src (if (symbol? name)
+                 (findsrc name)
+                 (from-here name))))
+    (unless src
+      (error "not found" name))
+    (loadfile module src))
+  (let ((*provisional* (ref module '*provisional* #f)))
+    (when (and *provisional* (symbol? name))
+      (sref *provisional* name 'nil)))
+  (when include-tests
+    (runtest-if-exists module name)))
+
+(load2 module2 'macro)
 
 (define (macro-expand2 module x)
   ((symtab-ref module2 'macro-expand)
    (hash 'module module 'validate (λ (x) x))
    x))
 
-(define (arc-eval2 module code)
-  (eval-ail
-    (arcail
-      (macro-expand2 module (ar-niltree code)))))
+; (define (arc-eval2 module code)
+;   (eval-ail
+;     (arcail
+;       (macro-expand2 module (ar-niltree code)))))
 
-(define (aload module filename)
-  (file-each filename
-    (λ (x)
-      (arc-eval2 module x))))
+; (define (aload module name)
+;   (file-each name
+;     (λ (x)
+;       (arc-eval2 module x))))
 
 ; (when include-tests
 ;   (aload module2 "perftest.arc"))

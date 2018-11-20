@@ -1,8 +1,11 @@
 #lang racket
 
-(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set!)
+(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set! symtab-each)
 
-(struct symtab (hash) #:transparent)
+(struct symtab (hash)
+  #:transparent
+  #:property prop:procedure (λ (g k)
+                              (symtab-ref g k)))
 
 (define new-symtab
   (case-lambda
@@ -25,4 +28,8 @@
 (define (symtab-set! g k v)
   (hash-set! (symtab-hash g) k v))
 
-;(printf "~s~n" (new-symtab))
+(define (symtab-each f g)
+  (hash-for-each (symtab-hash g) f))
+
+(module+ test (require rackunit/chk)
+  (chk ((symtab (hash 'a 1)) 'a) 1))

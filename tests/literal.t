@@ -1,3 +1,5 @@
+(use equals list)
+
 (equals (literal 3)              t)
 (equals (literal car)            t)
 (equals (literal "abc")          t)

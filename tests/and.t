@@ -1,3 +1,5 @@
+(use simple-equals)
+
 (equals (and)         t)
 (equals (and nil)     nil)
 (equals (and 1)       1)

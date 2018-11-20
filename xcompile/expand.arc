@@ -335,49 +335,52 @@
            (quit 1))))
 
 (= boot-module
-   (obj acons         [isa _ 'cons]
-        annotate      annotate
-        apply         apply
-        ar-apply      apply
-        ar-assert     ar-assert
-        ar-disp       disp
-        ar-iso        iso
-        ar-is2        is
-        ar-strlen     len
-        ar-str-append (fn args (apply + "" args))
-        ar-symstr     [coerce _ 'string]
-        ar-tag-type   type
-        ar-uniq       ar-uniq
-        ar-write      write
-        ar-<2         <
-        a-char        [isa _ 'char]
-        a-fn          [isa _ 'fn]
-        a-num         [isa _ 'num]
-        a-str         [isa _ 'string]
-        a-sym         [isa _ 'sym]
-        a-table       [isa _ 'table]
-        a-tagged      a-tagged
-        an-input      [isa _ 'input]
-        an-int        [isa _ 'int]
-        an-output     [isa _ 'output]
-        car           car
-        cdr           cdr
-        cons          cons
-        err           err
-        fnname        fnname
-        has           has
-        namefn        namefn
-        rep           rep
-        sref          (fn (g k v) (sref g v k))
-        stderr        stderr
-        stdin         stdin
-        stdout        stdout
-        t             t
-        table         table
-        +             +
-        -             -
-        *             *
-        /             /))
+   (symtab
+     (obj acons         [isa _ 'cons]
+          annotate      annotate
+          apply         apply
+          ar-apply      apply
+          ar-assert     ar-assert
+          ar-disp       disp
+          ar-iso        iso
+          is2           is
+          ar-strlen     len
+          ar-str-append (fn args (apply + "" args))
+          ar-symstr     [coerce _ 'string]
+          ar-tag-type   type
+          ar-uniq       ar-uniq
+          ar-write      write
+          ar-<2         <
+          a-char        [isa _ 'char]
+          a-fn          [isa _ 'fn]
+          a-num         [isa _ 'num]
+          a-str         [isa _ 'string]
+          a-sym         [isa _ 'sym]
+          a-table       [isa _ 'table]
+          a-tagged      a-tagged
+          an-input      [isa _ 'input]
+          an-int        [isa _ 'int]
+          an-output     [isa _ 'output]
+          car           car
+          cdr           cdr
+          cons          cons
+          err           err
+          fnname        fnname
+          has           has
+          namefn        namefn
+          rep           rep
+          sref          (fn (g k v) (sref g v k))
+          stderr        stderr
+          stdin         stdin
+          stdout        stdout
+          t             t
+          table         table
+          +             +
+          -             -
+          *             *
+          /             /
+          *loaded*      (obj)
+          *provisional* (obj))))
 
 (= boot-context (obj module boot-module))
 
@@ -411,36 +414,85 @@
   (equals (tostring (write (munch boot-module `(a ,boot-module!cons b))))
           "(a #&cons b)"))
 
-(= out (outfile "boot.expanded"))
+; add more as needed
 
-(def load-test (out testname)
-  (xload out (+ "../tests/" testname ".t")))
+(= convert-filename-chars
+   (obj #\/ "slash"
+        #\\ "backslash"
+        #\_ "underline"))
+
+(def asfilename (s)
+  (apply + ""
+    (map (fn (c)
+           (aif (convert-filename-chars c)
+                 (+ "_" it "_")
+                 (coerce c 'string)))
+     (coerce (+ "" s) 'cons))))
+
+(equals (asfilename "w/uniq") "w_slash_uniq")
+
+(= out (outfile "boot.expanded"))
 
 (def execf (out x)
   (let x (replace-tree x $renames)
-    ; (pprint x)
     (let m (macro-expand boot-context x)
       (when out
         (write (munch boot-module m) out)
         (disp "\n\n" out))
       (eval (ailarc m)))))
 
+(def use-feature (out feature)
+  (unless (or (boot-module!*loaded* feature)
+              (and (no (boot-module!*provisional* feature))
+                   (has boot-module feature)))
+    (xload out feature)))
+
+(def process-use (out x)
+  (each feature (cdr x)
+    (use-feature out feature)))
+
 (def process (out x)
-  (if (caris x 'test)
-       (load-test out (cadr x))
+  (if (caris x 'use)
+       (process-use out x)
+      (caris x 'provisional)
+       (set (boot-module!*provisional* (cadr x)))
+      (caris x 'provides)
+       (set (boot-module!*loaded* (cadr x)))
        (execf out x)))
 
-(def xload (out filename)
-  (each x (readfile filename)
+(= source-dirs '("../qq" "../src"))
+
+(= test-dirs '("../tests"))
+
+(def findsrc (name)
+  (some [file-exists (+ _ "/" (asfilename name) ".arc")] source-dirs))
+
+(def findtest (name)
+  (some [file-exists (+ _ "/" (asfilename name) ".t")] test-dirs))
+
+(def loadfile (out src)
+  (prn src)
+  (each x (readfile src)
     (process out x)))
 
-(xload out "../src/boot.arc")
-(xload out "../qq/qq.arc")
+(def runtest (out name)
+  (awhen (findtest name)
+    (loadfile out it)))
 
-(when include-tests
-  (each filename '("proper.t" "dotted-list.t" "qq.t")
-    (xload out (+ "../tests/" filename))))
+(def xload (out name)
+  (when (isa name 'sym)
+    (set (boot-module!*loaded* name)))
+  (let src (if (isa name 'sym) (findsrc name) name)
+    (unless src
+      (err "not found" name))
+    (loadfile out src))
+  (when (isa name 'sym)
+    (wipe (boot-module!*provisional* name)))
+  (when include-tests
+    (runtest out name)))
 
-(xload out "../src/two.arc")
+(xload out 'macro)
 
 (close out)
+
+(prn boot-module!*provisional*)

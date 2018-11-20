@@ -1,0 +1,10 @@
+(use simple-def if no or caris)
+
+(def literal (x)
+  (if (a-sym x)
+       (no x)
+      (acons x)
+       (or (caris x quote)
+           (caris x 'quote)
+           (caris x '$quote))
+       t))

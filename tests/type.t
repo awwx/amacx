@@ -1,3 +1,5 @@
+(use equals type annotate fn table stdout stdin)
+
 (equals (type (annotate 'foo 123)) 'foo)
 (equals (type '(1 . 2))            'cons)
 (equals (type 'foo)                'sym)

@@ -4,7 +4,8 @@
 (require "uniq.rkt")
 (require "symtab.rkt")
 
-(provide builtins ar-amac r-apply ar-nillist ar-niltree ar-rep ar-true?)
+(provide builtins ar-amac r-apply ar-nillist ar-niltree ar-rep ar-true?
+         ref sref)
 
 (define (ar-denillist x)
   (cond ((mpair? x)
@@ -72,6 +73,34 @@
          'nil)
 
         (else x)))
+
+(define ref
+  (case-lambda
+   ((g k)
+    (cond ((hash? g)
+           (hash-ref g k 'nil))
+          ((symtab? g)
+           (symtab-ref g k))
+          (else (error "can't ref non-table" g))))
+
+   ((g k default)
+    (cond ((hash? g)
+           (hash-ref g k default))
+          ((symtab? g)
+           (if (symtab-has-key? g k)
+               (symtab-ref g k)
+               default))
+          (else (error "can't ref non-table" g))))))
+
+(define (sref g key val)
+  (cond ((hash? g)  (if (eq? val 'nil)
+                          (hash-remove! g key)
+                          (hash-set! g key val)))
+        ((symtab? g) (symtab-set! g key val))
+        ((string? g) (string-set! g key val))
+        ((pair? g)   (nth-set! g key val))
+        (else (err "Can't set reference " g key val)))
+  val)
 
 ; where args is a racket list
 
@@ -170,8 +199,7 @@
 (bdef ar-iso (a b)
   (tnil (equal? a b)))
 
-(bdef ar-is2 (a b)
-  ;(printf "ar-is2 ~v ~v~n" a b)
+(bdef is2 (a b)
   (tnil (or (eqv? a b)
             (and (string? a) (string? b) (string=? a b))
             (and (ar-false? a) (ar-false? b)))))
@@ -275,15 +303,7 @@
 (b= stderr current-error-port)
 (b= stdout current-output-port)
 
-(bdef sref (g key val)
-  (cond ((hash? g)  (if (eq? val 'nil)
-                          (hash-remove! g key)
-                          (hash-set! g key val)))
-        ((symtab? g) (symtab-set! g key val))
-        ((string? g) (string-set! g key val))
-        ((pair? g)   (nth-set! g key val))
-        (else (err "Can't set reference " g key val)))
-  val)
+(b= sref sref)
 
 (b= symtab new-symtab)
 

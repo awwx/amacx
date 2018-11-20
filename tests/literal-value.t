@@ -1,3 +1,5 @@
+(use equals literal-value list)
+
 (equals (literal-value 3)              3)
 (equals (literal-value car)            car)
 (equals (literal-value "abc")          "abc")
