@@ -335,52 +335,51 @@
            (quit 1))))
 
 (= boot-module
-   (symtab
-     (obj acons         [isa _ 'cons]
-          annotate      annotate
-          apply         apply
-          ar-apply      apply
-          ar-assert     ar-assert
-          ar-disp       disp
-          ar-iso        iso
-          is2           is
-          ar-strlen     len
-          ar-str-append (fn args (apply + "" args))
-          ar-symstr     [coerce _ 'string]
-          ar-tag-type   type
-          ar-uniq       ar-uniq
-          ar-write      write
-          ar-<2         <
-          a-char        [isa _ 'char]
-          a-fn          [isa _ 'fn]
-          a-num         [isa _ 'num]
-          a-str         [isa _ 'string]
-          a-sym         [isa _ 'sym]
-          a-table       [isa _ 'table]
-          a-tagged      a-tagged
-          an-input      [isa _ 'input]
-          an-int        [isa _ 'int]
-          an-output     [isa _ 'output]
-          car           car
-          cdr           cdr
-          cons          cons
-          err           err
-          fnname        fnname
-          has           has
-          namefn        namefn
-          rep           rep
-          sref          (fn (g k v) (sref g v k))
-          stderr        stderr
-          stdin         stdin
-          stdout        stdout
-          t             t
-          table         table
-          +             +
-          -             -
-          *             *
-          /             /
-          *loaded*      (obj)
-          *provisional* (obj))))
+   (obj acons         [isa _ 'cons]
+        annotate      annotate
+        apply         apply
+        ar-apply      apply
+        ar-assert     ar-assert
+        ar-disp       disp
+        ar-iso        iso
+        is2           is
+        ar-strlen     len
+        ar-str-append (fn args (apply + "" args))
+        ar-symstr     [coerce _ 'string]
+        ar-tag-type   type
+        ar-uniq       ar-uniq
+        ar-write      write
+        ar-<2         <
+        a-char        [isa _ 'char]
+        a-fn          [isa _ 'fn]
+        a-num         [isa _ 'num]
+        a-str         [isa _ 'string]
+        a-sym         [isa _ 'sym]
+        a-table       [isa _ 'table]
+        a-tagged      a-tagged
+        an-input      [isa _ 'input]
+        an-int        [isa _ 'int]
+        an-output     [isa _ 'output]
+        car           car
+        cdr           cdr
+        cons          cons
+        err           err
+        fnname        fnname
+        has           has
+        namefn        namefn
+        rep           rep
+        sref          (fn (g k v) (sref g v k))
+        stderr        stderr
+        stdin         stdin
+        stdout        stdout
+        t             t
+        table         table
+        +             +
+        -             -
+        *             *
+        /             /
+        *loaded*      (obj)
+        *provisional* (obj)))
 
 (= boot-context (obj module boot-module))
 

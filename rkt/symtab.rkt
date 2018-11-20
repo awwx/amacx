@@ -2,10 +2,7 @@
 
 (provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set! symtab-each)
 
-(struct symtab (hash)
-  #:transparent
-  #:property prop:procedure (λ (g k)
-                              (symtab-ref g k)))
+(struct symtab (hash) #:transparent)
 
 (define new-symtab
   (case-lambda
@@ -30,6 +27,3 @@
 
 (define (symtab-each f g)
   (hash-for-each (symtab-hash g) f))
-
-(module+ test (require rackunit/chk)
-  (chk ((symtab (hash 'a 1)) 'a) 1))
