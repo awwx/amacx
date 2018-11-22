@@ -1,0 +1,11 @@
+(use equals <)
+
+(equals (<) t)
+(equals (< 1) t)
+(equals (< 1 2) t)
+(equals (< 1 1) nil)
+(equals (< 2 1) nil)
+(equals (< 1 2 3) t)
+(equals (< 1 1 1) nil)
+(equals (< 1 2 1) nil)
+(equals (< 2 1 3) nil)

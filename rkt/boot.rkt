@@ -6,6 +6,8 @@
 (require "eval-ail.rkt")
 (require "symtab.rkt")
 
+(provide phase2 aload)
+
 (define-runtime-path here "here")
 
 (define (from-here filename)
@@ -22,29 +24,27 @@
 (define (caris x v)
   (and (pair? x) (eq? (car x) v)))
 
-(define module1 (builtins))
-
-(define (inject x)
+(define (inject module x)
   (cond ((box? x)
          (cond ((eq? (unbox x) '*module*)
-                module1)
+                module)
                (else
-                (hash-ref module1 (unbox x)))))
+                (hash-ref module (unbox x)))))
 
         ((pair? x)
-         (cons (inject (car x))
-               (inject (cdr x))))
+         (cons (inject module (car x))
+               (inject module (cdr x))))
 
         (else
          x)))
 
-(define (demunch x)
+(define (demunch module x)
   (cond ((caris x 'quote-xVrP8JItk2Ot)
-         `(quote-xVrP8JItk2Ot ,(ar-niltree (inject (cadr x)))))
+         `(quote-xVrP8JItk2Ot ,(ar-niltree (inject module (cadr x)))))
 
         ((pair? x)
-         (cons (demunch (car x))
-               (demunch (cdr x))))
+         (cons (demunch module (car x))
+               (demunch module (cdr x))))
 
         (else x)))
 
@@ -78,8 +78,8 @@
 
 ;(print-hash-table #f)
 
-(define (exec1 x)
-  (let ((a (demunch x)))
+(define (exec1 module x)
+  (let ((a (demunch module x)))
     (eval-ail a))
   (void))
 
@@ -92,16 +92,22 @@
             (f x)
             (loop)))))))
 
-(file-each expanded-boot-path exec1)
+(define (phase1)
+  (define module (builtins))
+  (file-each expanded-boot-path (λ (x) (exec1 module x)))
+  module)
 
-(define (macro-expand1 module x)
-  ((hash-ref module1 'macro-expand)
-   (hash 'module module 'validate (λ (x) x))
-   x))
+(define (macro-expander macro-module)
+  (ref macro-module 'macro-expand))
 
-(define (arc-eval1 module code)
+(define (macro-expand expander target-module x)
+  (expander
+    (hash 'module target-module 'validate (λ (x) x))
+    x))
+
+(define (arc-eval code target-module expander)
   (define m
-    (macro-expand1 module (ar-niltree code)))
+    (macro-expand expander target-module (ar-niltree code)))
   (define ail (arcail m))
   (eval-ail ail))
 
@@ -111,7 +117,9 @@
 (define convert-filename-chars
   (hash #\/ "slash"
         #\\ "backslash"
-        #\_ "underline"))
+        #\_ "underline"
+        #\< "lt"
+        #\> "gt"))
 
 (define (tostr s)
   (cond ((string? s)
@@ -162,37 +170,41 @@
 (define (rename$ x)
   (replace-tree $renames x))
 
-(define module2 (new-symtab (builtins)))
+(define (ensure-table module tablename)
+  (or (ref module tablename #f)
+      (sref module tablename (make-hash))))
 
-((λ ()
-  (sref module2 '*loaded* (make-hash))
-  (sref module2 '*provisional* (make-hash))
-  (void)))
+(define (settab module tablename k v)
+  (sref (ensure-table module tablename) k v))
 
-(define (exec2 x)
-  (arc-eval1 module2 (rename$ x)))
+(define (exec2 expander target-module x)
+  (arc-eval (rename$ x) target-module expander))
 
 (define (loaded module sym)
   (let ((*loaded* (ref module '*loaded* 'nil)))
     (and (ar-true? *loaded*)
          (ar-true? (ref *loaded* sym 'nil)))))
 
-(define (process-use module features)
-  (for ((feature features))
-    (unless (or (and (not (ar-true? (ref (ref module '*provisional*) feature)))
-                     (ar-true? (ref module feature 'nil)))
-                (loaded module feature))
-      (load2 module feature))))
+(define (provisional? target-module feature)
+  (let ((*provisional* (ref target-module '*provisional* #f)))
+    (and *provisional* (ar-true? (ref *provisional* feature)))))
 
-(define (process module x)
+(define (process-use expander target-module features)
+  (for ((feature features))
+    (unless (or (and (not (provisional? target-module feature))
+                     (ar-true? (ref target-module feature 'nil)))
+                (loaded target-module feature))
+      (aload target-module feature expander))))
+
+(define (process expander target-module x)
   (cond ((caris x 'use)
-         (process-use module (cdr x)))
+         (process-use expander target-module (cdr x)))
         ((caris x 'provisional)
-         (sref (ref module '*provisional*) (cadr x) 't))
+         (settab target-module '*provisional* (cadr x) 't))
         ((caris x 'provides)
-         (sref (ref module '*loaded*) (cadr x) 't))
+         (settab target-module '*loaded* (cadr x) 't))
         (else
-         (exec2 x))))
+         (exec2 expander target-module x))))
 
 (define srcdirs '("../qq" "../src"))
 
@@ -219,50 +231,34 @@
 (define (findtest name)
   (findfile testdirs (asfilename name) ".t"))
 
-(define (loadfile module src)
+(define (loadfile expander target-module src)
   (display src)
   (newline)
-  (file-each src (λ (x) (process module x))))
+  (file-each src (λ (x) (process expander target-module x))))
 
-(define (runtest-if-exists module name)
+(define (runtest-if-exists expander target-module name)
   (let ((src (findtest name)))
     (when src
-      (loadfile module src))))
+      (loadfile expander target-module src))))
 
-(define (load2 module name)
-  (let ((*loaded* (ref module '*loaded* #f)))
-    (when (and (symbol? name) *loaded*)
-      (sref *loaded* name 't)))
+(define (aload target-module name (expander (macro-expander target-module)))
+  (when (symbol? name)
+    (settab target-module '*loaded* name 't))
   (let ((src (if (symbol? name)
                  (findsrc name)
-                 (from-here name))))
+                 name)))
     (unless src
       (error "not found" name))
-    (loadfile module src))
-  (let ((*provisional* (ref module '*provisional* #f)))
-    (when (and *provisional* (symbol? name))
-      (sref *provisional* name 'nil)))
+    (loadfile expander target-module src))
+  (when (symbol? name)
+    (settab target-module '*provisional* name 'nil))
   (when include-tests
-    (runtest-if-exists module name)))
+    (runtest-if-exists expander target-module name)))
 
-(load2 module2 'macro)
-
-(define (macro-expand2 module x)
-  ((symtab-ref module2 'macro-expand)
-   (hash 'module module 'validate (λ (x) x))
-   x))
-
-; (define (arc-eval2 module code)
-;   (eval-ail
-;     (arcail
-;       (macro-expand2 module (ar-niltree code)))))
-
-; (define (aload module name)
-;   (file-each name
-;     (λ (x)
-;       (arc-eval2 module x))))
-
-; (when include-tests
-;   (aload module2 "perftest.arc"))
-
-(printf "all done\n")
+(define (phase2)
+  (define module1 (phase1))
+  (define module2 (new-symtab (builtins)))
+  (aload module2 'macro (macro-expander module1))
+  (when include-tests
+    (printf "tests done\n"))
+  module2)

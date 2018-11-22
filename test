@@ -5,4 +5,4 @@ raco pkg install --skip-installed --deps search-auto rackunit-chk
 
 (cd xcompile; racket -f expand.scm)
 
-racket rkt/boot.rkt
+racket rkt/test.rkt
