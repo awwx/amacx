@@ -5,7 +5,7 @@ sources:
 
 tasks:
   - install_racket: |
-      wget -nv https://mirror.racket-lang.org/installers/7.1/racket-7.1-x86_64-linux.sh
+      wget -nv https://s3.amazonaws.com/awwx.ws/mirror/racket-7.1-x86_64-linux.sh
       sudo sh racket-7.1-x86_64-linux.sh --unix-style --dest /usr/local
       racket -v
 
