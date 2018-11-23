@@ -25,5 +25,5 @@
 (define (symtab-set! g k v)
   (hash-set! (symtab-hash g) k v))
 
-(define (symtab-each f g)
+(define (symtab-each g f)
   (hash-for-each (symtab-hash g) f))

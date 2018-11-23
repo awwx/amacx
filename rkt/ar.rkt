@@ -340,6 +340,15 @@
 (bdef table ()
   (make-hash))
 
+(bdef table-each (g f)
+  (cond ((symtab? g)
+         (symtab-each g f))
+        ((hash? g)
+         (hash-for-each g f))
+        (else
+         (err "not a table" g)))
+  g)
+
 (b= thread thread)
 
 (b= thread-wait thread-wait)

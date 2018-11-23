@@ -38,7 +38,7 @@
 
 (define (_maptable fn table)
   (cond ((symtab? table)
-         (symtab-each fn table))
+         (symtab-each table fn))
         (else
          (ac-maptable fn table))))
 
