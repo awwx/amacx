@@ -428,7 +428,8 @@
                  (coerce c 'string)))
      (coerce (+ "" s) 'cons))))
 
-(equals (asfilename "w/uniq") "w_slash_uniq")
+(when include-tests
+  (equals (asfilename "w/uniq") "w_slash_uniq"))
 
 (= out (outfile "boot.expanded"))
 

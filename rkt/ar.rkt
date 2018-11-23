@@ -137,6 +137,26 @@
     ((fn args)  (r-apply fn (ar-denillist args)))
     ((fn . rest) (r-apply fn (combine-apply rest)))))
 
+(define (protect during after)
+  (dynamic-wind (lambda () #t) during after))
+
+(define ar-the-sema (make-semaphore 1))
+
+(define ar-sema-cell (make-thread-cell #f))
+
+(define (atomic-invoke f)
+  (if (thread-cell-ref ar-sema-cell)
+      (ar-apply f '())
+      (begin
+        (thread-cell-set! ar-sema-cell #t)
+        (protect
+          (lambda ()
+            (call-with-semaphore
+             ar-the-sema
+             (lambda () (ar-apply f '()))))
+          (lambda ()
+            (thread-cell-set! ar-sema-cell #f))))))
+
 (define builtin-table (make-hash))
 
 (define-syntax b=
@@ -222,6 +242,8 @@
               ((and (char? x)   (char? y)) (char<? x y))
               (else (< x y)))))
 
+(b= atomic-invoke atomic-invoke)
+
 (bdef a-char (x)
   (tnil (char? x)))
 
@@ -297,7 +319,13 @@
 (bdef namefn (name fn)
   (procedure-rename fn name))
 
+(b= protect protect)
+
 (b= rep ar-rep)
+
+(define (wrapnil f) (lambda args (apply f args) 'nil))
+
+(b= sleep (wrapnil sleep))
 
 (b= stdin  current-input-port)
 (b= stderr current-error-port)
@@ -311,6 +339,10 @@
 
 (bdef table ()
   (make-hash))
+
+(b= thread thread)
+
+(b= thread-wait thread-wait)
 
 (b= ar-writec write-char)
 

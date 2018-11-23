@@ -1,6 +1,6 @@
 ; renamed from "loop" in Arc
 
-(use mac w/uniq do rfn if)
+(use mac w/uniq simple-do rfn if)
 
 (mac forloop (start test update . body)
   (w/uniq (gfn gparm)

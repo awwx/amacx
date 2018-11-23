@@ -1,4 +1,4 @@
-(use mac if no do let cxr)
+(use mac if no simple-do let cxr)
 
 (mac withs (parms . body)
   (if (no parms)
