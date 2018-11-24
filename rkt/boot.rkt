@@ -1,5 +1,6 @@
 #lang racket
 
+(require racket/hash)
 (require racket/runtime-path)
 
 (require "ar.rkt")
@@ -76,8 +77,6 @@
       '()
       (arcail x)))
 
-;(print-hash-table #f)
-
 (define (exec1 module x)
   (let ((a (demunch module x)))
     (eval-ail a))
@@ -95,9 +94,10 @@
 (define (phase1 (include-tests #f))
   (when include-tests
     (printf "------ phase one~n"))
-  (define module (builtins))
-  (file-each expanded-boot-path (λ (x) (exec1 module x)))
-  module)
+  (let ((module (make-hash)))
+    (hash-union! module builtins)
+    (file-each expanded-boot-path (λ (x) (exec1 module x)))
+    module))
 
 (define (macro-expander macro-module)
   (ref macro-module 'macro-expand))
@@ -259,7 +259,7 @@
 (define (phase2 include-tests (module1 (phase1 include-tests)))
   (when include-tests
     (printf "------ phase two~n"))
-  (define module2 (new-symtab (builtins)))
+  (define module2 (new-symtab builtins))
   (aload 'macro module2 (macro-expander module1) include-tests)
   (when include-tests
     (printf "tests done\n"))

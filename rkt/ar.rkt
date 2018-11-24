@@ -1,5 +1,6 @@
 #lang racket
 
+(require racket/hash)
 (require racket/random)
 (require "uniq.rkt")
 (require "symtab.rkt")
@@ -170,8 +171,7 @@
      (b= name
        (procedure-rename (λ args body ...) 'name)))))
 
-(define (builtins)
-  (hash-copy builtin-table))
+(define builtins #f)
 
 (define err error)
 
@@ -359,6 +359,10 @@
 (b= - -)
 (b= * *)
 (b= / /)
+
+
+(set! builtins
+  (hash-union (hash) builtin-table))
 
 (module+ test (require rackunit/chk)
   (let ((g (make-hash))
