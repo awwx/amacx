@@ -3,8 +3,8 @@
 (require racket/hash)
 (require racket/runtime-path)
 
-(require "ar.rkt")
 (require "aload.rkt")
+(require "builtins.rkt")
 (require "data.rkt")
 (require "eval-ail.rkt")
 (require "symtab.rkt")
