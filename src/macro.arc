@@ -1,5 +1,5 @@
 (use def and isa has if is no list fn join or idfn aif caris cxr
-     acons quasiquote map1 err unless let apply rep)
+     acons quasiquote map1 err unless let apply rep contains)
 
 (def amacro (x)
   (and (isa x 'mac) x))
@@ -9,15 +9,6 @@
       (and (isa x 'sym)
            (has module x)
            (amacro (module x)))))
-
-; as we don't have mem yet
-
-(def contains (lst x)
-  (if (no lst)
-       nil
-      (is (car lst) x)
-       t
-       (contains (cdr lst) x)))
 
 (def is-lexical (context var)
   (and (isa var 'sym) (contains (context 'env) var)))
