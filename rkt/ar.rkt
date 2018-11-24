@@ -2,11 +2,11 @@
 
 (require racket/hash)
 (require racket/random)
-(require "uniq.rkt")
+(require "data.rkt")
 (require "symtab.rkt")
+(require "uniq.rkt")
 
-(provide builtins ar-amac r-apply ar-nillist ar-niltree ar-rep ar-true?
-         ref sref)
+(provide builtins ar-amac ar-rep)
 
 (define (ar-denillist x)
   (cond ((mpair? x)
@@ -48,79 +48,6 @@
       x))
 
 (define (tnil x) (if x 't 'nil))
-
-(define (ar-false? x)
-  (or (eq? x 'nil) (eq? x #f)))
-
-(define (ar-true? x)
-  (not (ar-false? x)))
-
-(define (ar-nillist x)
-  (cond ((pair? x)
-         (mcons (car x)
-                (ar-nillist (cdr x))))
-
-        ((null? x)
-         'nil)
-
-        (else x)))
-
-(define (ar-niltree x)
-  (cond ((pair? x)
-         (mcons (ar-niltree (car x))
-                (ar-niltree (cdr x))))
-
-        ((or (eq? x #f) (eq? x '()))
-         'nil)
-
-        (else x)))
-
-(define ref
-  (case-lambda
-   ((g k)
-    (cond ((hash? g)
-           (hash-ref g k 'nil))
-          ((symtab? g)
-           (symtab-ref g k))
-          (else (error "can't ref non-table" g))))
-
-   ((g k default)
-    (cond ((hash? g)
-           (hash-ref g k default))
-          ((symtab? g)
-           (if (symtab-has-key? g k)
-               (symtab-ref g k)
-               default))
-          (else (error "can't ref non-table" g))))))
-
-(define (sref g key val)
-  (cond ((hash? g)  (if (eq? val 'nil)
-                          (hash-remove! g key)
-                          (hash-set! g key val)))
-        ((symtab? g) (symtab-set! g key val))
-        ((string? g) (string-set! g key val))
-        ((pair? g)   (nth-set! g key val))
-        (else (err "Can't set reference " g key val)))
-  val)
-
-; where args is a racket list
-
-(define (r-apply fn args)
-  (cond ((procedure? fn)
-         (apply fn args))
-        ((pair? fn)
-         (list-ref fn (car args)))
-        ((string? fn)
-         (string-ref fn (car args)))
-        ((hash? fn)
-         (hash-ref fn
-                   (car args)
-                   (λ ()
-                     (if (pair? (cdr args)) (cadr args) 'nil))))
-        ((symtab? fn)
-         (symtab-ref fn (car args)))
-        (else
-         (err "Function call on inappropriate object" fn args))))
 
 (define (combine-apply args)
   (cond ((null? args)
@@ -173,11 +100,6 @@
 
 (define builtins #f)
 
-(define err error)
-
-(define (nth-set! lst n val)
-  (set-mcar! (list-tail lst n) val))
-
 (define (ar-tagged? x)
   (and (vector? x) (eq? (vector-ref x 0) 'tagged)))
 
@@ -204,11 +126,14 @@
   (if (not (ar-false? x))
        (printf "OK\n")
        (begin (printf "FAIL\n")
-              (error 'fail))))
+              (err 'fail))))
 
 (b= ar-apply ar-apply)
 
 (b= apply ar-apply)
+
+(bdef ar-builtins ()
+  builtins)
 
 (bdef ar-disp (x port)
   (display (ar-denil x) port))
@@ -302,7 +227,7 @@
 (bdef cons (a d)
   (mcons a d))
 
-(b= err error)
+(b= err err)
 
 (bdef fnname (fn)
   (object-name fn))
@@ -312,7 +237,7 @@
          (tnil (hash-has-key? g k)))
         ((symtab? g)
          (tnil (symtab-has-key? g k)))
-        (else (error "has: not a table" g))))
+        (else (err "has: not a table" g))))
 
 (b= msec current-milliseconds)
 

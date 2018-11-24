@@ -6,7 +6,7 @@
          if-xVrP8JItk2Ot
          call-xVrP8JItk2Ot)
 
-(require (only-in "ar.rkt" r-apply ar-nillist ar-true?))
+(require (only-in "data.rkt" r-apply ar-nillist ar-true?))
 (require (only-in "symtab.rkt" symtab? symtab-ref))
 
 (define-syntax quote-xVrP8JItk2Ot
