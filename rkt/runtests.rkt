@@ -5,14 +5,15 @@
 
 (define-runtime-path tests "../tests")
 
-(define (runtest src)
+(define (runtest module1 src)
   (printf "~s~n" src)
-  (let ((module (phase2 #f)))
+  (let ((module (phase2 #f module1)))
     (aload src module)))
 
 (define (run-tests srcs)
-  (for ((src srcs))
-    (runtest src)))
+  (let ((module1 (phase1)))
+    (for ((src srcs))
+      (runtest module1 src))))
 
 (define (run-all-tests)
   (run-tests (map path->string (directory-list tests #:build? #t))))

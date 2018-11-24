@@ -6,7 +6,7 @@
 (require "eval-ail.rkt")
 (require "symtab.rkt")
 
-(provide phase2 aload)
+(provide phase1 phase2 aload)
 
 (define-runtime-path here "here")
 
@@ -92,7 +92,9 @@
             (f x)
             (loop)))))))
 
-(define (phase1)
+(define (phase1 (include-tests #f))
+  (when include-tests
+    (printf "------ phase one~n"))
   (define module (builtins))
   (file-each expanded-boot-path (λ (x) (exec1 module x)))
   module)
@@ -254,11 +256,7 @@
   (when include-tests
     (runtest-if-exists expander target-module include-tests name)))
 
-(define (phase2 include-tests)
-  (when include-tests
-    (printf "------ phase one~n"))
-  (define module1 (phase1))
-
+(define (phase2 include-tests (module1 (phase1 include-tests)))
   (when include-tests
     (printf "------ phase two~n"))
   (define module2 (new-symtab (builtins)))
