@@ -62,5 +62,11 @@
 
 (xdef ac-denil ac-denil)
 
+(define argv (current-command-line-arguments))
+
+(define _include-tests
+  (tnil (and (> (vector-length argv) 0)
+             (equal? (vector-ref argv 0) "-t"))))
+
 (aload "arc.arc")
 (aload "expand.arc")

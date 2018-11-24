@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-raco pkg install --skip-installed --deps search-auto rackunit-chk
+(cd xcompile; racket -f expand.scm -- -t)
+racket rkt/test-inline.rkt
 
 (cd xcompile; racket -f expand.scm)
-
-racket rkt/test.rkt
+racket rkt/runtests.rkt

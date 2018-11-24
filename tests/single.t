@@ -1,3 +1,5 @@
+(use equals single)
+
 (equals (single '())      nil)
 (equals (single '(a))     t)
 (equals (single '(a . b)) nil)

@@ -1,3 +1,5 @@
+(use equals alist)
+
 (equals (alist nil)     t)
 (equals (alist '(a))    t)
 (equals (alist '(a b))  t)

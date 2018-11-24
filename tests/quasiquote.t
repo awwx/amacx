@@ -1,3 +1,5 @@
+(use equals quasiquote + list)
+
 ; These are quasiquote expressions supported in Arc 3.1
 
 (equals `40

@@ -1,3 +1,5 @@
+(use equals rreduce +)
+
 (equals (rreduce +    '())        0)
 (equals (rreduce +    '(1))       1)
 (equals (rreduce +    '(1 2))     3)

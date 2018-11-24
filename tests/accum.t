@@ -1,3 +1,5 @@
+(use equals accum)
+
 (equals (accum a
           (a 1)
           (a 2)

@@ -1,3 +1,5 @@
+(use assert join)
+
 (assert (ar-iso (join '(a b) '(c d))
                 '(a b c d)))
 

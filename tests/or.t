@@ -1,3 +1,5 @@
+(use equals or)
+
 (equals (or)             nil)
 (equals (or nil)         nil)
 (equals (or 1)           1)

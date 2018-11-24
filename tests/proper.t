@@ -1,3 +1,5 @@
+(use equals proper)
+
 (equals (proper '())        t)
 (equals (proper 'a)         nil)
 (equals (proper '(a))       t)

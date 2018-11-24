@@ -1,3 +1,5 @@
+(use equals cxr fn list)
+
 ; (equals (fn-complex-opt 'f 'list '(cdr g1))
 ;   '((f (if (acons (cdr g1)) (car (cdr g1)) list))))
 

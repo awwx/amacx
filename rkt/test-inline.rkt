@@ -3,5 +3,5 @@
 (require "boot.rkt")
 
 ((λ ()
-  (phase2)
+  (phase2 #t)
   (void)))

@@ -1,3 +1,5 @@
+(use equals withs list +)
+
 (equals (withs (a 1)) nil)
 
 (equals (withs (a 1 b (+ a 1))

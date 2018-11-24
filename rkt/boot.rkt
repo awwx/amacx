@@ -100,14 +100,14 @@
 (define (macro-expander macro-module)
   (ref macro-module 'macro-expand))
 
-(define (macro-expand expander target-module x)
+(define (macro-expand target-module expander x)
   (expander
     (hash 'module target-module 'validate (λ (x) x))
     x))
 
 (define (arc-eval code target-module expander)
   (define m
-    (macro-expand expander target-module (ar-niltree code)))
+    (macro-expand target-module expander (ar-niltree code)))
   (define ail (arcail m))
   (eval-ail ail))
 
@@ -146,11 +146,6 @@
                   (string c))))
          (string->list (str s)))))
 
-(define include-tests #t)
-
-(when include-tests
-  (printf "------ phase two~n"))
-
 (define (replace-tree mapping x)
   (cond ((and (symbol? x)
               (hash-has-key? mapping x))
@@ -177,7 +172,7 @@
 (define (settab module tablename k v)
   (sref (ensure-table module tablename) k v))
 
-(define (exec2 expander target-module x)
+(define (exec2 target-module expander x)
   (arc-eval (rename$ x) target-module expander))
 
 (define (loaded module sym)
@@ -189,22 +184,22 @@
   (let ((*provisional* (ref target-module '*provisional* #f)))
     (and *provisional* (ar-true? (ref *provisional* feature)))))
 
-(define (process-use expander target-module features)
+(define (process-use target-module expander include-tests features)
   (for ((feature features))
     (unless (or (and (not (provisional? target-module feature))
                      (ar-true? (ref target-module feature 'nil)))
                 (loaded target-module feature))
-      (aload target-module feature expander))))
+      (aload feature target-module expander include-tests))))
 
-(define (process expander target-module x)
+(define (process target-module expander include-tests x)
   (cond ((caris x 'use)
-         (process-use expander target-module (cdr x)))
+         (process-use target-module expander include-tests (cdr x)))
         ((caris x 'provisional)
          (settab target-module '*provisional* (cadr x) 't))
         ((caris x 'provides)
          (settab target-module '*loaded* (cadr x) 't))
         (else
-         (exec2 expander target-module x))))
+         (exec2 target-module expander x))))
 
 (define srcdirs '("../qq" "../src"))
 
@@ -231,17 +226,21 @@
 (define (findtest name)
   (findfile testdirs (asfilename name) ".t"))
 
-(define (loadfile expander target-module src)
-  (display src)
-  (newline)
-  (file-each src (λ (x) (process expander target-module x))))
+(define (loadfile target-module expander include-tests src)
+  (when include-tests
+    (display src)
+    (newline))
+  (file-each src (λ (x) (process target-module expander include-tests x))))
 
-(define (runtest-if-exists expander target-module name)
+(define (runtest-if-exists expander target-module include-tests name)
   (let ((src (findtest name)))
     (when src
-      (loadfile expander target-module src))))
+      (loadfile target-module expander include-tests src))))
 
-(define (aload target-module name (expander (macro-expander target-module)))
+(define (aload name
+               target-module
+               (expander (macro-expander target-module))
+               (include-tests #f))
   (when (symbol? name)
     (settab target-module '*loaded* name 't))
   (let ((src (if (symbol? name)
@@ -249,16 +248,21 @@
                  name)))
     (unless src
       (error "not found" name))
-    (loadfile expander target-module src))
+    (loadfile target-module expander include-tests src))
   (when (symbol? name)
     (settab target-module '*provisional* name 'nil))
   (when include-tests
-    (runtest-if-exists expander target-module name)))
+    (runtest-if-exists expander target-module include-tests name)))
 
-(define (phase2)
+(define (phase2 include-tests)
+  (when include-tests
+    (printf "------ phase one~n"))
   (define module1 (phase1))
+
+  (when include-tests
+    (printf "------ phase two~n"))
   (define module2 (new-symtab (builtins)))
-  (aload module2 'macro (macro-expander module1))
+  (aload 'macro module2 (macro-expander module1) include-tests)
   (when include-tests
     (printf "tests done\n"))
   module2)

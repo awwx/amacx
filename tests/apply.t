@@ -1,3 +1,5 @@
+(use equals apply +)
+
 (equals (apply +)     0)
 (equals (apply + '()) 0)
 

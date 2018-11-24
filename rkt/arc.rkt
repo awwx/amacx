@@ -7,7 +7,7 @@
 
 (when (> (vector-length args) 0)
   (define file (vector-ref args 0))
-  (define module (phase2))
+  (define module (phase2 #f))
   (sref module 'aload aload)
-  (aload module file)
+  (aload file module)
   (void))

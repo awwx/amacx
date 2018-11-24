@@ -1,4 +1,6 @@
-(set include-tests)
+; (wipe include-tests)
+
+(prn "include-tests " include-tests)
 
 (mac test body
   (if include-tests `(do ,@body)))

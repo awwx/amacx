@@ -1,3 +1,5 @@
+(use equals aif let simple-do)
+
 (equals (aif 1 it)               1)
 (equals (aif nil it 3)           3)
 (equals (aif 1 it 3)             1)
