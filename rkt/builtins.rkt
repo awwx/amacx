@@ -2,6 +2,7 @@
 
 (require racket/hash)
 (require racket/random)
+(require "ail-ns.rkt")
 (require "aload.rkt")
 (require "data.rkt")
 (require "symtab.rkt")
@@ -121,6 +122,8 @@
 (bdef acons (x)
   (tnil (mpair? x)))
 
+(b= ail-namespace ail-ns)
+
 (b= annotate ar-tag)
 
 (bdef ar-assert (x)
@@ -191,7 +194,9 @@
   (tnil (symbol? x)))
 
 (bdef a-table (x)
-  (tnil (hash? x)))
+  (tnil (or (hash? x)
+            (symtab? x)
+            (namespace? x))))
 
 (bdef a-tagged (x)
   (tnil (ar-tagged? x)))
@@ -248,6 +253,8 @@
   (procedure-rename fn name))
 
 (b= protect protect)
+
+(b= racket-eval eval)
 
 (b= rep ar-rep)
 

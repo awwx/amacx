@@ -4,7 +4,8 @@
          fn-xVrP8JItk2Ot
          assign-xVrP8JItk2Ot
          if-xVrP8JItk2Ot
-         call-xVrP8JItk2Ot)
+         call-xVrP8JItk2Ot
+         #%top)
 
 (require (only-in "data.rkt" r-apply ar-nillist ar-true?))
 (require (only-in "symtab.rkt" symtab? symtab-ref))

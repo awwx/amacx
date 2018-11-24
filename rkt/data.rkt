@@ -61,6 +61,8 @@
         ((symtab? g) (symtab-set! g key val))
         ((string? g) (string-set! g key val))
         ((pair? g)   (nth-set! g key val))
+        ((namespace? g)
+         (namespace-set-variable-value! key val #f g))
         (else (err "Can't set reference " g key val)))
   val)
 
@@ -80,5 +82,7 @@
                      (if (pair? (cdr args)) (cadr args) 'nil))))
         ((symtab? fn)
          (symtab-ref fn (car args)))
+        ((namespace? fn)
+         (namespace-variable-value (car args) #t #f fn))
         (else
          (err "Function call on inappropriate object" fn args))))
