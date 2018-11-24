@@ -1,13 +1,12 @@
 #lang racket
 
-(require "ar.rkt")
 (require "boot.rkt")
+(require "data.rkt")
 
 (define args (current-command-line-arguments))
 
 (when (> (vector-length args) 0)
   (define file (vector-ref args 0))
   (define module (phase2 #f))
-  (sref module 'aload aload)
   (aload file module)
   (void))

@@ -2,6 +2,7 @@
 
 (require racket/hash)
 (require racket/random)
+(require "aload.rkt")
 (require "data.rkt")
 (require "symtab.rkt")
 (require "uniq.rkt")
@@ -143,6 +144,8 @@
 
 (bdef ar-iso (a b)
   (tnil (equal? a b)))
+
+(b= ar-load aload)
 
 (bdef is2 (a b)
   (tnil (or (eqv? a b)

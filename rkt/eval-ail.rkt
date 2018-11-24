@@ -1,7 +1,7 @@
 #lang racket
 
 (require racket/runtime-path)
-(require "ar.rkt")
+(require "data.rkt")
 (require "symtab.rkt")
 
 (define-runtime-path ail-path "ail.rkt")
@@ -10,11 +10,11 @@
 
 (define ail-namespace (make-base-empty-namespace))
 
-(define-runtime-module-path ar-path "ar.rkt")
+(define-runtime-module-path data-path "data.rkt")
 (define-namespace-anchor here)
 (define host (namespace-anchor->namespace here))
 (parameterize ((current-namespace ail-namespace))
-  (namespace-attach-module host ar-path)
+  (namespace-attach-module host data-path)
   (namespace-require ail-path))
 
 (define (eval-ail code)
