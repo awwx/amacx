@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+(cd rkt; ./unit_tests)
+
 (cd xcompile; racket -f expand.scm -- -t)
 racket rkt/test-inline.rkt
 

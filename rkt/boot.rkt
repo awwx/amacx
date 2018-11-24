@@ -65,5 +65,5 @@
   (define module2 (new-symtab builtins))
   (aload 'macro module2 (macro-expander module1) include-tests)
   (when include-tests
-    (printf "tests done\n"))
+    (printf "phase two tests done\n"))
   module2)

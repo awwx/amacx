@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+
+raco test ail.rkt aload.rkt builtins.rkt eval-ail.rkt
