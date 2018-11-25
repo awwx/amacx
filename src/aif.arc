@@ -1,4 +1,4 @@
-(use mac let if cxr)
+(use mac let if cxr quasiquote)
 
 (mac aif (expr . body)
   `(,let it ,expr

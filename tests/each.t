@@ -1,4 +1,4 @@
-(use each fn prn case obj equals)
+(use each complex-fn prn case obj equals)
 
 (with (a nil b nil c nil)
   (each (k v) (obj a 1 b 2 c 3)

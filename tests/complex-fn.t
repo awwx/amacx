@@ -1,19 +1,4 @@
-(use equals cxr fn list)
-
-; (equals (fn-complex-opt 'f 'list '(cdr g1))
-;   '((f (if (acons (cdr g1)) (car (cdr g1)) list))))
-
-(equals (cadar  '((a b c) d e)) 'b)
-(equals (caddar '((a b c) d e)) 'c)
-
-; (equals (fn-complex-args 'xs '(car gs1))
-;   '((xs (car gs1))))
-
-; (equals (fn-complex-args '(xs (o f list)) 'gs1)
-;   `((xs (,car gs1))
-;     (f  (if (acons (,cdr gs1))
-;              (car (,cdr gs1))
-;              list))))
+(use equals cxr complex-fn list)
 
 (equals (fn-complex-args? '())      nil)
 (equals (fn-complex-args? 'a)       nil)
@@ -26,6 +11,9 @@
 
 (equals ((fn ((o a 3)) a))
         3)
+
+(equals ((fn ((o a 3)) a) 4)
+        4)
 
 (equals ((fn ((a b c))
            (list a b c))

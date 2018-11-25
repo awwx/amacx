@@ -1,4 +1,4 @@
-(use fn equals)
+(use simple-fn equals)
 
 ((fn (a)
    ((fn (b)

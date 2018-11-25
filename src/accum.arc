@@ -1,4 +1,4 @@
-(use mac w/uniq withs fn assign rev)
+(use mac w/uniq withs simple-fn assign rev)
 
 (mac accum (accfn . body)
   (w/uniq gacc

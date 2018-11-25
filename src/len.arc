@@ -1,6 +1,4 @@
-(use def if no err
-  ; todo
-  fn)
+(use simple-def complex-fn if no err)
 
 (def len (xs (o l 0))
   (if (no xs)

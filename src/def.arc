@@ -1,1 +1,1 @@
-(use fn simple-def)
+(use simple-fn simple-def)
