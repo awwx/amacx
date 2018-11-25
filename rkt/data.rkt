@@ -40,6 +40,8 @@
            (hash-ref g k 'nil))
           ((symtab? g)
            (symtab-ref g k))
+          ((namespace? g)
+           (namespace-variable-value k #t #f g))
           (else (error "can't ref non-table" g))))
 
    ((g k default)
@@ -49,6 +51,8 @@
            (if (symtab-has-key? g k)
                (symtab-ref g k)
                default))
+          ((namespace? g)
+           (namespace-variable-value k #t (λ () default) g))
           (else (error "can't ref non-table" g))))))
 
 (define (nth-set! lst n val)

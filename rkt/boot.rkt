@@ -3,10 +3,10 @@
 (require racket/hash)
 (require racket/runtime-path)
 
+(require "ail-ns.rkt")
 (require "aload.rkt")
 (require "builtins.rkt")
 (require "data.rkt")
-(require "eval-ail.rkt")
 (require "symtab.rkt")
 
 (provide phase1 phase2 aload)
@@ -24,7 +24,7 @@
          (cond ((eq? (unbox x) '*module*)
                 module)
                (else
-                (hash-ref module (unbox x)))))
+                (ref module (unbox x)))))
 
         ((pair? x)
          (cons (inject module (car x))
@@ -43,16 +43,17 @@
 
         (else x)))
 
+(define ail-namespace1 (ail-ns))
+
 (define (exec1 module x)
   (let ((a (demunch module x)))
-    (eval-ail a))
+    (eval a ail-namespace1))
   (void))
 
 (define (phase1 (include-tests #f))
   (when include-tests
     (printf "------ phase one~n"))
-  (let ((module (make-hash)))
-    (hash-union! module builtins)
+  (let ((module (new-symtab builtins)))
     (file-each expanded-boot-path (λ (x) (exec1 module x)))
     module))
 

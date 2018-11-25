@@ -150,6 +150,12 @@
 
 (b= ar-load aload)
 
+(bdef ar-print args
+  (for ((arg args))
+    (write arg)
+    (display " "))
+  (display "\n"))
+
 (bdef is2 (a b)
   (tnil (or (eqv? a b)
             (and (string? a) (string? b) (string=? a b))
@@ -240,11 +246,16 @@
 (bdef fnname (fn)
   (object-name fn))
 
+(define missing (list 'missing))
+
 (bdef has (g k)
   (cond ((hash? g)
          (tnil (hash-has-key? g k)))
         ((symtab? g)
          (tnil (symtab-has-key? g k)))
+        ((namespace? g)
+         (tnil (not (eq? missing
+                         (namespace-variable-value k #t (λ () missing) g)))))
         (else (err "has: not a table" g))))
 
 (b= msec current-milliseconds)

@@ -3,7 +3,7 @@
 (require racket/hash)
 (require racket/runtime-path)
 (require "data.rkt")
-(require "eval-ail.rkt")
+(require "ail-ns.rkt")
 
 (provide aload caris file-each from-here macro-expander)
 
@@ -48,11 +48,15 @@
       '()
       (arcail x)))
 
+(define default-ail-namespace (ail-ns))
+
 (define (arc-eval code target-module expander)
   (define m
     (macro-expand target-module expander (ar-niltree code)))
   (define ail (arcail m))
-  (eval-ail ail))
+  (eval ail (if (namespace? target-module)
+                target-module
+                default-ail-namespace)))
 
 (define convert-filename-chars
   (hash #\/ "slash"
@@ -180,8 +184,8 @@
 
 (define (loadfile target-module expander include-tests src)
   (when include-tests
-    (display src)
-    (newline))
+    (printf "> ~a~n" src))
+
   (file-each src (λ (x) (process target-module expander include-tests x))))
 
 (define (runtest-if-exists expander target-module include-tests name)
@@ -199,7 +203,7 @@
                  (findsrc name)
                  name)))
     (unless src
-      (error "not found" name))
+      (error "src not found" name))
     (loadfile target-module expander include-tests src))
   (when (symbol? name)
     (settab target-module '*provisional* name 'nil))

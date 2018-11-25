@@ -420,7 +420,9 @@
 (= convert-filename-chars
    (obj #\/ "slash"
         #\\ "backslash"
-        #\_ "underline"))
+        #\_ "underline"
+        #\< "lt"
+        #\> "gt"))
 
 (def asfilename (s)
   (apply + ""
@@ -486,7 +488,7 @@
     (set (boot-module!*loaded* name)))
   (let src (if (isa name 'sym) (findsrc name) name)
     (unless src
-      (err "not found" name))
+      (err "src not found" name))
     (loadfile out src))
   (when (isa name 'sym)
     (wipe (boot-module!*provisional* name)))

@@ -5,6 +5,7 @@
          assign-xVrP8JItk2Ot
          if-xVrP8JItk2Ot
          call-xVrP8JItk2Ot
+         ns-var-xVrP8JItk2Ot
          #%top)
 
 (require (only-in "data.rkt" r-apply ar-nillist ar-true?))
@@ -85,6 +86,11 @@
 
     ((call-xVrP8JItk2Ot f e ...)
      (r-apply f (list e ...)))))
+
+(define-syntax ns-var-xVrP8JItk2Ot
+  (syntax-rules ()
+    ((ns-var-xVrP8JItk2Ot v)
+     v)))
 
 (module+ test (require rackunit/chk)
   (chk ((fn-xVrP8JItk2Ot (a b) (call-xVrP8JItk2Ot list a b)) 1 2)
