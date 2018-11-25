@@ -5,4 +5,6 @@
        l
       (acons xs)
        (len (cdr xs) (+ l 1))
+      (a-str xs)
+       (ar-strlen xs)
        (err "invalid list" xs)))
