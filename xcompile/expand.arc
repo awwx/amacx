@@ -1,5 +1,3 @@
-; (wipe include-tests)
-
 (prn "include-tests " include-tests)
 
 (mac test body
@@ -388,8 +386,7 @@
         -             -
         *             *
         /             /
-        *loaded*      (obj)
-        *provisional* (obj)))
+        *loaded*      (obj)))
 
 (= boot-context (obj module boot-module))
 
@@ -455,8 +452,7 @@
 
 (def use-feature (out feature)
   (unless (or (boot-module!*loaded* feature)
-              (and (no (boot-module!*provisional* feature))
-                   (has boot-module feature)))
+              (has boot-module feature))
     (xload out feature)))
 
 (def process-use (out x)
@@ -466,8 +462,6 @@
 (def process (out x)
   (if (caris x 'use)
        (process-use out x)
-      (caris x 'provisional)
-       (set (boot-module!*provisional* (cadr x)))
       (caris x 'provides)
        (set (boot-module!*loaded* (cadr x)))
        (execf out x)))
@@ -498,13 +492,9 @@
     (unless src
       (err "src not found" name))
     (loadfile out src))
-  (when (isa name 'sym)
-    (wipe (boot-module!*provisional* name)))
   (when include-tests
     (runtest out name)))
 
 (xload out 'macro)
 
 (close out)
-
-(prn boot-module!*provisional*)

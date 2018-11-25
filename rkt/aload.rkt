@@ -125,14 +125,9 @@
     (and (ar-true? *loaded*)
          (ar-true? (ref *loaded* sym 'nil)))))
 
-(define (provisional? target-module feature)
-  (let ((*provisional* (ref target-module '*provisional* #f)))
-    (and *provisional* (ar-true? (ref *provisional* feature)))))
-
 (define (process-use target-module expander include-tests features)
   (for ((feature features))
-    (unless (or (and (not (provisional? target-module feature))
-                     (ar-true? (ref target-module feature 'nil)))
+    (unless (or (ar-true? (ref target-module feature 'nil))
                 (loaded target-module feature))
       (aload feature target-module expander include-tests))))
 
@@ -142,8 +137,6 @@
 (define (process target-module expander include-tests x)
   (cond ((caris x 'use)
          (process-use target-module expander include-tests (cdr x)))
-        ((caris x 'provisional)
-         (settab target-module '*provisional* (cadr x) 't))
         ((caris x 'provides)
          (settab target-module '*loaded* (cadr x) 't))
         (else
@@ -208,7 +201,5 @@
     (unless src
       (error "src not found" name))
     (loadfile target-module expander include-tests src))
-  (when (symbol? name)
-    (settab target-module '*provisional* name 'nil))
   (when include-tests
     (runtest-if-exists expander target-module include-tests name)))
