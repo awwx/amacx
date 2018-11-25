@@ -2,8 +2,9 @@
 
 (require racket/hash)
 (require racket/runtime-path)
-(require "data.rkt")
 (require "ail-ns.rkt")
+(require "data.rkt")
+(require "readtables.rkt")
 
 (provide aload caris file-each from-here macro-expander)
 
@@ -174,13 +175,15 @@
   (findfile testdirs (asfilename name) ".t"))
 
 (define (file-each path f)
-  (with-input-from-file path
+  (w/readtables
     (λ ()
-      (let loop ()
-        (let ((x (read)))
-          (unless (eof-object? x)
-            (f x)
-            (loop)))))))
+      (with-input-from-file path
+        (λ ()
+          (let loop ()
+            (let ((x (read)))
+              (unless (eof-object? x)
+                (f x)
+                (loop)))))))))
 
 (define (loadfile target-module expander include-tests src)
   (when include-tests
