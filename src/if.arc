@@ -1,7 +1,5 @@
 (use mac no list cxr)
 
-(provides simple-if)
-
 ; (mac if args
 ;   ($if (no args)
 ;         nil
