@@ -245,6 +245,8 @@
                          (namespace-variable-value k #t (λ () missing) g)))))
         (else (err "has: not a table" g))))
 
+(b= mod modulo)
+
 (b= msec current-milliseconds)
 
 (bdef namefn (name fn)
