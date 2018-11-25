@@ -1,7 +1,5 @@
 (use module-var set-module-var assign)
 
-(provisional fn)
-
 ; (mac fn (parms . body)
 ;   `($fn ,parms ,@body))
 
