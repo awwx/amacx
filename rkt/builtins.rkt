@@ -8,7 +8,7 @@
 (require "symtab.rkt")
 (require "uniq.rkt")
 
-(provide builtins ar-rep)
+(provide builtins)
 
 (define (ar-denillist x)
   (cond ((mpair? x)
