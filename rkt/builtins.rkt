@@ -8,7 +8,7 @@
 (require "symtab.rkt")
 (require "uniq.rkt")
 
-(provide builtins ar-amac ar-rep)
+(provide builtins ar-rep)
 
 (define (ar-denillist x)
   (cond ((mpair? x)
@@ -105,9 +105,6 @@
 
 (define (ar-rep x)
   (if (ar-tagged? x) (vector-ref x 2) x))
-
-(define (ar-amac x)
-  (eq? (ar-tag-type x) 'mac))
 
 (bdef acons (x)
   (tnil (mpair? x)))
