@@ -34,16 +34,6 @@
       '()
       (ar-denil x)))
 
-(define (ar-nil-terminate l)
-  (if (or (eqv? l '()) (eqv? l 'nil))
-      '()
-      (cons (car l) (ar-nil-terminate (cdr l)))))
-
-(define (ar-apply-args args)
-  (cond ((null? args) '())
-        ((null? (cdr args)) (ar-nil-terminate (car args)))
-        (#t (cons (car args) (ar-apply-args (cdr args))))))
-
 (define (ar-nil x)
   (if (or (eq? x '()) (eq? x #f))
       'nil
