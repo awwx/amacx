@@ -336,6 +336,13 @@
        (do (prn "FAIL")
            (quit 1))))
 
+(def print args
+  (each arg args
+    (write arg)
+    (disp " "))
+  (prn)
+  (cadr args))
+
 (= boot-module
    (obj acons         [isa _ 'cons]
         annotate      annotate
@@ -345,6 +352,7 @@
         ar-disp       disp
         ar-iso        iso
         is2           is
+        ar-print      print
         ar-strlen     len
         ar-str-append (fn args (apply + "" args))
         ar-symstr     [coerce _ 'string]
