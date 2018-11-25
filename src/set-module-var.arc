@@ -3,7 +3,7 @@
 ; (mac set-module-var (var value)
 ;   `(,sref ,*module* ',var ,value))
 
-((*module* ($quote sref))
+(sref
   *module*
   ($quote set-module-var)
   (annotate ($quote mac)
