@@ -286,6 +286,8 @@
   (let ((r (string->number s radix)))
     (if r r 'nil)))
 
+(b= strsym string->symbol)
+
 (b= symtab new-symtab)
 
 (b= sym-to-str symbol->string)
