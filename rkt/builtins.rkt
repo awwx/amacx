@@ -164,6 +164,14 @@
               ((and (char? x)   (char? y)) (char<? x y))
               (else (< x y)))))
 
+(bdef ar->2 (x y)
+  (tnil (cond ((and (number? x) (number? y)) (> x y))
+              ((and (string? x) (string? y)) (string>? x y))
+              ((and (symbol? x) (symbol? y)) (string>? (symbol->string x)
+                                                       (symbol->string y)))
+              ((and (char? x)   (char? y)) (char>? x y))
+              (else (> x y)))))
+
 (b= atomic-invoke atomic-invoke)
 
 (bdef a-char (x)
