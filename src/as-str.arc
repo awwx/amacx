@@ -6,7 +6,7 @@
       (a-char x)
        (charstr x)
       (a-num x)
-       (num-to-str x (or radix 10))
+       (numstr x (or radix 10))
       (acons x)
        (apply str-append (map1 as-str x))
       (no x)

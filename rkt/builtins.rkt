@@ -262,7 +262,7 @@
 (bdef namefn (name fn)
   (procedure-rename fn name))
 
-(b= num-to-str number->string)
+(b= numstr number->string)
 
 (b= protect protect)
 
