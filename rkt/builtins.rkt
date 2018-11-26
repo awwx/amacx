@@ -230,6 +230,13 @@
 
 (b= charstr string)
 
+; todo sockets, custodians
+;
+(bdef close (port)
+  (cond ((input-port? port) (close-input-port port))
+        ((output-port? port) (close-output-port port))
+        (else (err "can't close" port))))
+
 (bdef cons (a d)
   (mcons a d))
 
@@ -250,10 +257,14 @@
                          (namespace-variable-value k #t (λ () missing) g)))))
         (else (err "has: not a table" g))))
 
+(b= infile open-input-file)
+
 (bdef inspect (x)
   (let ((p (open-output-string)))
     (write x p)
     (get-output-string p)))
+
+(b= instring open-input-string)
 
 (b= mod modulo)
 
@@ -264,9 +275,21 @@
 
 (b= numstr number->string)
 
+(bdef open-socket (num)
+  (tcp-listen num 50 #t))
+
+(bdef open-output-file (name mode exists)
+  (open-output-file name #:mode mode #:exists exists))
+
+(b= outstring open-output-string)
+
 (b= protect protect)
 
 (b= racket-eval eval)
+
+(bdef readport (port eof)
+  (let ((expr (read port)))
+    (if (eof-object? expr) eof expr)))
 
 (b= rep ar-rep)
 
