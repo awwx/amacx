@@ -1,7 +1,7 @@
-(use mac list assert)
+(use mac list true)
 
 ; (mac equals (a b)
-;   `(,assert (,ar-iso ,a ,b)))
+;   `(,true (,ar-iso ,a ,b)))
 
 (mac equals (a b)
-  (list assert (list ar-iso a b)))
+  (list true (list ar-iso a b)))

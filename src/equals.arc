@@ -1,4 +1,4 @@
-(use mac list assert iso)
+(use mac list true iso)
 
 (mac equals (a b)
-  (list assert (list iso a b)))
+  (list true (list iso a b)))
