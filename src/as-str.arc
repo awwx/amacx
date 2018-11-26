@@ -12,5 +12,5 @@
       (no x)
        ""
       (a-sym x)
-       (sym-to-str x)
+       (symstr x)
        (inspect x)))

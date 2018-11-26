@@ -288,9 +288,9 @@
 
 (b= strsym string->symbol)
 
-(b= symtab new-symtab)
+(b= symstr symbol->string)
 
-(b= sym-to-str symbol->string)
+(b= symtab new-symtab)
 
 (b= t 't)
 
