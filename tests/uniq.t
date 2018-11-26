@@ -1,3 +1,3 @@
-(use simple-equals uniq)
+(use true uniq)
 
-(equals (ar-strlen (ar-symstr (uniq))) 16)
+(true (is (ar-strlen (ar-symstr (uniq))) 16))
