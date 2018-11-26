@@ -282,7 +282,7 @@
 
 (b= str-append string-append)
 
-(bdef str-to-num (s radix)
+(bdef strnum (s radix)
   (let ((r (string->number s radix)))
     (if r r 'nil)))
 

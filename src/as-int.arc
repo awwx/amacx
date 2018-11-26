@@ -8,7 +8,7 @@
       (a-char x)
        (charcode x)
       (a-str x)
-       (aif (str-to-num x (or radix 10))
+       (aif (strnum x (or radix 10))
              (iround it)
              (err "Can't coerce to int" x))
        (err "Can't coerce to int" x)))
