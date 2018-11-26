@@ -228,7 +228,7 @@
 
 (b= charcode char->integer)
 
-(b= char-to-str string)
+(b= charstr string)
 
 (bdef cons (a d)
   (mcons a d))

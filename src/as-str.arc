@@ -4,7 +4,7 @@
   (if (a-str x)
        x
       (a-char x)
-       (char-to-str x)
+       (charstr x)
       (a-num x)
        (num-to-str x (or radix 10))
       (acons x)
