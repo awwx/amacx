@@ -1,4 +1,4 @@
-(use def map1 disp)
+(use simple-def map1 disp)
 
 (def pr args
   (map1 disp args)

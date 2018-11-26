@@ -1,4 +1,4 @@
-(use def if alist afn when isa simple-fn list for)
+(use simple-def if alist afn when isa simple-fn list for)
 
 (def foreach (seq f)
   (if (alist seq)

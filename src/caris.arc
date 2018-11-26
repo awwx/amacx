@@ -1,4 +1,4 @@
-(use def and is)
+(use simple-def and is)
 
 (def caris (x val)
   (and (acons x)

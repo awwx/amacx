@@ -1,4 +1,4 @@
-(use def if cxr)
+(use simple-def if cxr)
 
 (def reduce (f xs)
   (if (cddr xs)

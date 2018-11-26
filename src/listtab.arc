@@ -1,4 +1,4 @@
-(use def let table map1 complex-fn sref)
+(use simple-def let table map1 complex-fn sref)
 
 (def listtab (al)
   (let h (table)

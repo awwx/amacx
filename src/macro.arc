@@ -1,5 +1,5 @@
-(use def and isa has if is no list simple-fn join or idfn aif caris cxr
-     acons quasiquote map1 err unless let apply rep contains)
+(use simple-def and isa has if is no list simple-fn join or idfn aif
+     caris cxr acons quasiquote map1 err unless let apply rep contains)
 
 (def amacro (x)
   (and (isa x 'mac) x))

@@ -1,4 +1,4 @@
-(use def afn if)
+(use simple-def afn if)
 
 (def rev (xs)
   ((afn (xs acc)
