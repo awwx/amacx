@@ -352,7 +352,6 @@
         is2           is
         ar-print      print
         ar-strlen     len
-        ar-str-append (fn args (apply + "" args))
         ar-symstr     [coerce _ 'string]
         ar-tag-type   type
         ar-uniq       ar-uniq

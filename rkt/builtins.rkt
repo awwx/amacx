@@ -150,8 +150,6 @@
 
 (b= ar-strlen string-length)
 
-(b= ar-str-append string-append)
-
 (b= ar-symstr symbol->string)
 
 (b= ar-tag-type ar-tag-type)
@@ -225,6 +223,8 @@
         (else
          (err "Can't take cdr of" x))))
 
+(b= char-to-str string)
+
 (bdef cons (a d)
   (mcons a d))
 
@@ -245,12 +245,19 @@
                          (namespace-variable-value k #t (λ () missing) g)))))
         (else (err "has: not a table" g))))
 
+(bdef inspect (x)
+  (let ((p (open-output-string)))
+    (write x p)
+    (get-output-string p)))
+
 (b= mod modulo)
 
 (b= msec current-milliseconds)
 
 (bdef namefn (name fn)
   (procedure-rename fn name))
+
+(b= num-to-str number->string)
 
 (b= protect protect)
 
@@ -262,13 +269,17 @@
 
 (b= sleep (wrapnil sleep))
 
+(b= sref sref)
+
 (b= stdin  current-input-port)
 (b= stderr current-error-port)
 (b= stdout current-output-port)
 
-(b= sref sref)
+(b= str-append string-append)
 
 (b= symtab new-symtab)
+
+(b= sym-to-str symbol->string)
 
 (b= t 't)
 
