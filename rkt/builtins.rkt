@@ -280,17 +280,20 @@
 (b= stderr current-error-port)
 (b= stdout current-output-port)
 
-(b= str-append string-append)
-
 (bdef strnum (s radix)
   (let ((r (string->number s radix)))
     (if r r 'nil)))
+
+(bdef strchars (x)
+  (ar-nillist (string->list x)))
 
 (b= strsym string->symbol)
 
 (b= symstr symbol->string)
 
 (b= symtab new-symtab)
+
+(b= str-append string-append)
 
 (b= t 't)
 
