@@ -175,6 +175,9 @@
 (bdef a-num (x)
   (tnil (number? x)))
 
+(bdef iround (x)
+  (inexact->exact (round x)))
+
 (bdef a-socket (x)
   (tnil (tcp-listener? x)))
 
@@ -222,6 +225,8 @@
          'nil)
         (else
          (err "Can't take cdr of" x))))
+
+(b= charcode char->integer)
 
 (b= char-to-str string)
 
@@ -276,6 +281,10 @@
 (b= stdout current-output-port)
 
 (b= str-append string-append)
+
+(bdef str-to-num (s radix)
+  (let ((r (string->number s radix)))
+    (if r r 'nil)))
 
 (b= symtab new-symtab)
 
