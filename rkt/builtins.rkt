@@ -353,7 +353,11 @@
 
 
 (set! builtins
-  (hash-union (hash) builtin-table))
+  (let ((m1 (hash-union (hash) builtin-table))
+        (*features* 'nil))
+    (for ((key (hash-keys m1)))
+      (set! *features* (mcons key *features*)))
+    (hash-set m1 '*features* *features*)))
 
 (module+ test (require rackunit/chk)
   (let ((g (make-hash))

@@ -1,4 +1,4 @@
-(use equals proper)
+(use equals quasiquote)
 
 (equals (proper '())        t)
 (equals (proper 'a)         nil)

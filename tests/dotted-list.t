@@ -1,4 +1,4 @@
-(use equals dotted-list)
+(use equals quasiquote)
 
 (equals (dotted-list 1)     1)
 (equals (dotted-list 1 2)   '(1 . 2))

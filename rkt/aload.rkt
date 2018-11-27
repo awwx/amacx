@@ -120,15 +120,26 @@
 (define (exec2 target-module expander x)
   (arc-eval (rename$ x) target-module expander))
 
-(define (loaded module sym)
-  (let ((*loaded* (ref module '*loaded* 'nil)))
-    (and (ar-true? *loaded*)
-         (ar-true? (ref *loaded* sym 'nil)))))
+(define (contains arc-list x)
+  (cond ((eq? arc-list 'nil)
+         #f)
+        ((eq? (mcar arc-list) x)
+         #t)
+        (else
+         (contains (mcdr arc-list) x))))
+
+(define (has-feature module feature)
+  (let ((*features* (ref module '*features* #f)))
+    (and *features* (contains *features* feature))))
+
+(define (add-feature module feature)
+  (unless (has-feature module feature)
+    (let ((*features* (ref module '*features* 'nil)))
+      (sref module '*features* (mcons feature *features*)))))
 
 (define (process-use target-module expander include-tests features)
   (for ((feature features))
-    (unless (or (ar-true? (ref target-module feature 'nil))
-                (loaded target-module feature))
+    (unless (has-feature target-module feature)
       (aload feature target-module expander include-tests))))
 
 (define (caris x v)
@@ -138,7 +149,7 @@
   (cond ((caris x 'use)
          (process-use target-module expander include-tests (cdr x)))
         ((caris x 'provides)
-         (settab target-module '*loaded* (cadr x) 't))
+         (add-feature target-module (cadr x)))
         (else
          (exec2 target-module expander x))))
 
@@ -194,7 +205,7 @@
                (expander (macro-expander target-module))
                (include-tests #f))
   (when (symbol? name)
-    (settab target-module '*loaded* name 't))
+    (add-feature target-module name))
   (let ((src (if (symbol? name)
                  (findsrc name)
                  name)))

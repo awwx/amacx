@@ -384,8 +384,9 @@
         +             +
         -             -
         *             *
-        /             /
-        *loaded*      (obj)))
+        /             /))
+
+(= boot-module!*features* (keys boot-module))
 
 (= boot-context (obj module boot-module))
 
@@ -450,19 +451,22 @@
       (eval (ailarc m)))))
 
 (def use-feature (out feature)
-  (unless (or (boot-module!*loaded* feature)
-              (has boot-module feature))
+  (unless (mem feature boot-module!*features*)
     (xload out feature)))
 
 (def process-use (out x)
   (each feature (cdr x)
     (use-feature out feature)))
 
+(def add-feature (feature)
+  (unless (mem feature boot-module!*features*)
+    (push feature boot-module!*features*)))
+
 (def process (out x)
   (if (caris x 'use)
        (process-use out x)
       (caris x 'provides)
-       (set (boot-module!*loaded* (cadr x)))
+       (add-feature (cadr x))
        (execf out x)))
 
 (= source-dirs '("../qq" "../src"))
@@ -486,7 +490,7 @@
 
 (def xload (out name)
   (when (isa name 'sym)
-    (set (boot-module!*loaded* name)))
+    (add-feature name))
   (let src (if (isa name 'sym) (findsrc name) name)
     (unless src
       (err "src not found" name))
