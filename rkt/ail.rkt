@@ -34,8 +34,9 @@
 (define-syntax assign-xVrP8JItk2Ot
   (syntax-rules ()
     ((assign-xVrP8JItk2Ot v x)
-     (begin (set! v x)
-            x))))
+     (let ((val x))
+       (set! v val)
+       val))))
 
 (define err error)
 
