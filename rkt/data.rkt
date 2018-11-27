@@ -55,16 +55,21 @@
            (namespace-variable-value k #t (λ () default) g))
           (else (error "can't ref non-table" g))))))
 
+(define (mlist-tail lst n)
+  (if (= n 0)
+       lst
+       (mlist-tail (mcdr lst) (- n 1))))
+
 (define (nth-set! lst n val)
-  (set-mcar! (list-tail lst n) val))
+  (set-mcar! (mlist-tail lst n) val))
 
 (define (sref g key val)
-  (cond ((hash? g)  (if (eq? val 'nil)
+  (cond ((hash? g)   (if (eq? val 'nil)
                           (hash-remove! g key)
                           (hash-set! g key val)))
         ((symtab? g) (symtab-set! g key val))
         ((string? g) (string-set! g key val))
-        ((pair? g)   (nth-set! g key val))
+        ((mpair? g)  (nth-set! g key val))
         ((namespace? g)
          (namespace-set-variable-value! key val #f g))
         (else (err "Can't set reference " g key val)))
