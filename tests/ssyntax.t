@@ -1,4 +1,5 @@
-(use with obj equals ssyntax even square-fn andf let square-fn even)
+(use with obj equals ssyntax even square-fn andf let square-fn even
+     true false)
 
 (with (x (obj a 1 b 2 c 3)
        i 'b)
@@ -10,6 +11,10 @@
   (equals (even&plus1 2) 3)
   (equals (even&plus1 3) nil))
 
+(false (an-int&even nil))
+(false (an-int&even 'foo))
+(false (an-int&even 3))
+(true  (an-int&even 4))
 
 (equals (~ nil) t)
 (equals (~ t)   nil)
