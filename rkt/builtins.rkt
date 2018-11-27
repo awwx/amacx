@@ -301,6 +301,9 @@
 
 (b= rep ar-rep)
 
+(b= scar set-mcar!)
+(b= scdr set-mcdr!)
+
 (define (wrapnil f) (lambda args (apply f args) 'nil))
 
 (b= sleep (wrapnil sleep))
@@ -351,12 +354,12 @@
 (b= * *)
 (b= / /)
 
-
 (set! builtins
   (let ((m1 (hash-union (hash) builtin-table))
         (*features* 'nil))
     (for ((key (hash-keys m1)))
       (set! *features* (mcons key *features*)))
+    (set! *features* (mcons 'scxr *features*))
     (hash-set m1 '*features* *features*)))
 
 (module+ test (require rackunit/chk)
