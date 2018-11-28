@@ -153,7 +153,7 @@
         (else
          (exec2 target-module expander x))))
 
-(define srcdirs '("../qq" "../src"))
+(define srcdirs '("../qq" "../src" "../arcsrc"))
 
 (define testdirs '("../tests"))
 

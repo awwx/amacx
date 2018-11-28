@@ -469,7 +469,7 @@
        (add-feature (cadr x))
        (execf out x)))
 
-(= source-dirs '("../qq" "../src"))
+(= source-dirs '("../qq" "../src" "../arcsrc"))
 
 (= test-dirs '("../tests"))
 
