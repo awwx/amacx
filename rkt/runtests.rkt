@@ -3,20 +3,34 @@
 (require racket/runtime-path)
 (require "boot.rkt")
 
-(define-runtime-path tests "../tests")
+(define srcdirs '("src" "arcsrc" "tests"))
+
+(define-runtime-path here "here")
+
+(define root (simplify-path (build-path here 'up 'up)))
 
 (define (runtest module1 src)
-  (printf "~s~n" src)
+  (printf "~a~n" src)
   (let ((module (phase2 #f module1)))
-    (aload src module)))
+    (aload (build-path root src) module)))
 
 (define (run-tests srcs)
   (let ((module1 (phase1)))
     (for ((src srcs))
       (runtest module1 src))))
 
+(define (tests-in-dir dir)
+  (map (λ (filename)
+         (path->string (build-path dir filename)))
+       (filter (λ (filename)
+                 (string-suffix? (path->string filename) ".t"))
+               (directory-list (build-path root dir)))))
+
+(define (all-tests)
+  (append-map tests-in-dir srcdirs))
+
 (define (run-all-tests)
-  (run-tests (map path->string (directory-list tests #:build? #t))))
+  (run-tests (all-tests)))
 
 (define argv (current-command-line-arguments))
 

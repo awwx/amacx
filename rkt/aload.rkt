@@ -91,25 +91,6 @@
                   (string c))))
          (string->list (str s)))))
 
-(define (replace-tree mapping x)
-  (cond ((and (symbol? x)
-              (hash-has-key? mapping x))
-         (hash-ref mapping x))
-        ((pair? x)
-         (cons (replace-tree mapping (car x))
-               (replace-tree mapping (cdr x))))
-        (else x)))
-
-(define $renames
-  (hash '$quote   'quote-xVrP8JItk2Ot
-        '$fn      'fn-xVrP8JItk2Ot
-        '$assign  'assign-xVrP8JItk2Ot
-        '$if      'if-xVrP8JItk2Ot
-        '$call    'call-xVrP8JItk2Ot))
-
-(define (rename$ x)
-  (replace-tree $renames x))
-
 (define (ensure-table module tablename)
   (or (ref module tablename #f)
       (sref module tablename (make-hash))))
@@ -118,7 +99,7 @@
   (sref (ensure-table module tablename) k v))
 
 (define (exec2 target-module expander x)
-  (arc-eval (rename$ x) target-module expander))
+  (arc-eval x target-module expander))
 
 (define (contains arc-list x)
   (cond ((eq? arc-list 'nil)
@@ -153,7 +134,7 @@
         (else
          (exec2 target-module expander x))))
 
-(define srcdirs '("../qq" "../src" "../arcsrc"))
+(define srcdirs '("../qq" "../src" "../arcsrc" "../xboot"))
 
 (define testdirs '("../tests"))
 

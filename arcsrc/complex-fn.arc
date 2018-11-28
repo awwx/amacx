@@ -1,4 +1,5 @@
-(use if no isa and quasiquote let is cxr join err w/uniq apply withs mac)
+(use if no isa and quasiquote let is cxr join err w/uniq apply withs
+     mac $ail)
 
 (provides simple-fn)
 
@@ -32,18 +33,20 @@
          (join x (fn-complex-args (cdr args) `(,cdr ,ra))))
        (err "Can't understand fn arg list" args)))
 
-(def fn-complex-fn (args body)
-  (w/uniq ra
-    (let z (apply join (fn-complex-args args ra))
-      `($fn ,ra
-         (,withs ,z ,@body)))))
+($ail
+  (def fn-complex-fn (args body)
+    (w/uniq ra
+      (let z (apply join (fn-complex-args args ra))
+        `($fn ,ra
+           (,withs ,z ,@body))))))
 
 (def fn-body (body)
   (if (no body)
        '(nil)
        body))
 
-(mac fn (args . body)
-  (if (fn-complex-args? args)
-       (fn-complex-fn args body)
-       `($fn ,args ,@(fn-body body))))
+($ail
+  (mac fn (args . body)
+    (if (fn-complex-args? args)
+         (fn-complex-fn args body)
+         `($fn ,args ,@(fn-body body)))))

@@ -1,5 +1,6 @@
 (use simple-def and isa has if is no list simple-fn join or idfn aif
-     caris cxr acons quasiquote map1 err unless let apply rep contains)
+     caris cxr acons quasiquote map1 err unless let apply rep contains
+     $ail)
 
 (def amacro (x)
   (and (isa x 'mac) x))
@@ -30,85 +31,86 @@
   (extend context 'env
     (join vars (context 'env))))
 
-(def macro-expand (context e)
-  ((or (context 'validate) idfn)
-    (aif (no e)
-          `($quote nil)
+($ail
+  (def macro-expand (context e)
+    ((or (context 'validate) idfn)
+      (aif (no e)
+            `($quote nil)
 
-         (isa e 'sym)
-          (macro-expand-var context e)
+           (isa e 'sym)
+            (macro-expand-var context e)
 
-         (caris e '$quote)
-          `($quote ,(cadr e))
+           (caris e '$quote)
+            `($quote ,(cadr e))
 
-         (caris e '$assign)
-          (macro-expand-assign context (cadr e) (caddr e))
+           (caris e '$assign)
+            (macro-expand-assign context (cadr e) (caddr e))
 
-         (caris e '$fn)
-          (macro-expand-fn context e)
+           (caris e '$fn)
+            (macro-expand-fn context e)
 
-         (caris e '$if)
-          (macro-expand-if context e)
+           (caris e '$if)
+            (macro-expand-if context e)
 
-         (caris e '$call)
-          (macro-expand-call context (cdr e))
+           (caris e '$call)
+            (macro-expand-call context (cdr e))
 
-         (and (acons e)
-              (no (is-lexical context (car e)))
-              (macro (context 'module) (car e)))
-          (macro-expand-macro context it (cdr e))
+           (and (acons e)
+                (no (is-lexical context (car e)))
+                (macro (context 'module) (car e)))
+            (macro-expand-macro context it (cdr e))
 
-         (acons e)
-          (macro-expand-call context e)
+           (acons e)
+            (macro-expand-call context e)
 
-          `($quote ,e))))
+            `($quote ,e))))
 
-(def map-macro-expand (context es)
-  (map1 (fn (e)
-          (macro-expand context e))
-        es))
+  (def map-macro-expand (context es)
+    (map1 (fn (e)
+            (macro-expand context e))
+          es))
 
-(def macro-expand-var (context var)
-  (if (is-lexical context var)
-       var
-       (macro-expand-module-var context var)))
+  (def macro-expand-var (context var)
+    (if (is-lexical context var)
+         var
+         (macro-expand-module-var context var)))
 
-(def macro-expand-module-var (context var)
-  (if (is var '*module*)
-       `($quote ,(context 'module))
-       (let module-var-macro ((context 'module) 'module-var)
-         (unless module-var-macro
-           (err "no module-var macro defined" var))
-         (macro-expand context `(,module-var-macro ,var)))))
+  (def macro-expand-module-var (context var)
+    (if (is var '*module*)
+         `($quote ,(context 'module))
+         (let module-var-macro ((context 'module) 'module-var)
+           (unless module-var-macro
+             (err "no module-var macro defined" var))
+           (macro-expand context `(,module-var-macro ,var)))))
 
-(def macro-expand-call (context es)
-  `($call ,@(map-macro-expand context es)))
+  (def macro-expand-call (context es)
+    `($call ,@(map-macro-expand context es)))
 
-(def macro-expand-fn (context e)
-  (let context (extend-env context (arglist (cadr e)))
-    `($fn ,(cadr e)
-       ,@(map-macro-expand context (cddr e)))))
+  (def macro-expand-fn (context e)
+    (let context (extend-env context (arglist (cadr e)))
+      `($fn ,(cadr e)
+         ,@(map-macro-expand context (cddr e)))))
 
-(def macro-expand-if (context e)
-  `($if ,@(map-macro-expand context (cdr e))))
+  (def macro-expand-if (context e)
+    `($if ,@(map-macro-expand context (cdr e))))
 
-(def macro-expand-assign (context var val)
-  (unless var
-    (err "assign: variable not specified"))
+  (def macro-expand-assign (context var val)
+    (unless var
+      (err "assign: variable not specified"))
 
-  (unless (isa var 'sym)
-    (err "assign: not a sym" var))
+    (unless (isa var 'sym)
+      (err "assign: not a sym" var))
 
-  (if (is-lexical context var)
-       `($assign ,var ,(macro-expand context val))
-       (macro-expand-assign-module-var context var val)))
+    (if (is-lexical context var)
+         `($assign ,var ,(macro-expand context val))
+         (macro-expand-assign-module-var context var val)))
 
-(def macro-expand-assign-module-var (context var val)
-  (let set-module-var ((context 'module) 'set-module-var)
-    (unless set-module-var
-      (err "set-module-var macro not defined" var))
-    (macro-expand context `(,set-module-var ,var ,val))))
+  (def macro-expand-assign-module-var (context var val)
+    (let set-module-var ((context 'module) 'set-module-var)
+      (unless set-module-var
+        (err "set-module-var macro not defined" var))
+      (macro-expand context `(,set-module-var ,var ,val))))
 
-(def macro-expand-macro (context macro args)
-  (let expansion (apply (rep macro) args)
-    (macro-expand context expansion)))
+  (def macro-expand-macro (context macro args)
+    (let expansion (apply (rep macro) args)
+      (macro-expand context expansion))))

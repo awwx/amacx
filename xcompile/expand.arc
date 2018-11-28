@@ -101,6 +101,15 @@
 (mac $renaming body
   `(do ,@(replace-tree body $renames)))
 
+(each bootfile (dir "../boot")
+  (ensure-dir "../xboot")
+  (let in (readfile (+ "../boot/" bootfile))
+    (let out (replace-tree in $renames)
+      (w/outfile o (+ "../xboot/" bootfile)
+        (each x out
+          (write x o)
+          (disp "\n" o))))))
+
 ($renaming
   (def ail-quote? (x)
     (and (caris x '$quote)
@@ -443,12 +452,11 @@
 (= out (outfile "boot.expanded"))
 
 (def execf (out x)
-  (let x (replace-tree x $renames)
-    (let m (macro-expand boot-context x)
-      (when out
-        (write (munch boot-module m) out)
-        (disp "\n\n" out))
-      (eval (ailarc m)))))
+  (let m (macro-expand boot-context x)
+    (when out
+      (write (munch boot-module m) out)
+      (disp "\n\n" out))
+    (eval (ailarc m))))
 
 (def use-feature (out feature)
   (unless (mem feature boot-module!*features*)
@@ -469,9 +477,9 @@
        (add-feature (cadr x))
        (execf out x)))
 
-(= source-dirs '("../qq" "../src" "../arcsrc"))
+(= source-dirs '("../qq" "../src" "../arcsrc" "../xboot"))
 
-(= test-dirs '("../tests"))
+(= test-dirs '("../src" "../tests" "../xboot"))
 
 (def findsrc (name)
   (some [file-exists (+ _ "/" (asfilename name) ".arc")] source-dirs))
