@@ -88,3 +88,6 @@
         ssyntax-expand-and
         (err "Unknown ssyntax" sym))
    sym))
+
+(def ssexpand (x)
+  (if (a-sym x) (expand-ssyntax x) x))
