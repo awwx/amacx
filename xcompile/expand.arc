@@ -477,9 +477,9 @@
        (add-feature (cadr x))
        (execf out x)))
 
-(= source-dirs '("../qq" "../src" "../arcsrc" "../xboot"))
+(= source-dirs '("../arcsrc" "../qq" "../src" "../xboot"))
 
-(= test-dirs '("../src" "../tests" "../xboot"))
+(= test-dirs '("../arctests" "../qqtests" "../src" "../xboot"))
 
 (def findsrc (name)
   (some [file-exists (+ _ "/" (asfilename name) ".arc")] source-dirs))

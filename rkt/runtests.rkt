@@ -3,7 +3,7 @@
 (require racket/runtime-path)
 (require "boot.rkt")
 
-(define srcdirs '("src" "arcsrc" "tests"))
+(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
 (define-runtime-path here "here")
 
