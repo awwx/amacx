@@ -250,6 +250,8 @@
 
 (b= err err)
 
+(b= eval-ail eval-ail)
+
 (bdef fnname (fn)
   (object-name fn))
 

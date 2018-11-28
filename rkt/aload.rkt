@@ -6,7 +6,7 @@
 (require "data.rkt")
 (require "readtables.rkt")
 
-(provide aload caris file-each from-here macro-expander)
+(provide aload caris file-each from-here macro-expander eval-ail)
 
 (define-runtime-path here "here")
 
@@ -51,13 +51,15 @@
 
 (define default-ail-namespace (ail-ns))
 
+(define (eval-ail x (ns default-ail-namespace))
+  (eval (arcail x) ns))
+
 (define (arc-eval code target-module expander)
   (define m
     (macro-expand target-module expander (ar-niltree code)))
-  (define ail (arcail m))
-  (eval ail (if (namespace? target-module)
-                target-module
-                default-ail-namespace)))
+  (eval-ail m (if (namespace? target-module)
+                  target-module
+                  default-ail-namespace)))
 
 (define convert-filename-chars
   (hash #\/ "slash"
