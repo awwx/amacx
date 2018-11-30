@@ -68,5 +68,9 @@
   (tnil (and (> (vector-length argv) 0)
              (equal? (vector-ref argv 0) "-t"))))
 
+(require racket/runtime-path)
+(define-runtime-path here "here")
+(define _rootdir (path->string (simplify-path (build-path here 'up 'up))))
+
 (aload "arc.arc")
 (aload "expand.arc")

@@ -102,8 +102,8 @@
 (define (settab module tablename k v)
   (sref (ensure-table module tablename) k v))
 
-(define (exec2 target-module expander x)
-  (arc-eval x target-module expander))
+(define (exec2 target-module macro-module x)
+  (arc-eval x target-module (macro-expander macro-module)))
 
 (define (contains arc-list x)
   (cond ((eq? arc-list 'nil)
@@ -122,21 +122,21 @@
     (let ((*features* (ref module '*features* 'nil)))
       (sref module '*features* (mcons feature *features*)))))
 
-(define (process-use target-module expander include-tests features)
+(define (process-use target-module macro-module include-tests features)
   (for ((feature features))
     (unless (has-feature target-module feature)
-      (aload feature target-module expander include-tests))))
+      (aload feature target-module macro-module include-tests))))
 
 (define (caris x v)
   (and (pair? x) (eq? (car x) v)))
 
-(define (process target-module expander include-tests x)
+(define (process target-module macro-module include-tests x)
   (cond ((caris x 'use)
-         (process-use target-module expander include-tests (cdr x)))
+         (process-use target-module macro-module include-tests (cdr x)))
         ((caris x 'provides)
          (add-feature target-module (cadr x)))
         (else
-         (exec2 target-module expander x))))
+         (exec2 target-module macro-module x))))
 
 (define srcdirs '("qq" "src" "arcsrc" "xboot"))
 
@@ -151,17 +151,18 @@
 (define (file-exists name)
   (if (file-exists? name) name #f))
 
-(define (findfile dirs name extension)
-  (some (λ (dir)
-          (file-exists
-            (from-root (string-append dir "/" name extension))))
-        dirs))
+(define (findfile macro-module dirs name extension)
+  (let ((r ((ref macro-module 'findfile)
+            rootdir
+            (ar-nillist dirs)
+            (string-append name extension))))
+    (if (eq? r 'nil) #f r)))
 
-(define (findsrc name)
-  (findfile srcdirs (asfilename name) ".arc"))
+(define (findsrc macro-module name)
+  (findfile macro-module srcdirs (asfilename name) ".arc"))
 
-(define (findtest name)
-  (findfile testdirs (asfilename name) ".t"))
+(define (findtest macro-module name)
+  (findfile macro-module testdirs (asfilename name) ".t"))
 
 (define (file-each path f)
   (w/readtables
@@ -174,28 +175,28 @@
                 (f x)
                 (loop)))))))))
 
-(define (loadfile target-module expander include-tests src)
+(define (loadfile target-module macro-module include-tests src)
   (when include-tests
     (printf "> ~a~n" src))
 
-  (file-each src (λ (x) (process target-module expander include-tests x))))
+  (file-each src (λ (x) (process target-module macro-module include-tests x))))
 
-(define (runtest-if-exists expander target-module include-tests name)
-  (let ((src (findtest name)))
+(define (runtest-if-exists target-module macro-module include-tests name)
+  (let ((src (findtest macro-module name)))
     (when src
-      (loadfile target-module expander include-tests src))))
+      (loadfile target-module macro-module include-tests src))))
 
 (define (aload name
                target-module
-               (expander (macro-expander target-module))
+               (macro-module target-module)
                (include-tests #f))
   (when (symbol? name)
     (add-feature target-module name))
   (let ((src (if (symbol? name)
-                 (findsrc name)
+                 (findsrc macro-module name)
                  name)))
     (unless src
       (error "src not found" name))
-    (loadfile target-module expander include-tests src))
+    (loadfile target-module macro-module include-tests src))
   (when include-tests
-    (runtest-if-exists expander target-module include-tests name)))
+    (runtest-if-exists target-module macro-module include-tests name)))

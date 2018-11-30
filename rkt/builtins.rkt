@@ -252,6 +252,9 @@
 
 (b= eval-ail eval-ail)
 
+(bdef file-exists (name)
+  (if (file-exists? name) name 'nil))
+
 (bdef fnname (fn)
   (object-name fn))
 
@@ -302,6 +305,8 @@
     (if (eof-object? expr) eof expr)))
 
 (b= rep ar-rep)
+
+(b= rootdir rootdir)
 
 (b= scar set-mcar!)
 (b= scdr set-mcdr!)

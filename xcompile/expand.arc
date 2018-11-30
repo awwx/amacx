@@ -71,18 +71,27 @@
             nil)
           3))
 
-(mac as (type expr)
-  `(coerce ,expr ',type))
-
-(test
-  (equals (as sym "foo") 'foo))
-
 (mac use args)
+
+(load "../src/findfile.arc")
+(when include-tests
+  (load "../src/findfile.t"))
+
 (load "../src/replace-tree.arc")
+
 (load "../src/$ail.arc")
+(when include-tests
+  (load "../src/$ail.t"))
+
 (load "../src/validate-ail.arc")
+(when include-tests
+  (load "../src/validate-ail.t"))
+
 (load "../src/contains.arc")
+
 (load "../src/macro.arc")
+(when include-tests
+  (load "../src/macro.t"))
 
 (each bootfile (dir "../boot")
   (ensure-dir "../xboot")
@@ -174,7 +183,7 @@
         ar-<2         <
         a-char        [isa _ 'char]
         a-fn          [isa _ 'fn]
-        a-num         [isa _ 'num]
+        a-num         [or (isa _ 'num) (isa _ 'int)]
         a-str         [isa _ 'string]
         a-sym         [isa _ 'sym]
         a-table       [isa _ 'table]
@@ -184,16 +193,24 @@
         an-output     [isa _ 'output]
         car           car
         cdr           cdr
+        charstr       [coerce _ 'string]
         cons          cons
         err           err
         fnname        fnname
         has           has
+        file-exists   file-exists
+        inspect       (fn (x) (tostring (write x)))
+        mod           mod
         namefn        namefn
+        numstr        (fn (x n) (coerce x 'string n))
         rep           rep
+        rootdir       rootdir
         sref          (fn (g k v) (sref g v k))
         stderr        stderr
         stdin         stdin
         stdout        stdout
+        str-append    (fn args (apply + "" args))
+        symstr        [coerce _ 'string]
         t             t
         table         table
         +             +
@@ -283,15 +300,17 @@
        (add-feature (cadr x))
        (execf out x)))
 
-(= source-dirs '("../arcsrc" "../qq" "../src" "../xboot"))
+(= source-dirs '("arcsrc" "qq" "src" "xboot"))
 
-(= test-dirs '("../arctests" "../qqtests" "../src" "../xboot"))
+(= test-dirs '("arctests" "qqtests" "src" "xboot"))
 
 (def findsrc (name)
-  (some [file-exists (+ _ "/" (asfilename name) ".arc")] source-dirs))
+  (aand (findfile rootdir source-dirs (+ (asfilename name) ".arc"))
+        (+ rootdir it)))
 
 (def findtest (name)
-  (some [file-exists (+ _ "/" (asfilename name) ".t")] test-dirs))
+  (aand (findfile rootdir test-dirs (+ (asfilename name) ".t"))
+        (+ rootdir it)))
 
 (def loadfile (out src)
   (prn src)
@@ -313,5 +332,6 @@
     (runtest out name)))
 
 (xload out 'macro)
+(xload out 'findfile)
 
 (close out)

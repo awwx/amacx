@@ -8,4 +8,3 @@
 (equals (as-str nil)        "")
 (equals (as-str 'foo)       "foo")
 (equals (as-str '(#\a #\b)) "ab")
-(equals (as-str +)          "#<procedure:+>")
