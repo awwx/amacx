@@ -6,12 +6,14 @@
 (require "data.rkt")
 (require "readtables.rkt")
 
-(provide aload caris file-each from-here macro-expander eval-ail)
+(provide aload caris file-each rootdir macro-expander eval-ail)
 
 (define-runtime-path here "here")
 
-(define (from-here filename)
-  (simplify-path (build-path here 'up filename)))
+(define rootdir (path->string (simplify-path (build-path here 'up 'up))))
+
+(define (from-root filename)
+  (build-path rootdir filename))
 
 (define (macro-expander macro-module)
   (ref macro-module 'macro-expand))
@@ -136,9 +138,9 @@
         (else
          (exec2 target-module expander x))))
 
-(define srcdirs '("../qq" "../src" "../arcsrc" "../xboot"))
+(define srcdirs '("qq" "src" "arcsrc" "xboot"))
 
-(define testdirs '("../tests"))
+(define testdirs (append '("arctests" "qqtests") srcdirs))
 
 (define (some test seq)
   (if (null? seq)
@@ -152,7 +154,7 @@
 (define (findfile dirs name extension)
   (some (λ (dir)
           (file-exists
-            (from-here (string-append dir "/" name extension))))
+            (from-root (string-append dir "/" name extension))))
         dirs))
 
 (define (findsrc name)

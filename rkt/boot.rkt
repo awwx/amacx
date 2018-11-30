@@ -11,7 +11,7 @@
 
 (provide phase1 phase2 aload)
 
-(define expanded-boot-path (from-here "../xcompile/boot.expanded"))
+(define expanded-boot-path (build-path rootdir "xcompile/boot.expanded"))
 
 (define (px msg x)
   (printf "~a: ~s~n" msg x)
