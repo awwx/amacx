@@ -1,20 +1,14 @@
-(use simple-def aif and isa ret pair mac simple-do case)
+(use simple-def replace-tree case simple-do)
 
-(def $ail-rename (x)
-  (case x
-    $quote   'quote-xVrP8JItk2Ot
-    $fn      'fn-xVrP8JItk2Ot
-    $assign  'assign-xVrP8JItk2Ot
-    $if      'if-xVrP8JItk2Ot
-    $call    'call-xVrP8JItk2Ot))
-
-(def replace-tree (x mapping)
-  (aif (and (isa x 'sym) (mapping x))
-        it
-       (acons x)
-        (cons (replace-tree (car x) mapping)
-              (replace-tree (cdr x) mapping))
-        x))
+(def rename-$ail (x)
+  (replace-tree x
+    (fn (m)
+      (case m
+        $quote   'quote-xVrP8JItk2Ot
+        $fn      'fn-xVrP8JItk2Ot
+        $assign  'assign-xVrP8JItk2Ot
+        $if      'if-xVrP8JItk2Ot
+        $call    'call-xVrP8JItk2Ot))))
 
 (mac $ail body
-  `(do ,@(replace-tree body $ail-rename)))
+  `(do ,@(rename-$ail body)))

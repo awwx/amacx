@@ -77,40 +77,22 @@
 (test
   (equals (as sym "foo") 'foo))
 
-(def replace-tree (x mapping)
-  (aif (and (isa x 'sym) (mapping x))
-        it
-       (acons x)
-        (cons (replace-tree (car x) mapping)
-              (replace-tree (cdr x) mapping))
-        x))
-
-(def renaming-table (renames)
-  (ret tab (table)
-    (each (k v) (pair renames)
-      (= (tab k) v))))
-
-(= $renames
-   (renaming-table
-      '($quote   quote-xVrP8JItk2Ot
-        $fn      fn-xVrP8JItk2Ot
-        $assign  assign-xVrP8JItk2Ot
-        $if      if-xVrP8JItk2Ot
-        $call    call-xVrP8JItk2Ot)))
-
-(mac $renaming body
-  `(do ,@(replace-tree body $renames)))
+(mac use args)
+(load "../src/replace-tree.arc")
+(load "../src/$ail.arc")
+(load "../src/contains.arc")
+(load "../src/macro.arc")
 
 (each bootfile (dir "../boot")
   (ensure-dir "../xboot")
   (let in (readfile (+ "../boot/" bootfile))
-    (let out (replace-tree in $renames)
+    (let out (rename-$ail in)
       (w/outfile o (+ "../xboot/" bootfile)
         (each x out
           (write x o)
           (disp "\n" o))))))
 
-($renaming
+($ail
   (def ail-quote? (x)
     (and (caris x '$quote)
          (is (len x) 2)))
@@ -185,16 +167,10 @@
     (equals (ailarc '($call a b c))
             '(a b c))))
 
-(mac use args)
+(def expand-eval-arc (context x)
+  (eval:ailarc:macro-expand context x))
 
-(load "../src/$ail.arc")
-(load "../src/contains.arc")
-(load "../src/macro.arc")
-
-($renaming
-  (def expand-eval-arc (context x)
-    (eval:ailarc:macro-expand context x))
-
+($ail
   (test
     (= zilch (obj module (obj)))
 
