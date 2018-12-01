@@ -300,16 +300,14 @@
        (add-feature (cadr x))
        (execf out x)))
 
-(= source-dirs '("arcsrc" "qq" "src" "xboot"))
-
-(= test-dirs '("arctests" "qqtests" "src" "xboot"))
+(= source-dirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
 (def findsrc (name)
   (aand (findfile rootdir source-dirs (+ (asfilename name) ".arc"))
         (+ rootdir it)))
 
 (def findtest (name)
-  (aand (findfile rootdir test-dirs (+ (asfilename name) ".t"))
+  (aand (findfile rootdir source-dirs (+ (asfilename name) ".t"))
         (+ rootdir it)))
 
 (def loadfile (out src)

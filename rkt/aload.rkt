@@ -138,9 +138,7 @@
         (else
          (exec2 target-module macro-module x))))
 
-(define srcdirs '("qq" "src" "arcsrc" "xboot"))
-
-(define testdirs (append '("arctests" "qqtests") srcdirs))
+(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
 (define (some test seq)
   (if (null? seq)
@@ -162,7 +160,7 @@
   (findfile macro-module srcdirs (asfilename name) ".arc"))
 
 (define (findtest macro-module name)
-  (findfile macro-module testdirs (asfilename name) ".t"))
+  (findfile macro-module srcdirs (asfilename name) ".t"))
 
 (define (file-each path f)
   (w/readtables
