@@ -9,8 +9,7 @@
            (if (and (has container 'macro-expand)
                     (has container 'findfile))
                container
-               *module*)
-           (has container '*include-tests*)))
+               *module*)))
   nil)
 
 (def provides-feature (container feature)

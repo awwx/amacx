@@ -1,7 +1,7 @@
-(prn "include-tests " include-tests)
+(prn "inline-tests " inline-tests)
 
 (mac test body
-  (if include-tests `(do ,@body)))
+  (if inline-tests `(do ,@body)))
 
 (= caddr car:cddr)
 
@@ -74,23 +74,23 @@
 (mac use args)
 
 (load "../src/findfile.arc")
-(when include-tests
+(when inline-tests
   (load "../src/findfile.t"))
 
 (load "../src/replace-tree.arc")
 
 (load "../src/$ail.arc")
-(when include-tests
+(when inline-tests
   (load "../src/$ail.t"))
 
 (load "../src/validate-ail.arc")
-(when include-tests
+(when inline-tests
   (load "../src/validate-ail.t"))
 
 (load "../src/contains.arc")
 
 (load "../src/macro.arc")
-(when include-tests
+(when inline-tests
   (load "../src/macro.t"))
 
 (each bootfile (dir "../boot")
@@ -269,7 +269,7 @@
                  (coerce c 'string)))
      (coerce (+ "" s) 'cons))))
 
-(when include-tests
+(when inline-tests
   (equals (asfilename "w/uniq") "w_slash_uniq"))
 
 (= out (outfile "boot.expanded"))
@@ -326,7 +326,7 @@
     (unless src
       (err "src not found" name))
     (loadfile out src))
-  (when include-tests
+  (when inline-tests
     (runtest out name)))
 
 (xload out 'macro)

@@ -1,10 +1,17 @@
 #!/bin/bash
 set -e
 
+echo '=============== racket unit tests'
 (cd rkt; ./unit_tests)
 
+echo '=============== xcompile including inline tests'
 (cd xcompile; racket -f expand.scm -- -t)
+
+echo '=============== load phase 2 in racket with inline tests'
 racket rkt/test-inline.rkt
 
+echo '=============== xcompile without inline tests'
 (cd xcompile; racket -f expand.scm)
+
+echo '=============== run all tests (but without inline tests)'
 racket rkt/runtests.rkt

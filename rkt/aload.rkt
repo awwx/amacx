@@ -147,29 +147,30 @@
                 (f x)
                 (loop)))))))))
 
-(define (loadfile target-module macro-module include-tests src)
-  (when include-tests
+(define (inline-tests target-module)
+  (ar-true? (ref target-module '*inline-tests* 'nil)))
+
+(define (loadfile target-module macro-module src)
+  (when (inline-tests target-module)
     (printf "> ~a~n" src))
 
   (file-each src (λ (x) (exec2 target-module macro-module x))))
 
-(define (runtest-if-exists target-module macro-module include-tests name)
+(define (runtest-if-exists target-module macro-module name)
   (let ((src (findtest macro-module name)))
     (when src
-      (loadfile target-module macro-module include-tests src))))
+      (loadfile target-module macro-module src))))
 
 (define (aload name
                target-module
-               (macro-module target-module)
-               (include-tests #f))
-  (let ((include-tests (if (eq? include-tests 'nil) #f include-tests)))
-    (when (symbol? name)
-      (add-feature target-module name))
-    (let ((src (if (symbol? name)
-                   (findsrc macro-module name)
-                   name)))
-      (unless src
-        (error "src not found" name))
-      (loadfile target-module macro-module include-tests src))
-    (when include-tests
-      (runtest-if-exists target-module macro-module include-tests name))))
+               (macro-module target-module))
+  (when (symbol? name)
+    (add-feature target-module name))
+  (let ((src (if (symbol? name)
+                 (findsrc macro-module name)
+                 name)))
+    (unless src
+      (error "src not found" name))
+    (loadfile target-module macro-module src))
+  (when (inline-tests target-module)
+    (runtest-if-exists target-module macro-module name)))

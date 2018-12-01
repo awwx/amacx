@@ -13,10 +13,6 @@
 
 (define expanded-boot-path (build-path rootdir "xcompile/boot.expanded"))
 
-(define (px msg x)
-  (printf "~a: ~s~n" msg x)
-  x)
-
 ;; Phase one
 
 (define (inject module x)
@@ -50,8 +46,8 @@
     (eval a ail-namespace1))
   (void))
 
-(define (phase1 (include-tests #f))
-  (when include-tests
+(define (phase1 (inline-tests #f))
+  (when inline-tests
     (printf "------ phase one~n"))
   (let ((module (new-symtab builtins)))
     (file-each expanded-boot-path (λ (x) (exec1 module x)))
@@ -60,14 +56,14 @@
 
 ;; Phase two
 
-(define (phase2 include-tests (module1 (phase1 include-tests)))
-  (when include-tests
+(define (phase2 inline-tests (module1 (phase1 inline-tests)))
+  (when inline-tests
     (printf "------ phase two~n"))
 
   (define module2 (new-symtab builtins))
 
-  (when include-tests
-    (sref module2 '*include-tests* 't))
+  (when inline-tests
+    (sref module2 '*inline-tests* 't))
 
   (sref module2 'use
     (ar-tag 'mac ((ref module1 'use-implementation) module2)))
@@ -75,11 +71,11 @@
   (sref module2 'provides
     (ar-tag 'mac ((ref module1 'provides-implementation) module2)))
 
-  (aload 'macro module2 module1 include-tests)
-  (aload 'findfile module2 module1 include-tests)
+  (aload 'macro module2 module1)
+  (aload 'findfile module2 module1)
 
-  (when include-tests
+  (when inline-tests
     (printf "phase two tests done\n")
-    (symtab-rm module2 '*include-tests*))
+    (symtab-rm module2 '*inline-tests*))
 
   module2)
