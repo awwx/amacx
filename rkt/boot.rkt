@@ -72,6 +72,7 @@
     (ar-tag 'mac ((ref module1 'provides-implementation) module2)))
 
   (aload 'macro module2 module1)
+  (aload 'asfilename module2 module1)
   (aload 'findfile module2 module1)
   (aload 'eval module2 module1)
 

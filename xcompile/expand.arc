@@ -71,7 +71,14 @@
             nil)
           3))
 
+(= as-str   [coerce _ 'string])
+(= strchars [coerce _ 'cons])
+
 (mac use args)
+
+(load "../src/asfilename.arc")
+(when inline-tests
+  (load "../src/asfilename.t"))
 
 (load "../src/findfile.arc")
 (when inline-tests
@@ -211,6 +218,7 @@
         stdin         stdin
         stdout        stdout
         str-append    (fn args (apply + "" args))
+        strchars      [coerce _ 'cons]
         symstr        [coerce _ 'string]
         t             t
         table         table
@@ -252,26 +260,6 @@
 
   (equals (tostring (write (munch boot-module `(a ,boot-module!cons b))))
           "(a #&cons b)"))
-
-; add more as needed
-
-(= convert-filename-chars
-   (obj #\/ "slash"
-        #\\ "backslash"
-        #\_ "underline"
-        #\< "lt"
-        #\> "gt"))
-
-(def asfilename (s)
-  (apply + ""
-    (map (fn (c)
-           (aif (convert-filename-chars c)
-                 (+ "_" it "_")
-                 (coerce c 'string)))
-     (coerce (+ "" s) 'cons))))
-
-(when inline-tests
-  (equals (asfilename "w/uniq") "w_slash_uniq"))
 
 (= out (outfile "boot.expanded"))
 
@@ -331,6 +319,7 @@
     (runtest out name)))
 
 (xload out 'macro)
+(xload out 'asfilename)
 (xload out 'findfile)
 (xload out 'use)
 (xload out 'eval)

@@ -82,14 +82,8 @@
 (module+ test (require rackunit/chk)
   (chk (str "a" #\b 'c "d") "abcd"))
 
-(define (asfilename s)
-  (apply str
-    (map (λ (c)
-           (cond ((hash-has-key? convert-filename-chars c)
-                  (str "_" (hash-ref convert-filename-chars c) "_"))
-                 (else
-                  (string c))))
-         (string->list (str s)))))
+(define (asfilename macro-module s)
+  ((ref macro-module 'asfilename) s))
 
 (define (contains arc-list x)
   (cond ((eq? arc-list 'nil)
@@ -127,10 +121,10 @@
     (if (eq? r 'nil) #f r)))
 
 (define (findsrc macro-module name)
-  (findfile macro-module srcdirs (asfilename name) ".arc"))
+  (findfile macro-module srcdirs (asfilename macro-module name) ".arc"))
 
 (define (findtest macro-module name)
-  (findfile macro-module srcdirs (asfilename name) ".t"))
+  (findfile macro-module srcdirs (asfilename macro-module name) ".t"))
 
 (define (file-each path f)
   (w/readtables
