@@ -1,4 +1,4 @@
-(use module-var set-module-var assign)
+(use module-var set-module-var assign quote)
 
 ; (mac fn (parms . body)
 ;   `($fn ,parms ,@body))

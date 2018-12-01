@@ -92,20 +92,6 @@
 
 (define builtins #f)
 
-(define (ar-tagged? x)
-  (and (vector? x) (eq? (vector-ref x 0) 'tagged)))
-
-(define (ar-tag-type x)
-  (and (ar-tagged? x) (vector-ref x 1)))
-
-(define (ar-tag type rep)
-  (if (eq? (ar-tag-type rep) type)
-       rep
-       (vector 'tagged type rep)))
-
-(define (ar-rep x)
-  (if (ar-tagged? x) (vector-ref x 2) x))
-
 (bdef acons (x)
   (tnil (mpair? x)))
 
@@ -135,7 +121,7 @@
 (bdef ar-iso (a b)
   (tnil (equal? a b)))
 
-(b= ar-load aload)
+(b= aload aload)
 
 (bdef ar-print args
   (for ((arg args))

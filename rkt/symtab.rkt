@@ -1,6 +1,7 @@
 #lang racket
 
-(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set! symtab-each)
+(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set!
+         symtab-each symtab-rm)
 
 (struct symtab (hash) #:transparent)
 
@@ -27,3 +28,6 @@
 
 (define (symtab-each g f)
   (hash-for-each (symtab-hash g) f))
+
+(define (symtab-rm g k)
+  (hash-remove! (symtab-hash g) k))

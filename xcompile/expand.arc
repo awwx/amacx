@@ -331,5 +331,6 @@
 
 (xload out 'macro)
 (xload out 'findfile)
+(xload out 'use)
 
 (close out)

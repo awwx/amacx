@@ -63,9 +63,23 @@
 (define (phase2 include-tests (module1 (phase1 include-tests)))
   (when include-tests
     (printf "------ phase two~n"))
+
   (define module2 (new-symtab builtins))
+
+  (when include-tests
+    (sref module2 '*include-tests* 't))
+
+  (sref module2 'use
+    (ar-tag 'mac ((ref module1 'use-implementation) module2)))
+
+  (sref module2 'provides
+    (ar-tag 'mac ((ref module1 'provides-implementation) module2)))
+
   (aload 'macro module2 module1 include-tests)
   (aload 'findfile module2 module1 include-tests)
+
   (when include-tests
-    (printf "phase two tests done\n"))
+    (printf "phase two tests done\n")
+    (symtab-rm module2 '*include-tests*))
+
   module2)

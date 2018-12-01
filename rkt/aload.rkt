@@ -12,9 +12,6 @@
 
 (define rootdir (path->string (simplify-path (build-path here 'up 'up))))
 
-(define (from-root filename)
-  (build-path rootdir filename))
-
 (define (macro-expander macro-module)
   (ref macro-module 'macro-expand))
 
@@ -95,13 +92,6 @@
                   (string c))))
          (string->list (str s)))))
 
-(define (ensure-table module tablename)
-  (or (ref module tablename #f)
-      (sref module tablename (make-hash))))
-
-(define (settab module tablename k v)
-  (sref (ensure-table module tablename) k v))
-
 (define (exec2 target-module macro-module x)
   (arc-eval x target-module (macro-expander macro-module)))
 
@@ -122,21 +112,8 @@
     (let ((*features* (ref module '*features* 'nil)))
       (sref module '*features* (mcons feature *features*)))))
 
-(define (process-use target-module macro-module include-tests features)
-  (for ((feature features))
-    (unless (has-feature target-module feature)
-      (aload feature target-module macro-module include-tests))))
-
 (define (caris x v)
   (and (pair? x) (eq? (car x) v)))
-
-(define (process target-module macro-module include-tests x)
-  (cond ((caris x 'use)
-         (process-use target-module macro-module include-tests (cdr x)))
-        ((caris x 'provides)
-         (add-feature target-module (cadr x)))
-        (else
-         (exec2 target-module macro-module x))))
 
 (define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
@@ -145,9 +122,6 @@
        #f
        (let ((r (test (car seq))))
          (or r (some test (cdr seq))))))
-
-(define (file-exists name)
-  (if (file-exists? name) name #f))
 
 (define (findfile macro-module dirs name extension)
   (let ((r ((ref macro-module 'findfile)
@@ -177,7 +151,7 @@
   (when include-tests
     (printf "> ~a~n" src))
 
-  (file-each src (λ (x) (process target-module macro-module include-tests x))))
+  (file-each src (λ (x) (exec2 target-module macro-module x))))
 
 (define (runtest-if-exists target-module macro-module include-tests name)
   (let ((src (findtest macro-module name)))
@@ -188,13 +162,14 @@
                target-module
                (macro-module target-module)
                (include-tests #f))
-  (when (symbol? name)
-    (add-feature target-module name))
-  (let ((src (if (symbol? name)
-                 (findsrc macro-module name)
-                 name)))
-    (unless src
-      (error "src not found" name))
-    (loadfile target-module macro-module include-tests src))
-  (when include-tests
-    (runtest-if-exists target-module macro-module include-tests name)))
+  (let ((include-tests (if (eq? include-tests 'nil) #f include-tests)))
+    (when (symbol? name)
+      (add-feature target-module name))
+    (let ((src (if (symbol? name)
+                   (findsrc macro-module name)
+                   name)))
+      (unless src
+        (error "src not found" name))
+      (loadfile target-module macro-module include-tests src))
+    (when include-tests
+      (runtest-if-exists target-module macro-module include-tests name))))

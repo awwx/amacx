@@ -2,8 +2,8 @@
 
 (require "symtab.rkt")
 
-(provide ar-false? ar-nillist ar-niltree ar-true? err ref sref
-         r-apply)
+(provide ar-false? ar-tagged? ar-tag-type ar-tag ar-rep ar-nillist
+         ar-niltree ar-true? err ref sref r-apply)
 
 (define err error)
 
@@ -12,6 +12,20 @@
 
 (define (ar-true? x)
   (not (ar-false? x)))
+
+(define (ar-tagged? x)
+  (and (vector? x) (eq? (vector-ref x 0) 'tagged)))
+
+(define (ar-tag-type x)
+  (and (ar-tagged? x) (vector-ref x 1)))
+
+(define (ar-tag type rep)
+  (if (eq? (ar-tag-type rep) type)
+       rep
+       (vector 'tagged type rep)))
+
+(define (ar-rep x)
+  (if (ar-tagged? x) (vector-ref x 2) x))
 
 (define (ar-nillist x)
   (cond ((pair? x)
