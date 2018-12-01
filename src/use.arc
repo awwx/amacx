@@ -7,7 +7,8 @@
     (aload feature
            container
            (if (and (has container 'macro-expand)
-                    (has container 'findfile))
+                    (has container 'findfile)
+                    (has container 'eval))
                container
                *module*)))
   nil)

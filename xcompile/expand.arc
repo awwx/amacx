@@ -195,6 +195,7 @@
         cdr           cdr
         charstr       [coerce _ 'string]
         cons          cons
+        eval-ail      eval:ailarc
         err           err
         fnname        fnname
         has           has
@@ -332,5 +333,6 @@
 (xload out 'macro)
 (xload out 'findfile)
 (xload out 'use)
+(xload out 'eval)
 
 (close out)

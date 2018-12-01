@@ -13,5 +13,5 @@ racket rkt/test-inline.rkt
 echo '=============== xcompile without inline tests'
 (cd xcompile; racket -f expand.scm)
 
-echo '=============== run all tests (but without inline tests)'
+echo '=============== run all tests individually'
 racket rkt/runtests.rkt

@@ -6,7 +6,7 @@
 (require "data.rkt")
 (require "readtables.rkt")
 
-(provide aload caris file-each rootdir macro-expander eval-ail)
+(provide aload caris file-each rootdir eval-ail)
 
 (define-runtime-path here "here")
 
@@ -53,12 +53,11 @@
 (define (eval-ail x (ns default-ail-namespace))
   (eval (arcail x) ns))
 
-(define (arc-eval code target-module expander)
-  (define m
-    (macro-expand target-module expander (ar-niltree code)))
-  (eval-ail m (if (namespace? target-module)
-                  target-module
-                  default-ail-namespace)))
+(define (arc-eval code target-module macro-module)
+  ((or (ref target-module 'eval #f)
+       (ref macro-module 'eval))
+   (ar-niltree code)
+   target-module))
 
 (define convert-filename-chars
   (hash #\/ "slash"
@@ -91,9 +90,6 @@
                  (else
                   (string c))))
          (string->list (str s)))))
-
-(define (exec2 target-module macro-module x)
-  (arc-eval x target-module (macro-expander macro-module)))
 
 (define (contains arc-list x)
   (cond ((eq? arc-list 'nil)
@@ -154,7 +150,7 @@
   (when (inline-tests target-module)
     (printf "> ~a~n" src))
 
-  (file-each src (λ (x) (exec2 target-module macro-module x))))
+  (file-each src (λ (x) (arc-eval x target-module macro-module))))
 
 (define (runtest-if-exists target-module macro-module name)
   (let ((src (findtest macro-module name)))
@@ -166,11 +162,13 @@
                (macro-module target-module))
   (when (symbol? name)
     (add-feature target-module name))
+
   (let ((src (if (symbol? name)
                  (findsrc macro-module name)
                  name)))
     (unless src
       (error "src not found" name))
     (loadfile target-module macro-module src))
+
   (when (inline-tests target-module)
     (runtest-if-exists target-module macro-module name)))

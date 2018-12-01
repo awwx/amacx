@@ -73,6 +73,7 @@
 
   (aload 'macro module2 module1)
   (aload 'findfile module2 module1)
+  (aload 'eval module2 module1)
 
   (when inline-tests
     (printf "phase two tests done\n")
