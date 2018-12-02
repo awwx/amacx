@@ -300,7 +300,7 @@
 
 (bdef readport (port eof)
   (let ((expr (read port)))
-    (if (eof-object? expr) eof expr)))
+    (if (eof-object? expr) eof (ar-niltree expr))))
 
 (b= rep ar-rep)
 
