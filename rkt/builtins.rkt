@@ -121,6 +121,8 @@
 (bdef ar-iso (a b)
   (tnil (equal? a b)))
 
+(b= ar-nillist ar-nillist)
+
 (b= aload aload)
 
 (bdef ar-print args
@@ -165,6 +167,9 @@
 
 (bdef a-fn (x)
   (tnil (procedure? x)))
+
+(bdef a-namespace (x)
+  (tnil (namespace? x)))
 
 (bdef a-num (x)
   (tnil (number? x)))
@@ -238,6 +243,9 @@
 
 (b= eval-ail eval-ail)
 
+(bdef eval-racket (x (namespace (make-base-namespace)))
+  (eval (ar-denil x) namespace))
+
 (bdef file-exists (name)
   (if (file-exists? name) name 'nil))
 
@@ -284,7 +292,11 @@
 
 (b= protect protect)
 
+(b= quit exit)
+
+(b= racket-ar-apply r-apply)
 (b= racket-eval eval)
+(b= racket-list list)
 
 (bdef readport (port eof)
   (let ((expr (read port)))
@@ -321,6 +333,8 @@
 (b= symtab new-symtab)
 
 (b= str-append string-append)
+
+(b= substr substring)
 
 (b= t 't)
 

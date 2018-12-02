@@ -190,6 +190,7 @@
         ar-<2         <
         a-char        [isa _ 'char]
         a-fn          [isa _ 'fn]
+        a-namespace   (fn (x) nil)
         a-num         [or (isa _ 'num) (isa _ 'int)]
         a-str         [isa _ 'string]
         a-sym         [isa _ 'sym]

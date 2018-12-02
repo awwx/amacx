@@ -1,3 +1,4 @@
 (use equals eval macro)
 
-(equals (eval '(+ 1 2)) 3)
+(equals (eval '(+ 1 2))
+        3)

@@ -6,6 +6,9 @@
                                 (has module 'eval)
                                 (module 'macro-expand))
                            macro-expand)))
-  (eval-ail (expander (obj module module
-                           env '())
-                      x)))
+  (let ailcode (expander (obj module module
+                              env '())
+                         x)
+    (if (a-namespace module)
+         (eval-ail ailcode module)
+         (eval-ail ailcode))))
