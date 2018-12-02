@@ -205,16 +205,24 @@
         car           car
         cdr           cdr
         charstr       [coerce _ 'string]
+        close         close
         cons          cons
         eval-ail      eval:ailarc
         err           err
+        file-exists   file-exists
         fnname        fnname
         has           has
-        file-exists   file-exists
+        infile        infile
         inspect       (fn (x) (tostring (write x)))
+        instring      instring
         mod           mod
         namefn        namefn
         numstr        (fn (x n) (coerce x 'string n))
+        open-output-file
+                      (fn (filename . args) (outfile filename))
+        open-socket   open-socket
+        protect       protect
+        readport      sread
         rep           rep
         rootdir       rootdir
         sref          (fn (g k v) (sref g v k))
@@ -327,5 +335,6 @@
 (xload out 'findfile)
 (xload out 'use)
 (xload out 'eval)
+(xload out 'read)
 
 (close out)
