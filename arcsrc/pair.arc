@@ -10,4 +10,4 @@
                (list (list (car xs)))
                (cons (f (car xs) (cadr xs))
                      (pair (cddr xs) f)))))
-   (if (is rs nil) list (car rs))))
+   (if (no rs) list (car rs))))
