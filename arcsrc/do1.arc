@@ -1,4 +1,4 @@
-(use mac w/uniq ret)
+(use mac w/uniq quasiquote ret)
 
 (mac do1 args
   (w/uniq g
