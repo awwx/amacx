@@ -1,4 +1,5 @@
-(use simple-def if is +str and file-exists square-fn reclist compose)
+(use simple-def if is +str and file-exists square-fn reclist compose
+     asfilename)
 
 (def completepath (basedir path)
   (if (is (path 0) #\/)
@@ -12,3 +13,15 @@
   (listsome [and (file-exists (+ (completepath basedir _) "/" filename))
                  (+ _ "/" filename)]
         dirs))
+
+(assign *srcdirs* '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
+
+(def findsrc (container name)
+  (findfile rootdir
+            *srcdirs*
+            (str-append (asfilename name) ".arc")))
+
+(def findtest (container name)
+  (findfile rootdir
+            *srcdirs*
+            (str-append (asfilename name) ".t")))

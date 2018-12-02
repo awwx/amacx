@@ -74,6 +74,9 @@
 (= as-str   [coerce _ 'string])
 (= strchars [coerce _ 'cons])
 
+(def str-append args
+  (apply + "" args))
+
 (mac use args)
 
 (load "../src/asfilename.arc")

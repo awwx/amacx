@@ -113,18 +113,17 @@
        (let ((r (test (car seq))))
          (or r (some test (cdr seq))))))
 
-(define (findfile macro-module dirs name extension)
-  (let ((r ((ref macro-module 'findfile)
-            rootdir
-            (ar-nillist dirs)
-            (string-append name extension))))
+(define (findsrc macro-module name)
+  (let ((r ((ref macro-module 'findsrc)
+            macro-module
+            name)))
     (if (eq? r 'nil) #f r)))
 
-(define (findsrc macro-module name)
-  (findfile macro-module srcdirs (asfilename macro-module name) ".arc"))
-
 (define (findtest macro-module name)
-  (findfile macro-module srcdirs (asfilename macro-module name) ".t"))
+  (let ((r ((ref macro-module 'findtest)
+            macro-module
+            name)))
+    (if (eq? r 'nil) #f r)))
 
 (define (file-each path f)
   (w/readtables
