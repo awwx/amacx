@@ -335,6 +335,6 @@
 (xload out 'findfile)
 (xload out 'use)
 (xload out 'eval)
-(xload out 'read)
+(xload out 'file-each)
 
 (close out)
