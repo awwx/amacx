@@ -104,7 +104,9 @@
                    (λ ()
                      (if (pair? (cdr args)) (cadr args) 'nil))))
         ((symtab? fn)
-         (symtab-ref fn (car args)))
+         (if (pair? (cdr args))
+             (symtab-ref-default fn (car args) (cadr args))
+             (symtab-ref fn (car args))))
         ((namespace? fn)
          (namespace-variable-value (car args) #t #f fn))
         (else

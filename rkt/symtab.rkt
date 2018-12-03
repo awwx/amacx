@@ -1,7 +1,7 @@
 #lang racket
 
-(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-set!
-         symtab-each symtab-rm)
+(provide new-symtab symtab? symtab-has-key? symtab-ref symtab-ref-default
+         symtab-set! symtab-each symtab-rm)
 
 (struct symtab (hash) #:transparent)
 
@@ -20,8 +20,11 @@
 (define (symtab-has-key? g k)
   (hash-has-key? (symtab-hash g) k))
 
+(define (symtab-ref-default g k default)
+  (hash-ref (symtab-hash g) k default))
+
 (define (symtab-ref g k)
-  (hash-ref (symtab-hash g) k (λ () (error "key not found" k))))
+  (symtab-ref-default g k (λ () (error "key not found" k))))
 
 (define (symtab-set! g k v)
   (hash-set! (symtab-hash g) k v))
