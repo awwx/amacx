@@ -90,6 +90,7 @@
   (aload 'implement-use module2 module1)
   (aload 'eval module2 module1)
   (aload 'loadfile module2 module1)
+  (aload 'load module2 module1)
 
   (when inline-tests
     (printf "phase two tests done\n")

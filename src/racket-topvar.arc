@@ -22,4 +22,5 @@
     (aload 'findfile m *module*)
     (aload 'implement-use m *module*)
     (aload 'eval m *module*)
-    (aload 'loadfile m *module*)))
+    (aload 'loadfile m *module*)
+    (aload 'load m *module*)))

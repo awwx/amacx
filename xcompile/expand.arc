@@ -338,5 +338,6 @@
 (xload out 'implement-use)
 (xload out 'eval)
 (xload out 'loadfile)
+(xload out 'load)
 
 (close out)
