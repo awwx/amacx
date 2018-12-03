@@ -67,12 +67,6 @@
             name)))
     (if (eq? r 'nil) #f r)))
 
-(define (findtest macro-module name)
-  (let ((r ((ref macro-module 'findtest)
-            macro-module
-            name)))
-    (if (eq? r 'nil) #f r)))
-
 (define (inline-tests target-module)
   (ar-true? (ref target-module '*inline-tests* 'nil)))
 
@@ -83,9 +77,10 @@
    src))
 
 (define (runtest-if-exists target-module macro-module name)
-  (let ((src (findtest macro-module name)))
-    (when src
-      (loadfile target-module macro-module src))))
+  ((or (ref target-module 'runtest-if-exists #f)
+       (ref macro-module  'runtest-if-exists))
+   target-module
+   name))
 
 (define (aload name
                target-module
