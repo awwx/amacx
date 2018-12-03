@@ -333,7 +333,7 @@
 (xload out 'macro)
 (xload out 'asfilename)
 (xload out 'findfile)
-(xload out 'use)
+(xload out 'implement-use)
 (xload out 'eval)
 (xload out 'file-each)
 

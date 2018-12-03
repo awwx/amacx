@@ -29,20 +29,22 @@
 ; container, the `*module*` would refer to the *source* container,
 ; not the *target* container.
 ;
-; Thus `use-implementation`, when called with a target container,
-; returns a macro function suitable for being injected into the
-; target container, annotated as a macro.  For example,
+; Thus `implement-use`, when called with a target container, returns
+; a macro suitable for being injected into the target container.
+; For example,
 ;
-; (= target!use (annotate 'mac (use-implementation target)))
+; (= target!use (implement-use target))
 
-(def use-implementation (container)
-  (fn args
-    ; we don't have `each` yet in the boot process...
-    (map1 (fn (arg)
-            (use-feature container arg))
-          args)
-    nil))
+(def implement-use (container)
+  (annotate 'mac
+    (fn args
+      ; we don't have `each` yet in the boot process...
+      (map1 (fn (arg)
+              (use-feature container arg))
+            args)
+      nil)))
 
-(def provides-implementation (container)
-  (fn (feature)
-    (provides-feature container feature)))
+(def implement-provides (container)
+  (annotate 'mac
+    (fn (feature)
+      (provides-feature container feature))))
