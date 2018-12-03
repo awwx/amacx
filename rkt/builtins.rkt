@@ -193,6 +193,9 @@
 (bdef an-output (x)
   (tnil (output-port? x)))
 
+(bdef call-w/stdout (port thunk)
+  (parameterize ((current-output-port port)) (thunk)))
+
 (bdef car (x)
   (cond ((mpair? x)
          (mcar x))
@@ -252,6 +255,8 @@
         (else (err "has: not a table" g))))
 
 (b= infile open-input-file)
+
+(b= inside get-output-string)
 
 (define (inspect x)
   (let ((p (open-output-string)))
