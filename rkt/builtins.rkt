@@ -239,6 +239,9 @@
 (bdef cons (a d)
   (mcons a d))
 
+(bdef details (c)
+  (disp-to-string (exn-message c)))
+
 (b= err err)
 
 (b= eval-ail eval-ail)
@@ -266,10 +269,17 @@
 
 (b= infile open-input-file)
 
-(bdef inspect (x)
+(define (inspect x)
   (let ((p (open-output-string)))
     (write x p)
     (get-output-string p)))
+
+(define (disp-to-string x)
+  (let ((p (open-output-string)))
+    (display x p)
+    (get-output-string p)))
+
+(b= inspect inspect)
 
 (b= instring open-input-string)
 
@@ -281,6 +291,10 @@
   (procedure-rename fn name))
 
 (b= numstr number->string)
+
+(bdef on-err (errfn f)
+  (with-handlers ((exn:fail? errfn))
+    (f)))
 
 (bdef open-socket (num)
   (tcp-listen num 50 #t))
