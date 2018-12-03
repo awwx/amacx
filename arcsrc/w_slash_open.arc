@@ -1,4 +1,5 @@
-(use let simple-fn after simple-do close infile outfile instring open-socket)
+(use let simple-fn quasiquote let after simple-do close
+     infile outfile instring open-socket)
 
 (let expander
      (fn (f var name body)
