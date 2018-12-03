@@ -5,19 +5,11 @@
 (require "ail-ns.rkt")
 (require "data.rkt")
 
-(provide aload caris rootdir eval-ail)
+(provide aload rootdir eval-ail)
 
 (define-runtime-path here "here")
 
 (define rootdir (path->string (simplify-path (build-path here 'up 'up))))
-
-(define (macro-expander macro-module)
-  (ref macro-module 'macro-expand))
-
-(define (macro-expand target-module expander x)
-  (expander
-    (hash 'module target-module 'validate (λ (x) x))
-    x))
 
 (define (mcaris x v)
   (and (mpair? x) (eq? (mcar x) v)))
@@ -52,38 +44,6 @@
 (define (eval-ail x (ns default-ail-namespace))
   (eval (arcail x) ns))
 
-(define (arc-eval code target-module macro-module)
-  ((or (ref target-module 'eval #f)
-       (ref macro-module 'eval))
-   (ar-niltree code)
-   target-module))
-
-(define convert-filename-chars
-  (hash #\/ "slash"
-        #\\ "backslash"
-        #\_ "underline"
-        #\< "lt"
-        #\> "gt"))
-
-(define (tostr s)
-  (cond ((string? s)
-         s)
-        ((char? s)
-         (string s))
-        ((symbol? s)
-         (symbol->string s))
-        (else
-         (error "can't convert to string" s))))
-
-(define (str . args)
-  (apply string-append (map tostr args)))
-
-(module+ test (require rackunit/chk)
-  (chk (str "a" #\b 'c "d") "abcd"))
-
-(define (asfilename macro-module s)
-  ((ref macro-module 'asfilename) s))
-
 (define (contains arc-list x)
   (cond ((eq? arc-list 'nil)
          #f)
@@ -101,17 +61,6 @@
     (let ((*features* (ref module '*features* 'nil)))
       (sref module '*features* (mcons feature *features*)))))
 
-(define (caris x v)
-  (and (pair? x) (eq? (car x) v)))
-
-(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
-
-(define (some test seq)
-  (if (null? seq)
-       #f
-       (let ((r (test (car seq))))
-         (or r (some test (cdr seq))))))
-
 (define (findsrc macro-module name)
   (let ((r ((ref macro-module 'findsrc)
             macro-module
@@ -128,14 +77,10 @@
   (ar-true? (ref target-module '*inline-tests* 'nil)))
 
 (define (loadfile target-module macro-module src)
-  (when (inline-tests target-module)
-    (printf "> ~a~n" src))
-
-  ((or (ref target-module 'file-each #f)
-       (ref macro-module 'file-each))
-   src
-   (λ (x)
-     (arc-eval (ar-denil x) target-module macro-module))))
+  ((or (ref target-module 'loadfile #f)
+       (ref macro-module 'loadfile))
+   target-module
+   src))
 
 (define (runtest-if-exists target-module macro-module name)
   (let ((src (findtest macro-module name)))

@@ -124,6 +124,17 @@
              (symtab-ref-default fn (car args) (cadr args))
              (symtab-ref fn (car args))))
         ((namespace? fn)
-         (namespace-variable-value (car args) #t #f fn))
+         (if (pair? (cdr args))
+             (namespace-variable-value
+               (car args)     ; sym
+               #t             ; use-mapping?
+               (λ ()          ; failure-thunk
+                 (cadr args))
+               fn)            ; namespace
+             (namespace-variable-value
+               (car args)     ; sym
+               #t             ; use-mapping?
+               #f             ; failure-thunk
+               fn)))          ; namespace
         (else
          (err "Function call on inappropriate object" fn args))))

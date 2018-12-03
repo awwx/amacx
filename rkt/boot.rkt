@@ -29,6 +29,9 @@
         (else
          x)))
 
+(define (caris x v)
+  (and (pair? x) (eq? (car x) v)))
+
 (define (demunch module x)
   (cond ((caris x 'quote-xVrP8JItk2Ot)
          `(quote-xVrP8JItk2Ot ,(ar-niltree (inject module (cadr x)))))
@@ -86,6 +89,7 @@
   (aload 'findfile module2 module1)
   (aload 'implement-use module2 module1)
   (aload 'eval module2 module1)
+  (aload 'loadfile module2 module1)
 
   (when inline-tests
     (printf "phase two tests done\n")

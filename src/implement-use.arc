@@ -8,7 +8,8 @@
            container
            (if (and (has container 'macro-expand)
                     (has container 'findfile)
-                    (has container 'eval))
+                    (has container 'eval)
+                    (has container 'loadfile))
                container
                *module*)))
   nil)

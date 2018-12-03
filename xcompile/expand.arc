@@ -337,5 +337,6 @@
 (xload out 'findfile)
 (xload out 'implement-use)
 (xload out 'eval)
+(xload out 'loadfile)
 
 (close out)
