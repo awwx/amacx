@@ -2,7 +2,7 @@
 
 (def use-feature (container feature)
   (unless (has container '*features*)
-    (sref container '*features* (table)))
+    (sref container '*features* '()))
   (unless (contains (container '*features*) feature)
     (aload feature
            container
