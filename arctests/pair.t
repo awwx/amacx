@@ -1,6 +1,8 @@
+(use simple-fn ar-assert is2)
+
 ((fn (x)
-  (ar-assert (is (car  (car x))  'a))
-  (ar-assert (is (cadr (car x))  1))
-  (ar-assert (is (car  (cadr x)) 'b))
-  (ar-assert (is (cadr (cadr x)) 2)))
+  (ar-assert (is2 (car  (car x))  'a))
+  (ar-assert (is2 (cadr (car x))  1))
+  (ar-assert (is2 (car  (cadr x)) 'b))
+  (ar-assert (is2 (cadr (cadr x)) 2)))
  (pair '(a 1 b 2)))
