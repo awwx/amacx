@@ -2,10 +2,26 @@
 
 (require "symtab.rkt")
 
-(provide ar-false? ar-tagged? ar-tag-type ar-tag ar-rep ar-nillist
-         ar-niltree ar-true? err ref sref r-apply)
+(provide ar-denil ar-false? ar-tagged? ar-tag-type ar-tag ar-rep
+         ar-nillist ar-niltree ar-true? err ref sref r-apply)
 
 (define err error)
+
+(define (ar-denil x)
+  (cond ((mpair? x)
+         (cons (ar-denil-car (mcar x))
+               (ar-denil-cdr (mcdr x))))
+        (else x)))
+
+(define (ar-denil-car x)
+  (if (eq? x 'nil)
+      'nil
+      (ar-denil x)))
+
+(define (ar-denil-cdr x)
+  (if (eq? x 'nil)
+      '()
+      (ar-denil x)))
 
 (define (ar-false? x)
   (or (eq? x 'nil) (eq? x #f)))

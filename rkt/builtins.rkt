@@ -18,22 +18,6 @@
          '())
         (else x)))
 
-(define (ar-denil x)
-  (cond ((mpair? x)
-         (cons (ar-denil-car (mcar x))
-               (ar-denil-cdr (mcdr x))))
-        (else x)))
-
-(define (ar-denil-car x)
-  (if (eq? x 'nil)
-      'nil
-      (ar-denil x)))
-
-(define (ar-denil-cdr x)
-  (if (eq? x 'nil)
-      '()
-      (ar-denil x)))
-
 (define (ar-nil x)
   (if (or (eq? x '()) (eq? x #f))
       'nil

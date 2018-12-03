@@ -46,6 +46,15 @@
     (eval a ail-namespace1))
   (void))
 
+(define (file-each path f)
+  (with-input-from-file path
+    (λ ()
+      (let loop ()
+        (let ((x (read)))
+          (unless (eof-object? x)
+            (f x)
+            (loop)))))))
+
 (define (phase1 (inline-tests #f))
   (when inline-tests
     (printf "------ phase one~n"))
@@ -71,12 +80,12 @@
   (sref module2 'provides
     ((ref module1 'implement-provides) module2))
 
+  (aload 'file-each module2 module1)
   (aload 'macro module2 module1)
   (aload 'asfilename module2 module1)
   (aload 'findfile module2 module1)
   (aload 'implement-use module2 module1)
   (aload 'eval module2 module1)
-  (aload 'file-each module2 module1)
 
   (when inline-tests
     (printf "phase two tests done\n")

@@ -1,9 +1,11 @@
 #lang racket
 
 (require "boot.rkt")
+(require "readtables.rkt")
 
 (print-hash-table #f)
 
-((λ ()
-  (phase2 #t)
-  (void)))
+(void
+  (w/readtables
+    (λ ()
+      (phase2 #t))))

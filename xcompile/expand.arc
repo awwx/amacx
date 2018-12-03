@@ -190,6 +190,7 @@
         ar-tag-type   type
         ar-uniq       ar-uniq
         ar-write      write
+        ar-writec     writec
         ar-<2         <
         a-char        [isa _ 'char]
         a-fn          [isa _ 'fn]
@@ -330,11 +331,11 @@
   (when inline-tests
     (runtest out name)))
 
+(xload out 'file-each)
 (xload out 'macro)
 (xload out 'asfilename)
 (xload out 'findfile)
 (xload out 'implement-use)
 (xload out 'eval)
-(xload out 'file-each)
 
 (close out)

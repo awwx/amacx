@@ -2,6 +2,7 @@
 
 (require racket/runtime-path)
 (require "boot.rkt")
+(require "readtables.rkt")
 
 (define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
@@ -34,6 +35,11 @@
 
 (define argv (current-command-line-arguments))
 
-(if (eqv? 0 (vector-length argv))
-    (run-all-tests)
-    (run-tests (vector->list argv)))
+(define (main)
+  (w/readtables
+    (λ ()
+      (if (eqv? 0 (vector-length argv))
+          (run-all-tests)
+          (run-tests (vector->list argv))))))
+
+(void (main))

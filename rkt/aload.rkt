@@ -4,9 +4,8 @@
 (require racket/runtime-path)
 (require "ail-ns.rkt")
 (require "data.rkt")
-(require "readtables.rkt")
 
-(provide aload caris file-each rootdir eval-ail)
+(provide aload caris rootdir eval-ail)
 
 (define-runtime-path here "here")
 
@@ -125,17 +124,6 @@
             name)))
     (if (eq? r 'nil) #f r)))
 
-(define (file-each path f)
-  (w/readtables
-    (λ ()
-      (with-input-from-file path
-        (λ ()
-          (let loop ()
-            (let ((x (read)))
-              (unless (eof-object? x)
-                (f x)
-                (loop)))))))))
-
 (define (inline-tests target-module)
   (ar-true? (ref target-module '*inline-tests* 'nil)))
 
@@ -143,7 +131,11 @@
   (when (inline-tests target-module)
     (printf "> ~a~n" src))
 
-  (file-each src (λ (x) (arc-eval x target-module macro-module))))
+  ((or (ref target-module 'file-each #f)
+       (ref macro-module 'file-each))
+   src
+   (λ (x)
+     (arc-eval (ar-denil x) target-module macro-module))))
 
 (define (runtest-if-exists target-module macro-module name)
   (let ((src (findtest macro-module name)))
