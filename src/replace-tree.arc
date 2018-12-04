@@ -1,4 +1,4 @@
-(use simple-def aif and isa)
+(use arcbase aif)
 
 (def replace-tree (x mapping)
   (aif (and (isa x 'sym) (mapping x))
