@@ -1,4 +1,4 @@
-(use equals testify alist)
+(use arcbase equals testify)
 
 (equals ((testify 3)     3)   t)
 (equals ((testify 3)     4)   nil)
