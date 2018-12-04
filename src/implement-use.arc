@@ -1,18 +1,8 @@
-(use simple-def mac map1 unless has table contains)
+(use simple-def mac map1 unless has table contains load)
 
-(def use-feature (container feature)
-  (unless (has container '*features*)
-    (sref container '*features* '()))
-  (unless (contains (container '*features*) feature)
-    (aload feature
-           container
-           (if (and (has container 'macro-expand)
-                    (has container 'findfile)
-                    (has container 'eval)
-                    (has container 'loadfile)
-                    (has container 'load))
-               container
-               *module*)))
+(def use-feature (feature container expander)
+  (unless (contains (container '*features* nil) feature)
+    (load feature container expander))
   nil)
 
 (def provides-feature (container feature)
@@ -37,12 +27,12 @@
 ;
 ; (= target!use (implement-use target))
 
-(def implement-use (container)
+(def implement-use (container expander)
   (annotate 'mac
     (fn args
       ; we don't have `each` yet in the boot process...
-      (map1 (fn (arg)
-              (use-feature container arg))
+      (map1 (fn (feature)
+              (use-feature feature container expander))
             args)
       nil)))
 

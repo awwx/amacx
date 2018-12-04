@@ -78,19 +78,15 @@
     (sref module2 '*inline-tests* 't))
 
   (sref module2 'use
-    ((ref module1 'implement-use) module2))
+    ((ref module1 'implement-use)
+     module2
+     (ref module1 'macro-expand)))
 
   (sref module2 'provides
-    ((ref module1 'implement-provides) module2))
+    ((ref module1 'implement-provides)
+     module2))
 
-  (aload 'file-each module2 module1)
-  (aload 'macro module2 module1)
-  (aload 'asfilename module2 module1)
-  (aload 'findfile module2 module1)
-  (aload 'implement-use module2 module1)
-  (aload 'eval module2 module1)
-  (aload 'loadfile module2 module1)
-  (aload 'load module2 module1)
+  (aload 'use-implementation module2 module1)
 
   (when inline-tests
     (printf "phase two tests done\n")

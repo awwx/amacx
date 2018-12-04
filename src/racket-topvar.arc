@@ -1,4 +1,4 @@
-(use ns-var-rule copyinto prn ret obj implement-use)
+(use ns-var-rule copyinto prn ret obj implement-use load)
 
 (def ns-var (target-module)
   (annotate 'mac
@@ -12,15 +12,9 @@
     (sref m 'module-var (ns-var m))
     (sref m '*features* (cons 'module-var (m '*features*)))
 
-    (sref m 'use      (implement-use m))
+    (sref m 'use      (implement-use m macro-expand))
     (sref m 'provides (implement-provides m))
 
-    (aload 'file-each m *module*)
-    (aload 'macro m *module*)
-    (aload 'ns-var-rule m *module*)
-    (aload 'asfilename m *module*)
-    (aload 'findfile m *module*)
-    (aload 'implement-use m *module*)
-    (aload 'eval m *module*)
-    (aload 'loadfile m *module*)
-    (aload 'load m *module*)))
+    (load 'ns-var-rule m macro-expand)
+
+    (load 'use-implementation m)))

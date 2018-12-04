@@ -77,6 +77,8 @@
 (def str-append args
   (apply + "" args))
 
+(= ar-print prn)
+
 (mac use args)
 
 (load "../src/asfilename.arc")
@@ -331,13 +333,7 @@
   (when inline-tests
     (runtest out name)))
 
-(xload out 'file-each)
 (xload out 'macro)
-(xload out 'asfilename)
-(xload out 'findfile)
 (xload out 'implement-use)
-(xload out 'eval)
-(xload out 'loadfile)
-(xload out 'load)
 
 (close out)

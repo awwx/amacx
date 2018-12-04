@@ -1,16 +1,14 @@
-(use simple-def when pr disp prn file-each eval)
+(use simple-def let when findfile prn file-each eval)
 
-(def runtest-if-exists (target-module name)
+(def runtest-if-exists (name target-module expander)
   (let src (findtest nil name)
     (when src
-      (loadfile target-module src))))
+      (loadfile src target-module expander))))
 
-(def loadfile (target-module src)
+(def loadfile (src target-module expander)
   (when (target-module '*inline-tests* nil)
-    (pr "> ")
-    (disp src)
-    (prn))
+    (prn "> " src))
 
   (file-each src
     (fn (x)
-      (eval x target-module))))
+      (eval x target-module expander))))

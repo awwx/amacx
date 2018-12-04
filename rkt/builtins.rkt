@@ -107,8 +107,6 @@
 
 (b= ar-nillist ar-nillist)
 
-(b= aload aload)
-
 (bdef ar-print args
   (for ((arg args))
     (write arg)
