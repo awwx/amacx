@@ -1,4 +1,4 @@
-(use simple-def and is len all square-fn some iso)
+(use arcbase len all square-fn some iso)
 
 (def sets-iso (s1 s2)
   (and (is (len s1) (len s2))
