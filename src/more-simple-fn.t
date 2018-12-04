@@ -1,4 +1,4 @@
-(use equals simple-fn)
+(use arcboot equals)
 
 ; (equals ((fn ())) nil)
 

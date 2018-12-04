@@ -1,4 +1,4 @@
-(use mac let uniq simple-fn no apply)
+(use arcboot mac let uniq no apply)
 
 (mac complement (f)
   (let g (uniq)

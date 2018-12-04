@@ -1,4 +1,4 @@
-(use equals some simple-fn or is no)
+(use arcboot equals some or is no)
 
 (equals (some #\c "abcdef") t)
 (equals (some #\x "abcdef") nil)

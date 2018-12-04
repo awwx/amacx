@@ -1,4 +1,4 @@
-(use simple-def simple-fn if no list cxr)
+(use arcboot simple-def if no list cxr)
 
 ; (def pair (xs (o f list)) ...)
 

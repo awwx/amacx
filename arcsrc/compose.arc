@@ -1,4 +1,4 @@
-(use mac uniq simple-fn afn if list apply idfn)
+(use arcboot mac uniq afn if list apply idfn)
 
 (mac compose args
   (let g (uniq)

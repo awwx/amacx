@@ -1,4 +1,4 @@
-(use simple-fn equals)
+(use arcboot equals)
 
 ((fn (a)
    ((fn (b)

@@ -1,4 +1,4 @@
-(use simple-def if alist afn when isa simple-fn list for len)
+(use arcboot simple-def if alist afn when isa list for len)
 
 (def foreach (seq f)
   (if (alist seq)

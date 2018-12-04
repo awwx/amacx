@@ -1,4 +1,4 @@
-(use mac simple-fn map1 pair cxr)
+(use arcboot mac map1 pair cxr)
 
 ; (mac with (parms . body)
 ;   `((,fn ,(map1 car (pair parms))

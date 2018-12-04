@@ -1,4 +1,4 @@
-(use mac quasiquote simple-fn)
+(use arcboot mac quasiquote)
 
 (mac square-bracket args
   `(,fn (_) (,@args)))

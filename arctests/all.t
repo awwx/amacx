@@ -1,4 +1,4 @@
-(use equals all simple-fn in no)
+(use arcboot equals all in no)
 
 (equals (all #\a "")     t)
 (equals (all #\a "aaaa") t)

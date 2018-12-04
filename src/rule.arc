@@ -1,4 +1,4 @@
-(use mac w/uniq quasiquote let simple-fn aif apply)
+(use arcboot mac w/uniq quasiquote let aif apply)
 
 (mac rule (name arglist test . body)
   (w/uniq (orig args)

@@ -1,4 +1,4 @@
-(use mac atomic-invoke simple-fn)
+(use arcboot mac atomic-invoke)
 
 (mac atomic body
   `(,atomic-invoke (,fn () ,@body)))

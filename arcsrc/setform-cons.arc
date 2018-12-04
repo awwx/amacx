@@ -1,4 +1,4 @@
-(use setforms w/uniq list simple-fn scxr cxr)
+(use arcboot setforms w/uniq list scxr cxr)
 
 (defset car (x)
   (w/uniq g

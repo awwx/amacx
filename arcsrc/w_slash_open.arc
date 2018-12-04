@@ -1,4 +1,4 @@
-(use let simple-fn quasiquote let after simple-do close
+(use arcboot let quasiquote let after simple-do close
      infile outfile instring open-socket)
 
 (let expander
