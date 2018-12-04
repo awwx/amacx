@@ -1,6 +1,4 @@
-(use arcboot simple-def and isa has if is no list join or idfn aif
-     caris cxr acons quasiquote map1 err unless let apply rep contains
-     $ail)
+(use arcbase has aif quasiquote unless contains $ail)
 
 (def amacro (x)
   (and (isa x 'mac) x))
