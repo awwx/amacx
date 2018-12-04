@@ -1,5 +1,4 @@
-(use arcboot simple-def if no rreduce alist err list let is cxr and
-     atom caris single literal literal-value join dotted)
+(use arcbase rreduce single literal literal-value dotted)
 
 ; Quasiquote ported from GNU clisp 2.47 backquote.lisp to Arc in May
 ; 2010 by fallintothis
