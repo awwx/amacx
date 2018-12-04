@@ -1,5 +1,4 @@
-(use simple-def contains unless complex-fn when findfile if
-     loadfile and or)
+(use arcbase contains unless complex-fn when findfile loadfile)
 
 (def has-feature (module feature)
   (contains (module '*features* nil) feature))
