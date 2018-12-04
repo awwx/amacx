@@ -1,4 +1,4 @@
-(use simple-def if no map1 afn some apply)
+(use arcbase afn some)
 
 (def map (f . seqs)
   (if (no (cdr seqs))
