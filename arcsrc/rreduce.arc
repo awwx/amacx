@@ -1,4 +1,4 @@
-(use simple-def if cxr apply)
+(use arcbase)
 
 (def rreduce (f xs)
   (if (cddr xs)
