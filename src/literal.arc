@@ -1,4 +1,4 @@
-(use simple-def if no or caris)
+(use arcbase)
 
 (def literal (x)
   (if (a-sym x)

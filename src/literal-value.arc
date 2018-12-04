@@ -1,4 +1,4 @@
-(use simple-def if or isa is caris cxr err)
+(use arcbase)
 
 (def literal-value (x)
   (if (or (isa x 'sym) (isa x 'cons))
