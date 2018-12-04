@@ -1,4 +1,4 @@
-(use arcboot mac w/uniq quasiquote let aif apply)
+(use arcbase w/uniq quasiquote aif)
 
 (mac rule (name arglist test . body)
   (w/uniq (orig args)
