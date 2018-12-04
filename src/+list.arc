@@ -1,4 +1,4 @@
-(use rule alist apply join)
+(use arcbase rule)
 
 (rule + args (and (acons args) (alist (car args)))
   (apply join args))
