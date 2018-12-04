@@ -1,4 +1,4 @@
-(use simple-def and caris is len isa >= all or unless err $ail)
+(use arcbase len >= all unless $ail)
 
 ($ail
   (def ail-quote (x)
