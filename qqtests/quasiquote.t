@@ -1,4 +1,4 @@
-(use equals quasiquote + list)
+(use arcbase equals quasiquote)
 
 ; These are quasiquote expressions supported in Arc 3.1
 
