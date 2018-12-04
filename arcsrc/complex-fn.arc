@@ -1,5 +1,4 @@
-(use if no isa and quasiquote let is cxr join err w/uniq apply withs
-     mac $ail)
+(use arcbase quasiquote w/uniq withs $ail)
 
 (provides simple-fn)
 
