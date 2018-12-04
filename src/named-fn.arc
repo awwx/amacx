@@ -1,4 +1,4 @@
-(use module-var set-module-var assign simple-fn)
+(use module-var set-module-var assign simple-fn quote)
 
 ; (mac named-fn (name parms . body)
 ;   `(,namefn ',name (,fn ,parms ,@body)))
