@@ -1,5 +1,4 @@
-(use simple-def in some and no as-str rev if testify let readstr
-     strchars caris complement compose map1 cxr list)
+(use arcbase in some rev testify readstr complement compose)
 
 (def ssyntax-char (c)
   (in c #\: #\~ #\& #\. #\!))
