@@ -1,4 +1,4 @@
-(use simple-def and no)
+(use arcbase)
 
 (def single (x)
   (and (acons x)
