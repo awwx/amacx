@@ -1,4 +1,4 @@
-(use mac if no simple-do let cxr)
+(use arcbase)
 
 (mac withs (parms . body)
   (if (no parms)
