@@ -1,4 +1,4 @@
-(use arcboot mac uniq afn if list apply idfn)
+(use arcbase quasiquote afn)
 
 (mac compose args
   (let g (uniq)
