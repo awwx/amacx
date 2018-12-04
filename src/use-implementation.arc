@@ -1,4 +1,4 @@
-(use assign implement-use macro)
+(use arcboot implement-use macro)
 
 (assign use (implement-use *module* macro-expand))
 
