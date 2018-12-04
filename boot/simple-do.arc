@@ -1,4 +1,4 @@
-(use module-var mac list quote)
+(use arcboot mac list)
 
 ; (mac do body
 ;   `(($fn () ,@body))
