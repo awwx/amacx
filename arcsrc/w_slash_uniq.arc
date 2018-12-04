@@ -1,4 +1,4 @@
-(use mac if with apply join map1 let uniq)
+(use mac if acons quasiquote with apply join map1 let uniq)
 
 (mac w/uniq (names . body)
   (if (acons names)

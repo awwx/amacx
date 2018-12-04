@@ -1,4 +1,4 @@
-(use mac w/uniq let simple-fn aif apply)
+(use mac w/uniq quasiquote let simple-fn aif apply)
 
 (mac rule (name arglist test . body)
   (w/uniq (orig args)

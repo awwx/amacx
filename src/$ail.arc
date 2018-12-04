@@ -1,4 +1,4 @@
-(use simple-def replace-tree case simple-do)
+(use simple-def replace-tree simple-fn case mac quasiquote simple-do)
 
 (def rename-$ail (x)
   (replace-tree x
