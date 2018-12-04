@@ -1,4 +1,4 @@
-(use simple-def afn if no apply and)
+(use arcbase afn)
 
 (def andf fns
   (fn args
