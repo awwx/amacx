@@ -1,4 +1,4 @@
-(use simple-def or no and < cxr apply)
+(use arcbase <)
 
 (def >= args
   (or (no args)
