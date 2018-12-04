@@ -210,6 +210,7 @@
         charstr       [coerce _ 'string]
         close         close
         cons          cons
+        details       details
         eval-ail      eval:ailarc
         err           err
         file-exists   file-exists
