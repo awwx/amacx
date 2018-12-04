@@ -1,4 +1,4 @@
-(use simple-def mac map1 unless has table contains load each)
+(use arcbase unless contains load each)
 
 (def use-feature (feature container expander)
   (unless (contains (container '*features* nil) feature)
