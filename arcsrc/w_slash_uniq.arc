@@ -1,4 +1,4 @@
-(use mac if acons quasiquote with apply join map1 let uniq)
+(use arcbase quasiquote)
 
 (mac w/uniq (names . body)
   (if (acons names)
