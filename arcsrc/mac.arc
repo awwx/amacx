@@ -1,4 +1,4 @@
-(use module-var set-module-var assign named-fn list quote)
+(use arcboot annotate named-fn list)
 
 ; (assign mac
 ;   (annotate 'mac
