@@ -1,4 +1,4 @@
-(use simple-def atom and or)
+(use arcbase)
 
 (def dotted (x)
   (if (atom x)
