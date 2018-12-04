@@ -1,4 +1,4 @@
-(use module-var mac set-module-var named-fn)
+(use arcboot mac named-fn)
 
 ; (mac def (name parms . body)
 ;   `(,assign ,name (,named-fn ,name ,parms ,@body)))
