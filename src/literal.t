@@ -1,4 +1,4 @@
-(use equals list)
+(use arcbase equals)
 
 (equals (literal 3)              t)
 (equals (literal car)            t)
