@@ -1,4 +1,4 @@
-(use arcboot mac let uniq no apply)
+(use arcbase)
 
 (mac complement (f)
   (let g (uniq)
