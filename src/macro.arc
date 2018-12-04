@@ -1,4 +1,4 @@
-(use arcbase has aif quasiquote unless contains $ail)
+(use arcbase aif quasiquote unless contains $ail)
 
 (def amacro (x)
   (and (isa x 'mac) x))
