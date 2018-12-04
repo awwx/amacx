@@ -1,6 +1,5 @@
-(use simple-def mac w/uniq let isa expand-ssyntax list quasiquote
-     caris warn mappend compose complement afn join err and ssyntax
-     complex-fn +list simple-do pair)
+(use arcbase w/uniq expand-ssyntax quasiquote warn mappend compose
+     complement afn ssyntax complex-fn +list)
 
 (assign setter (table))
 

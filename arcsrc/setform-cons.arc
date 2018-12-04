@@ -1,4 +1,4 @@
-(use arcboot setforms w/uniq list scxr cxr)
+(use arcbase setforms w/uniq scxr)
 
 (defset car (x)
   (w/uniq g
