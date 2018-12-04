@@ -1,4 +1,4 @@
-(use mac w/uniq withs testify while no assign)
+(use arcboot mac w/uniq withs testify while no)
 
 (mac whiler (var expr endval . body)
   (w/uniq gf
