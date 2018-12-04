@@ -227,6 +227,9 @@
 (bdef details (c)
   (disp-to-string (exn-message c)))
 
+(bdef dir (path)
+  (ar-niltree (map path->string (directory-list path))))
+
 (b= err err)
 
 (b= eval-ail eval-ail)
