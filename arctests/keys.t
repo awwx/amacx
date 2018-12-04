@@ -1,5 +1,5 @@
-(use let table true sets-iso setforms ssyntax keys some find
-     square-fn iso let cxr equals find)
+(use arcbase true sets-iso setforms ssyntax keys some find
+     square-fn iso equals find)
 
 (let g (table)
   (true (sets-iso (keys g) nil))
