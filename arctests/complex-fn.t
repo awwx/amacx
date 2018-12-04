@@ -1,4 +1,4 @@
-(use equals cxr complex-fn list)
+(use arcbase equals complex-fn)
 
 (equals (fn-complex-args? '())      nil)
 (equals (fn-complex-args? 'a)       nil)
