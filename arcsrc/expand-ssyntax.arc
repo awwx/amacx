@@ -1,4 +1,4 @@
-(use arcbase in some rev testify readstr complement compose)
+(use arcbase as-str in some rev testify readstr complement compose)
 
 (def ssyntax-char (c)
   (in c #\: #\~ #\& #\. #\!))
