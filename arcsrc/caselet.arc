@@ -1,4 +1,4 @@
-(use mac let afn if no cxr)
+(use arcbase afn)
 
 (mac caselet (var expr . args)
   (let ex (afn (args)
