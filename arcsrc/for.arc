@@ -1,4 +1,4 @@
-(use mac w/uniq with + forloop assign <)
+(use arcboot mac w/uniq with + forloop <)
 
 (mac for (v init max . body)
   (w/uniq (gi gm)

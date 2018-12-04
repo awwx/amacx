@@ -1,4 +1,4 @@
-(use mac let assign simple-fn)
+(use arcboot mac let)
 
 (mac afn (parms . body)
   `(,let self nil
