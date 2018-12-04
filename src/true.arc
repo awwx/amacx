@@ -1,4 +1,4 @@
-(use mac list if simple-do quote)
+(use arcboot mac list if simple-do)
 
 (mac true (x)
   (list if x
