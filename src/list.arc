@@ -1,4 +1,4 @@
-(use module-var set-module-var assign named-fn)
+(use arcboot named-fn)
 
 ; (def list args args)
 

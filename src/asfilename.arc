@@ -1,4 +1,4 @@
-(use assign obj simple-def string map1 aif strchars as-str)
+(use arcboot obj simple-def string map1 aif strchars as-str)
 
 (assign convert-filename-chars
   (obj #\/ "slash"
