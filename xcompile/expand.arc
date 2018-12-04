@@ -237,6 +237,7 @@
         symstr        [coerce _ 'string]
         t             t
         table         table
+        table-each    (fn (g f) (maptable f g))
         +             +
         -             -
         *             *

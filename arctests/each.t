@@ -1,4 +1,9 @@
-(use each complex-fn prn case obj equals)
+(use each complex-fn case obj equals accum)
+
+(equals (accum a
+          (each x '(1 2 3 4)
+            (a x)))
+        '(1 2 3 4))
 
 (with (a nil b nil c nil)
   (each (k v) (obj a 1 b 2 c 3)
@@ -10,3 +15,8 @@
   (equals a 1)
   (equals b 2)
   (equals c 3))
+
+(equals (accum a
+          (each c "abcd"
+            (a c)))
+        '(#\a #\b #\c #\d))

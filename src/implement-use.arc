@@ -1,4 +1,4 @@
-(use simple-def mac map1 unless has table contains load)
+(use simple-def mac map1 unless has table contains load each)
 
 (def use-feature (feature container expander)
   (unless (contains (container '*features* nil) feature)
@@ -14,26 +14,25 @@
 
 ; This is like
 ;
-; (mac use args
-;   (each arg args (use-feature *module* arg)))
+; (mac use features
+;   (each feature features
+;     (use-feature feature *module* macro-expand)))
 ;
-; except that if we imported this version of `use` into a target
-; container, the `*module*` would refer to the *source* container,
-; not the *target* container.
+; except that if we imported such a `use` into a target container,
+; using `use` in the target container would load things into *our*
+; source container, not the target container.
 ;
-; Thus `implement-use`, when called with a target container, returns
-; a macro suitable for being injected into the target container.
-; For example,
+; Thus `implement-use` here, when called with a target container,
+; returns a macro suitable for being injected into the target
+; container.  For example,
 ;
-; (= target!use (implement-use target))
+; (= target!use (implement-use target macro-expand))
 
 (def implement-use (container expander)
   (annotate 'mac
-    (fn args
-      ; we don't have `each` yet in the boot process...
-      (map1 (fn (feature)
-              (use-feature feature container expander))
-            args)
+    (fn features
+      (each feature features
+        (use-feature feature container expander))
       nil)))
 
 (def implement-provides (container)
