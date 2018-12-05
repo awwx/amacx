@@ -1,4 +1,4 @@
-(use let listset mlist equals)
+(use arcbase listset mlist equals)
 
 (let x (mcopy '(a b c d))
   (listset x 0 'w)
