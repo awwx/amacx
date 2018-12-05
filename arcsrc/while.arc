@@ -1,4 +1,4 @@
-(use mac w/uniq rfn when)
+(use arcbase w/uniq rfn when)
 
 (mac while (test . body)
   (w/uniq (gf gp)
