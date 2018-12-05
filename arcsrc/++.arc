@@ -1,4 +1,4 @@
-(use mac complex-fn if isa setforms + w/uniq let withs +list)
+(use arcbase complex-fn setforms w/uniq +list)
 
 (mac ++ (place (o i 1))
   (if (isa place 'sym)
