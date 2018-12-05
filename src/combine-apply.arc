@@ -1,4 +1,4 @@
-(use arcbase)
+(use simple-def if no)
 
 (def combine-apply (args)
   (if (no args)
