@@ -1,4 +1,4 @@
-(use mac w/uniq quasiquote w/outstring w/stdout inside)
+(use arcbase w/uniq quasiquote w/outstring w/stdout)
 
 (mac tostring body
   (w/uniq gv
