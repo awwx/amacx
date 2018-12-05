@@ -1,5 +1,4 @@
-(use arcboot let quasiquote let after simple-do close
-     infile outfile instring open-socket)
+(use arcbase quasiquote after close infile outfile instring open-socket)
 
 (let expander
      (fn (f var name body)
