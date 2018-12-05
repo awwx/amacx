@@ -1,4 +1,4 @@
-(use equals rfn if)
+(use arcbase equals rfn)
 
 (equals ((rfn foo (i x)
               (if (is i 0)
