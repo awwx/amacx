@@ -1,4 +1,4 @@
-(use arcboot mac w/uniq let or map1 is)
+(use arcbase w/uniq)
 
 (mac in (x . choices)
   (w/uniq g
