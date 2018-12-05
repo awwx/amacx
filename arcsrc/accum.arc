@@ -1,4 +1,4 @@
-(use arcboot mac w/uniq withs rev)
+(use arcbase w/uniq withs rev)
 
 (mac accum (accfn . body)
   (w/uniq gacc
