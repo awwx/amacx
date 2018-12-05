@@ -1,4 +1,4 @@
-(use equals recstring if is square-fn)
+(use arcbase equals recstring square-fn)
 
 (equals (recstring [if (is ("abc" _) #\x) 'found] "abc")   nil)
 (equals (recstring [if (is ("axc" _) #\x) 'found] "axc")   'found)
