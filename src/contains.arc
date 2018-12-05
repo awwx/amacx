@@ -1,6 +1,6 @@
 ; For when we don't have mem yet
 
-(use simple-def no is)
+(use arcboot)
 
 (def contains (lst x)
   (if (no lst)
