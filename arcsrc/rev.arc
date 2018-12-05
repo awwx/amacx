@@ -1,4 +1,4 @@
-(use simple-def afn if)
+(use arcbase afn)
 
 (def rev (xs)
   ((afn (xs acc)
