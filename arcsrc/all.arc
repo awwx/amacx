@@ -1,4 +1,4 @@
-(use simple-def no some complement testify)
+(use arcbase some complement testify)
 
 ; we don't have ssyntax yet
 
