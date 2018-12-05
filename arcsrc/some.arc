@@ -1,4 +1,4 @@
-(use simple-def let testify if reclist recstring compose)
+(use arcbase testify reclist recstring compose)
 
 (def some (test seq)
   (let f (testify test)
