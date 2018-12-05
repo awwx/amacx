@@ -1,6 +1,6 @@
 ; For when we don't have copy yet.
 
-(use simple-def each complex-fn)
+(use arcbase each complex-fn)
 
 (def copyinto (g . srcs)
   (each src srcs
