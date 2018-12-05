@@ -1,4 +1,4 @@
-(use arcboot equals all in no)
+(use arcbase equals all in)
 
 (equals (all #\a "")     t)
 (equals (all #\a "aaaa") t)
