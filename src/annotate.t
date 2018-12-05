@@ -1,4 +1,4 @@
-(use let annotate equals)
+(use arcbase equals)
 
 (let x (annotate 'foo 123)
   (equals (ar-tag-type x) 'foo)
