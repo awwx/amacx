@@ -1,5 +1,4 @@
-(use arcbase is +str file-exists square-fn reclist compose
-     asfilename)
+(use arcbase +str file-exists square-fn reclist compose asfilename)
 
 (def completepath (basedir path)
   (if (is (path 0) #\/)
