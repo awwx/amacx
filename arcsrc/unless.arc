@@ -1,4 +1,4 @@
-(use mac quasiquote if no simple-do)
+(use arcbase quasiquote)
 
 (mac unless (test . body)
   `(,if (,no ,test) (,do ,@body)))
