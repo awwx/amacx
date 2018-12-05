@@ -1,4 +1,4 @@
-(use arcboot mac w/uniq with + forloop <)
+(use arcbase w/uniq forloop <)
 
 (mac for (v init max . body)
   (w/uniq (gi gm)
