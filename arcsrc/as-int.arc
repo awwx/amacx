@@ -1,4 +1,4 @@
-(use simple-def complex-fn aif or)
+(use arcbase complex-fn aif)
 
 (def as-int (x (o radix))
   (if (an-int x)
