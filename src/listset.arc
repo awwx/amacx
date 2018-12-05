@@ -1,4 +1,4 @@
-(use simple-def if is scxr -)
+(use arcbase scxr)
 
 (def listset (xs i v)
   (if (is i 0)
