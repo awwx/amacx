@@ -1,4 +1,4 @@
-(use equals let +)
+(use arcbase equals)
 
 (equals
   (let xyz 0
