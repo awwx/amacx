@@ -1,4 +1,4 @@
-(use arcboot simple-def replace-tree case mac quasiquote simple-do)
+(use arcbase replace-tree case quasiquote)
 
 (def rename-$ail (x)
   (replace-tree x
