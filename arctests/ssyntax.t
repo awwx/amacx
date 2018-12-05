@@ -1,4 +1,4 @@
-(use with obj equals ssyntax even square-fn andf let square-fn even
+(use arcbase obj equals ssyntax even square-fn andf square-fn
      true false)
 
 (with (x (obj a 1 b 2 c 3)
