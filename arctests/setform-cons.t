@@ -1,4 +1,4 @@
-(use mac let setform-cons equals listset mlist ssyntax)
+(use arcbase setform-cons equals listset mlist ssyntax)
 
 (mac test-setform (orig mod val expected)
   `(let x (,mcopy ',orig)
