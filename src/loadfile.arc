@@ -1,4 +1,4 @@
-(use simple-def let when findfile prn file-each eval)
+(use arcbase when findfile prn file-each eval)
 
 (def runtest-if-exists (name target-module expander)
   (let src (findtest nil name)
