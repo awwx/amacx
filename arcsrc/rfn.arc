@@ -1,4 +1,4 @@
-(use arcboot mac let)
+(use arcbase)
 
 (mac rfn (name parms . body)
   `(,let ,name nil
