@@ -1,4 +1,4 @@
-(use arcboot equals some or is no)
+(use arcbase equals some)
 
 (equals (some #\c "abcdef") t)
 (equals (some #\x "abcdef") nil)
