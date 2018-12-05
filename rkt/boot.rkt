@@ -72,21 +72,13 @@
   (when inline-tests
     (printf "------ phase two~n"))
 
-  (define module2 (new-symtab builtins))
-
-  (when inline-tests
-    (sref module2 '*inline-tests* 't))
-
-  (sref module2 'use
-    ((ref module1 'implement-use)
-     module2
-     (ref module1 'macro-expand)))
-
-  (sref module2 'provides
-    ((ref module1 'implement-provides)
-     module2))
-
-  (aload 'use-implementation module2 module1)
+  (define module2
+    ((ref module1 'provision-container)
+     (new-symtab)
+     (hash 'builtins       builtins
+           'macro-expander (ref module1 'macro-expand)
+           'inline-tests   (tnil inline-tests)
+           'start          'use-implementation)))
 
   (when inline-tests
     (printf "phase two tests done\n")

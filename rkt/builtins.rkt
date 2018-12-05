@@ -23,8 +23,6 @@
       'nil
       x))
 
-(define (tnil x) (if x 't 'nil))
-
 (define (combine-apply args)
   (cond ((null? args)
          '())
