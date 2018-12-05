@@ -1,4 +1,4 @@
-(use simple-def disp each write)
+(use arcbase disp each write)
 
 (def warn (msg . args)
   (disp (+ "Warning: " msg ". ") (stderr))
