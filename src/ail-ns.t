@@ -1,4 +1,4 @@
-(use let equals)
+(use arcbase equals)
 
 (let g (ail-namespace)
   (equals (a-table g) 't)
