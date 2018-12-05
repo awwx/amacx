@@ -1,4 +1,4 @@
-(use arcbase map1 disp)
+(use arcbase disp)
 
 (def pr args
   (map1 disp args)
