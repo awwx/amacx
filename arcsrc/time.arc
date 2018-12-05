@@ -1,4 +1,4 @@
-(use mac w/uniq let msec do1 prn -)
+(use arcbase w/uniq do1 prn)
 
 (mac time (expr)
   (w/uniq (t1 t2)
