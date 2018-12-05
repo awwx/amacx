@@ -1,4 +1,4 @@
-(use equals compose + even no * square-fn)
+(use arcbase equals compose even square-fn)
 
 (equals ((compose)             '(a b c)) '(a b c))
 (equals ((compose car)         '(a b c)) 'a)
