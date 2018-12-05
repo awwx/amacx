@@ -1,4 +1,4 @@
-(use with complex-fn equals)
+(use arcbase complex-fn equals)
 
 (with ((a b c) '(10 11 12)
        d       13)
