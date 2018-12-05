@@ -1,4 +1,4 @@
-(use equals aif let simple-do)
+(use arcbase equals aif)
 
 (equals (aif 1 it)               1)
 (equals (aif nil it 3)           3)
