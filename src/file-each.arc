@@ -1,4 +1,4 @@
-(use simple-def w/open w/uniq whiler read)
+(use arcbase w/open w/uniq whiler read)
 
 (def file-each (filename f)
   (w/infile in filename
