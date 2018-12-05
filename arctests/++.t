@@ -1,4 +1,4 @@
-(use let equals ++ obj ssyntax setforms setform-cons mlist)
+(use arcbase equals ++ obj ssyntax setforms setform-cons mlist)
 
 (let a 3
   (equals (++ a) 4)
