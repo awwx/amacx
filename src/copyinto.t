@@ -1,4 +1,4 @@
-(use let copyinto obj equals)
+(use arcbase copyinto obj equals)
 
 (let g (copyinto (obj a 1 b 2 c 3 d 4)
                  (obj b 88)
