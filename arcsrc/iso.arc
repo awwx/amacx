@@ -1,4 +1,4 @@
-(use arcbase)
+(use simple-def or is and)
 
 (def iso (x y)
   (or (is x y)
