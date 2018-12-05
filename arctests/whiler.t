@@ -1,4 +1,4 @@
-(use arcboot equals accum let whiler ret)
+(use arcbase equals accum whiler ret)
 
 (equals
   (accum a
