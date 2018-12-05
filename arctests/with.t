@@ -1,4 +1,4 @@
-(use true with is)
+(use arcboot true is with)
 
 (with ()
   (true t))
