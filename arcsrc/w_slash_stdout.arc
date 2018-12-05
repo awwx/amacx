@@ -1,4 +1,4 @@
-(use arcboot mac quasiquote call-w/stdout)
+(use arcbase quasiquote)
 
 (mac w/stdout (str . body)
   `(call-w/stdout ,str (fn () ,@body)))
