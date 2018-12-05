@@ -1,4 +1,4 @@
-(use let equals)
+(use arcbase equals)
 
 (let xs '(a b c d)
   (sref xs 0 'X)
