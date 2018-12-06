@@ -18,6 +18,8 @@
   (let src (if (a-sym name)
                 (findsrc nil name)
                 name)
+    (unless src
+      (err "load: unable to find in srcdirs:" name))
     (loadfile src target-module expander))
 
   (when (and (a-sym name)
