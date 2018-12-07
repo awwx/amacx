@@ -21,3 +21,6 @@
 (true  (iso (obj (a b) 1) (obj (a b) 1)))
 (false (iso (obj (a b) 1) (obj (a c) 1)))
 (false (iso (obj (a b) 1) (obj (a b) 2)))
+
+(true  (iso (obj (a (b (c) d) e) 1)
+            (obj (a (b (c) d) e) 1)))
