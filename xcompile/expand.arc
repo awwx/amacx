@@ -335,6 +335,10 @@
   (when inline-tests
     (runtest out name)))
 
+(when inline-tests
+  (runtest out '$quote)
+  (runtest out '$if))
+
 (xload out 'macro)
 (xload out 'container)
 
