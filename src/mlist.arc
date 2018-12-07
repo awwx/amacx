@@ -1,4 +1,9 @@
-(use arcbase copylist)
+(use arcbase)
 
 (assign mlist list)
-(assign mcopy copylist)
+
+(def mcopy (x)
+  (if (acons x)
+       (cons (mcopy (car x))
+             (mcopy (cdr x)))
+       x))

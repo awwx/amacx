@@ -1,6 +1,6 @@
-(use arcbase equals)
+(use arcbase equals mlist)
 
-(let xs '(a b c d)
+(let xs (mcopy '(a b c d))
   (sref xs 0 'X)
   (equals xs '(X b c d))
   (sref xs 1 'Y)
