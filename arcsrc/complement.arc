@@ -1,4 +1,4 @@
-(use arcbase)
+(use arcbase quasiquote)
 
 (mac complement (f)
   (let g (uniq)

@@ -1,3 +1,3 @@
 (use true uniq)
 
-(true (is (ar-strlen (ar-symstr (uniq))) 16))
+(true (is2 (ar-strlen (ar-symstr (uniq))) 16))

@@ -1,3 +1,5 @@
+(use cxr)
+
 (ar-assert (is2 (caar '((a)))   'a))
 (ar-assert (is2 (cadr '(a b c)) 'b))
 (ar-assert (is2 (car (cddr '(a b c d))) 'c))

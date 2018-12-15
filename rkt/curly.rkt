@@ -79,58 +79,58 @@
   (make-readtable base #\{ 'terminating-macro read-curly))
 
 
-(module+ test (require rackunit/chk)
-
-  (define (readall in)
-    (let loop ((accum '()))
-      (let ((v (read-syntax #f in)))
-        (if (eof-object? v)
-          (reverse accum)
-          (loop (cons v accum))))))
-
-  (define (parse s)
-    (parameterize ((current-readtable curly-readtable))
-      (let ((in (open-input-string s)))
-        (port-count-lines! in)
-        (map syntax->datum (readall in)))))
-
-  (chk (parse "")  '()
-       (parse "a")  '(a)
-
-       #:exn (parse "{")    curly-not-closed-msg
-       #:exn (parse "{  ")  curly-not-closed-msg
-
-       (parse "{}")    '( (curly-bracket) )
-       (parse "{  }")  '( (curly-bracket) )
-
-       (parse "{} x")   '( (curly-bracket) x )
-       (parse "{  } x") '( (curly-bracket) x )
-
-       (parse "{a}")    '( (curly-bracket (a)) )
-       (parse "{ a }")  '( (curly-bracket (a)) )
-
-       #:exn (parse "{a")    curly-not-closed-msg
-       #:exn (parse "{ a ")  curly-not-closed-msg
-
-       (parse "{a,}")    '( (curly-bracket (a)) )
-       (parse "{ a, }")  '( (curly-bracket (a)) )
-
-       #:exn (parse "{a,")    curly-not-closed-msg
-       #:exn (parse "{ a, ")  curly-not-closed-msg
-
-       #:exn (parse "{a ,}")  "unexpected `}`"
-
-       (parse "{a,b}")       '( (curly-bracket (a) (b)) )
-       (parse "{a,b,c}")     '( (curly-bracket (a) (b) (c)) )
-       (parse "{ a, b, c }") '( (curly-bracket (a) (b) (c)) )
-
-       (parse "{ a ,b }")    '( (curly-bracket (a ,b)) )
-
-       (parse "{ a 1 }")       '( (curly-bracket (a 1)) )
-       (parse "{ a 1, b }")    '( (curly-bracket (a 1) (b)) )
-       (parse "{ a, b 2 }")    '( (curly-bracket (a) (b 2)) )
-       (parse "{ a 1, b 2 }")  '( (curly-bracket (a 1) (b 2)) )
-
-       #:exn (parse "{ a b c }")  missing-comma-msg
-
-       (parse "{ a (+ 3 4), b 2 }")  '( (curly-bracket (a (+ 3 4)) (b 2)) )))
+; (module+ test (require rackunit/chk)
+;
+;   (define (readall in)
+;     (let loop ((accum '()))
+;       (let ((v (read-syntax #f in)))
+;         (if (eof-object? v)
+;           (reverse accum)
+;           (loop (cons v accum))))))
+;
+;   (define (parse s)
+;     (parameterize ((current-readtable curly-readtable))
+;       (let ((in (open-input-string s)))
+;         (port-count-lines! in)
+;         (map syntax->datum (readall in)))))
+;
+;   (chk (parse "")  '()
+;        (parse "a")  '(a)
+;
+;        #:exn (parse "{")    curly-not-closed-msg
+;        #:exn (parse "{  ")  curly-not-closed-msg
+;
+;        (parse "{}")    '( (curly-bracket) )
+;        (parse "{  }")  '( (curly-bracket) )
+;
+;        (parse "{} x")   '( (curly-bracket) x )
+;        (parse "{  } x") '( (curly-bracket) x )
+;
+;        (parse "{a}")    '( (curly-bracket (a)) )
+;        (parse "{ a }")  '( (curly-bracket (a)) )
+;
+;        #:exn (parse "{a")    curly-not-closed-msg
+;        #:exn (parse "{ a ")  curly-not-closed-msg
+;
+;        (parse "{a,}")    '( (curly-bracket (a)) )
+;        (parse "{ a, }")  '( (curly-bracket (a)) )
+;
+;        #:exn (parse "{a,")    curly-not-closed-msg
+;        #:exn (parse "{ a, ")  curly-not-closed-msg
+;
+;        #:exn (parse "{a ,}")  "unexpected `}`"
+;
+;        (parse "{a,b}")       '( (curly-bracket (a) (b)) )
+;        (parse "{a,b,c}")     '( (curly-bracket (a) (b) (c)) )
+;        (parse "{ a, b, c }") '( (curly-bracket (a) (b) (c)) )
+;
+;        (parse "{ a ,b }")    '( (curly-bracket (a ,b)) )
+;
+;        (parse "{ a 1 }")       '( (curly-bracket (a 1)) )
+;        (parse "{ a 1, b }")    '( (curly-bracket (a 1) (b)) )
+;        (parse "{ a, b 2 }")    '( (curly-bracket (a) (b 2)) )
+;        (parse "{ a 1, b 2 }")  '( (curly-bracket (a 1) (b 2)) )
+;
+;        #:exn (parse "{ a b c }")  missing-comma-msg
+;
+;        (parse "{ a (+ 3 4), b 2 }")  '( (curly-bracket (a (+ 3 4)) (b 2)) )))

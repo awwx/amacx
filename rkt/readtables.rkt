@@ -13,11 +13,11 @@
   (parameterize ((current-readtable readtables))
     (f)))
 
-(module+ test (require rackunit/chk)
-  (define (parse s)
-    (let ((in (open-input-string s)))
-      (w/readtables (λ () (read in)))))
-
-  (chk (parse "[a b c]")  '(square-bracket a b c))
-
-  (chk (parse "{ a, b 2 }") '(curly-bracket (a) (b 2))))
+; (module+ test (require rackunit/chk)
+;   (define (parse s)
+;     (let ((in (open-input-string s)))
+;       (w/readtables (λ () (read in)))))
+;
+;   (chk (parse "[a b c]")  '(square-bracket a b c))
+;
+;   (chk (parse "{ a, b 2 }") '(curly-bracket (a) (b 2))))

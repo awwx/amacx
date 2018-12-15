@@ -1,18 +1,44 @@
 #lang racket
 
 (require racket/runtime-path)
-(require "data.rkt")
 
-(provide ail-ns)
+(provide ail-ns
+         default-mpair-namespace
+         default-srcloc-namespace)
 
-(define-runtime-path ail-path "ail.rkt")
-(define-runtime-module-path data-path "data.rkt")
-(define-namespace-anchor here)
-(define host (namespace-anchor->namespace here))
+(module ail-mpair racket
+  (provide quote-xVrP8JItk2Ot
+           fn-xVrP8JItk2Ot
+           assign-xVrP8JItk2Ot
+           if-xVrP8JItk2Ot
+           call-xVrP8JItk2Ot
+           ns-var-xVrP8JItk2Ot
+           #%top)
+  (require (submod "runtime.rkt" mpair)))
 
-(define (ail-ns)
-  (define ail-namespace (make-base-empty-namespace))
-  (parameterize ((current-namespace ail-namespace))
-    (namespace-attach-module host data-path)
-    (namespace-require ail-path))
-  ail-namespace)
+(module ail-srcloc racket
+  (provide quote-xVrP8JItk2Ot
+           fn-xVrP8JItk2Ot
+           assign-xVrP8JItk2Ot
+           if-xVrP8JItk2Ot
+           call-xVrP8JItk2Ot
+           ns-var-xVrP8JItk2Ot
+           #%top)
+  (require (submod "runtime.rkt" srcloc)))
+
+(define-namespace-anchor anchor)
+
+(define-runtime-path me "ail-ns.rkt")
+
+(define (ail-ns runtime)
+  (define ns (namespace-anchor->empty-namespace anchor))
+  (parameterize ((current-namespace ns))
+    (namespace-require
+      (case runtime
+        ((mpair)  (list 'submod me 'ail-mpair))
+        ((srcloc) (list 'submod me 'ail-srcloc))
+        (else (error "invalid runtime" runtime)))))
+  ns)
+
+(define default-mpair-namespace  (ail-ns 'mpair))
+(define default-srcloc-namespace (ail-ns 'srcloc))

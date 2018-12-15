@@ -64,10 +64,6 @@
 
 (define argv (current-command-line-arguments))
 
-(define _inline-tests
-  (tnil (and (> (vector-length argv) 0)
-             (equal? (vector-ref argv 0) "-t"))))
-
 (require racket/runtime-path)
 (define-runtime-path here "here")
 (define _rootdir (path->string (simplify-path (build-path here 'up 'up))))

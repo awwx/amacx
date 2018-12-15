@@ -1,8 +1,14 @@
 #lang racket
 
 (require racket/runtime-path)
-(require "boot.rkt")
 (require "readtables.rkt")
+(require "boot.rkt")
+(require "builtins.rkt")
+
+(provide runtimes all-tests main)
+
+; TODO
+(define runtimes '(mpair srcloc))
 
 (define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
@@ -10,15 +16,17 @@
 
 (define root (simplify-path (build-path here 'up 'up)))
 
-(define (runtest module1 src)
-  (printf "~a~n" src)
-  (let ((module (phase2 #f module1)))
-    (aload (build-path root src) module)))
+(define (runtest runtime module1 src)
+  (printf "~a ~a~n" runtime src)
+  (let ((module (new-container runtime module1)))
+    ((runtimef runtime 'aload)
+      (path->string (build-path root src))
+      module
+      module1)))
 
-(define (run-tests srcs)
-  (let ((module1 (phase1)))
-    (for ((src srcs))
-      (runtest module1 src))))
+(define (run-tests runtime module1 srcs)
+  (for ((src srcs))
+    (runtest runtime module1 src)))
 
 (define (tests-in-dir dir)
   (map (λ (filename)
@@ -30,16 +38,25 @@
 (define (all-tests)
   (append-map tests-in-dir srcdirs))
 
+(define (run-tests-in-runtime runtime srcs)
+  (let ((module1 (phase1 runtime)))
+    (run-tests runtime module1 srcs)))
+
+(define (run-all-tests-in-runtime runtime)
+  (run-tests-in-runtime runtime (all-tests)))
+
 (define (run-all-tests)
-  (run-tests (all-tests)))
+  (for ((runtime runtimes))
+    (run-all-tests-in-runtime runtime)))
 
-(define argv (current-command-line-arguments))
-
-(define (main)
+(define (main . argv)
   (w/readtables
     (λ ()
-      (if (eqv? 0 (vector-length argv))
-          (run-all-tests)
-          (run-tests (vector->list argv))))))
-
-(void (main))
+      (cond ((null? argv)
+             (run-all-tests))
+            ((null? (cdr argv))
+             (run-all-tests-in-runtime (string->symbol (car argv))))
+            (else
+             (run-tests-in-runtime (string->symbol (car argv))
+                                   (cdr argv))))))
+  (void))

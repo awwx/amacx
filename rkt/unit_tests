@@ -1,4 +1,0 @@
-#!/bin/sh
-set -e
-
-raco test ail.rkt aload.rkt builtins.rkt readtables.rkt square.rkt

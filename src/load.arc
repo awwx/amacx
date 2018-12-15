@@ -9,9 +9,7 @@
       (cons feature (module '*features* nil)))))
 
 (def load (name
-           (o target-module *module*)
-           (o expander (or (target-module 'macro-expand nil)
-                           (*module* 'macro-expand))))
+           (o target-module *module*))
   (when (a-sym name)
     (add-feature target-module name))
 
@@ -20,8 +18,8 @@
                 name)
     (unless src
       (err "load: unable to find in srcdirs:" name))
-    (loadfile src target-module expander))
+    (loadfile src target-module))
 
   (when (and (a-sym name)
              (target-module '*inline-tests* nil))
-    (runtest-if-exists name target-module expander)))
+    (runtest-if-exists name target-module)))

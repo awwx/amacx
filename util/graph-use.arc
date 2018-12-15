@@ -14,7 +14,8 @@
           (fn (x)
             (when (caris x 'use)
               (each feature (cdr x)
-                (prn src "(" src ") --> " feature)
+                (prn (asfilename src) "(" (asfilename src) ") --> "
+                     (asfilename feature))
                 (process feature)))))))))
 
 (def genhtml (chart)

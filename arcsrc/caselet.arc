@@ -1,4 +1,4 @@
-(use arcbase afn)
+(use arcbase afn quasiquote)
 
 (mac caselet (var expr . args)
   (let ex (afn (args)

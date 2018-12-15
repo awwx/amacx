@@ -29,17 +29,20 @@
   (extend context 'env
     (join vars (context 'env))))
 
+(def heuristic-loc (loc e)
+  (if (hasloc e) e (srcloc loc e)))
+
 ($ail
   (def macro-expand (context e)
     ((or (context 'validate) idfn)
       (aif (no e)
-            `($quote nil)
+            (srcloc e `($quote ,e))
 
            (isa e 'sym)
             (macro-expand-var context e)
 
            (caris e '$quote)
-            `($quote ,(cadr e))
+            (srcloc e `($quote ,(cadr e)))
 
            (caris e '$assign)
             (macro-expand-assign context (cadr e) (caddr e))
@@ -51,17 +54,17 @@
             (macro-expand-if context e)
 
            (caris e '$call)
-            (macro-expand-call context (cdr e))
+            (macro-expand-call context e (cdr e))
 
            (and (acons e)
                 (no (is-lexical context (car e)))
                 (macro (context 'module) (car e)))
-            (macro-expand-macro context it (cdr e))
+            (macro-expand-macro context e it (cdr e))
 
            (acons e)
-            (macro-expand-call context e)
+            (macro-expand-call context e e)
 
-            `($quote ,e))))
+            (srcloc e `($quote ,e)))))
 
   (def map-macro-expand (context es)
     (map1 (fn (e)
@@ -81,13 +84,15 @@
              (err "no module-var macro defined" var))
            (macro-expand context `(,module-var-macro ,var)))))
 
-  (def macro-expand-call (context es)
-    `($call ,@(map-macro-expand context es)))
+  (def macro-expand-call (context loc es)
+    (srcloc loc
+      `($call ,@(map-macro-expand context es))))
 
   (def macro-expand-fn (context e)
     (let context (extend-env context (arglist (cadr e)))
-      `($fn ,(cadr e)
-         ,@(map-macro-expand context (cddr e)))))
+      (srcloc e
+        `($fn ,(cadr e)
+           ,@(map-macro-expand context (cddr e))))))
 
   (def macro-expand-if (context e)
     `($if ,@(map-macro-expand context (cdr e))))
@@ -109,6 +114,6 @@
         (err "set-module-var macro not defined" var))
       (macro-expand context `(,set-module-var ,var ,val))))
 
-  (def macro-expand-macro (context macro args)
-    (let expansion (apply (rep macro) args)
+  (def macro-expand-macro (context loc macro args)
+    (let expansion (heuristic-loc loc (apply (rep macro) args))
       (macro-expand context expansion))))

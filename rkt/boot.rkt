@@ -1,30 +1,31 @@
 #lang racket
 
 (require racket/hash)
-(require racket/runtime-path)
 
-(require "ail-ns.rkt")
-(require "aload.rkt")
+(require "common.rkt")
 (require "builtins.rkt")
-(require "data.rkt")
+(require "readtables.rkt")
 (require "symtab.rkt")
 
-(provide phase1 phase2 aload)
+(provide phase1 phase2 new-container munch)
 
-(define expanded-boot-path (build-path rootdir "xcompile/boot.expanded"))
+(define expanded-boot-path (build-path rootdir "xboot/boot.expanded"))
+(define test-boot-path     (build-path rootdir "xboot/boot-test.expanded"))
 
 ;; Phase one
 
-(define (inject module x)
+(define (inject runtime container x)
   (cond ((box? x)
          (cond ((eq? (unbox x) '*module*)
-                module)
+                container)
                (else
-                (ref module (unbox x)))))
+                (((xruntime runtime) 'ref)
+                 container
+                 (unbox x)))))
 
         ((pair? x)
-         (cons (inject module (car x))
-               (inject module (cdr x))))
+         (cons (inject runtime container (car x))
+               (inject runtime container (cdr x))))
 
         (else
          x)))
@@ -32,21 +33,21 @@
 (define (caris x v)
   (and (pair? x) (eq? (car x) v)))
 
-(define (demunch module x)
+(define (demunch runtime container x)
   (cond ((caris x 'quote-xVrP8JItk2Ot)
-         `(quote-xVrP8JItk2Ot ,(ar-niltree (inject module (cadr x)))))
+         `(quote-xVrP8JItk2Ot
+            ,(((xruntime runtime) 'quote-this)
+              (inject runtime container (cadr x)))))
 
         ((pair? x)
-         (cons (demunch module (car x))
-               (demunch module (cdr x))))
+         (cons (demunch runtime container (car x))
+               (demunch runtime container (cdr x))))
 
         (else x)))
 
-(define ail-namespace1 (ail-ns))
-
-(define (exec1 module x)
-  (let ((a (demunch module x)))
-    (eval a ail-namespace1))
+(define (exec1 runtime container x)
+  (let ((a (demunch runtime container x)))
+    (eval a ((xruntime runtime) 'namespace)))
   (void))
 
 (define (file-each path f)
@@ -58,30 +59,47 @@
             (f x)
             (loop)))))))
 
-(define (phase1 (inline-tests #f))
+(define (phase1 runtime (inline-tests #f))
   (when inline-tests
-    (printf "------ phase one~n"))
-  (let ((module (new-symtab builtins)))
-    (file-each expanded-boot-path (λ (x) (exec1 module x)))
-    module))
+    (printf "~a ------ phase one~n" runtime))
+  (let ((container (new-symtab ((xruntime runtime) 'builtins))))
+    (file-each (if inline-tests test-boot-path expanded-boot-path)
+               (λ (x)
+                 (exec1 runtime container x)))
+    container))
 
 
 ;; Phase two
 
-(define (phase2 inline-tests (module1 (phase1 inline-tests)))
+(define (phase2 runtime inline-tests (container1 (phase1 runtime inline-tests)))
   (when inline-tests
-    (printf "------ phase two~n"))
+    (printf "~a ------ phase two~n" runtime))
 
-  (define module2
-    ((ref module1 'provision-container)
+  (define container2
+    ((((xruntime runtime) 'ref) container1 'provision-container)
      (new-symtab)
-     (hash 'builtins       builtins
-           'macro-expander (ref module1 'macro-expand)
-           'inline-tests   (tnil inline-tests)
+     (hash 'builtins       ((xruntime runtime) 'builtins)
+           'macro-expander (((xruntime runtime) 'ref) container1 'macro-expand)
+           'inline-tests   (((xruntime runtime) 'tnil) inline-tests)
            'start          'use-implementation)))
 
   (when inline-tests
     (printf "phase two tests done\n")
-    (symtab-rm module2 '*inline-tests*))
+    (symtab-rm container2 '*inline-tests*))
 
-  module2)
+  container2)
+
+(define (new-container runtime (container1 (phase1 runtime)))
+  ((((xruntime runtime) 'ref) container1 'provision-container)
+   (new-symtab)
+   (hash 'builtins ((xruntime runtime) 'builtins)
+         'macro-expander (((xruntime runtime) 'ref) container1 'macro-expand))))
+
+(define (munch runtime xs)
+  (define container1 (phase1 runtime #f))
+  (define aeval (((xruntime runtime) 'ref) container1 'eval))
+  (define container (new-container runtime container1))
+  (w/readtables
+    (λ ()
+      (for ((x (syntax->list xs)))
+        (aeval x container)))))

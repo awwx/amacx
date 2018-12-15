@@ -1,3 +1,5 @@
+(use if)
+
 (ar-assert (is2 (if) nil))
 (ar-assert (is2 (if nil 1) nil))
 (ar-assert (is2 (if t 1) 1))

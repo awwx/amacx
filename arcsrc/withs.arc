@@ -1,4 +1,4 @@
-(use arcbase)
+(use arcbase quasiquote)
 
 (mac withs (parms . body)
   (if (no parms)

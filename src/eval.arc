@@ -2,10 +2,7 @@
 
 (def eval (x
            (o module *module*)
-           (o expander (or (and (has module 'macro-expand)
-                                (has module 'eval)
-                                (module 'macro-expand))
-                           macro-expand)))
+           (o expander (or (module 'macro-expand nil) macro-expand)))
   (let ailcode (expander (obj module module
                               env '())
                          x)

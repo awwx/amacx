@@ -1,3 +1,5 @@
+(use simple-def)
+
 (def caar   (xs) (car (car xs)))
 (def cadr   (xs) (car (cdr xs)))
 (def cdar   (xs) (cdr (car xs)))

@@ -1,4 +1,4 @@
-(use arcbase mappend quasiquote obj)
+(use arcbase quasiquote mappend quasiquote obj)
 
 (mac curly-bracket args
   `(obj ,@(mappend (fn (kv)

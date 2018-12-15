@@ -8,4 +8,5 @@
 (void
   (w/readtables
     (λ ()
-      (phase2 #t))))
+      (phase2 'mpair  #t)
+      (phase2 'srcloc #t))))

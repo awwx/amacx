@@ -1,4 +1,4 @@
-(use arcbase)
+(use arcbase quasiquote)
 
 (mac afn (parms . body)
   `(,let self nil

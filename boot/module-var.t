@@ -1,3 +1,5 @@
+(use module-var)
+
 (ar-assert (module-var t))
 (ar-assert (is2 ((module-var +) 1 2) 3))
 (ar-assert (is2 ((module-var ar-<2) 1 2) t))
