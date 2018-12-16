@@ -5,7 +5,7 @@
 (require "common.rkt")
 (require "runtime.rkt")
 
-(provide ail-ns default-namespaces)
+(provide construct-ail-ns default-namespaces)
 
 (define-syntax-rule (create-ail-module name runtime)
   (module name racket
@@ -28,11 +28,11 @@
 (define (prefix-ail runtime)
   (string->symbol (string-append "ail-" (symbol->string runtime))))
 
-(define (ail-ns runtime)
+(define (construct-ail-ns runtime)
   (define ns (namespace-anchor->empty-namespace anchor))
   (parameterize ((current-namespace ns))
     (namespace-require (list 'submod me (prefix-ail runtime))))
   ns)
 
 (define default-namespaces
-  (map-hash ail-ns runtimes))
+  (map-hash construct-ail-ns runtimes))

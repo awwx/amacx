@@ -45,7 +45,7 @@
     (add-features runtime
       (hash-union (runtimef runtime 'runtime-builtins)
         (hash
-          'ail-namespace (λ () (ail-ns runtime))
+          'ail-namespace (λ () (construct-ail-ns runtime))
           'ar-builtins   (λ () builtins)
           'eval-ail      (builtin-eval-ail-for runtime)))))
   builtins)
