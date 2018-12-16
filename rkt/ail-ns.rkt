@@ -25,14 +25,13 @@
 
 (define-runtime-path me "ail-ns.rkt")
 
+(define (prefix-ail runtime)
+  (string->symbol (string-append "ail-" (symbol->string runtime))))
+
 (define (ail-ns runtime)
   (define ns (namespace-anchor->empty-namespace anchor))
   (parameterize ((current-namespace ns))
-    (namespace-require
-      (case runtime
-        ((mpair)  (list 'submod me 'ail-mpair))
-        ((srcloc) (list 'submod me 'ail-srcloc))
-        (else (error "invalid runtime" runtime)))))
+    (namespace-require (list 'submod me (prefix-ail runtime))))
   ns)
 
 (define default-namespaces
