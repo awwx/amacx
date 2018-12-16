@@ -15,22 +15,9 @@
     (require "symtab.rkt")
     (require "uniq.rkt")
     (require spec)
-    ; TODO all-defined-in?
+
     (provide (all-defined-out)
-             acons
-             ar-denil
-             ar-denillist
-             ar-false?
-             ar-is
-             ar-srcloc
-             deep-unwrap
-             hide
-             unwrap
-             unwrap-args
-             unwrap-list
-             unwraps
-             xcar
-             xcdr)
+             (all-from-out spec))
 
     (define runtime 'name)
 
@@ -105,6 +92,28 @@
 
     (define (eval-ail x namespace)
       (eval (arcail x) namespace))
+
+    ; Would go in runtime specific module but don't have ar-niltree
+    ; there.
+    (define readport
+      (case runtime
+        ; For the mpair runtime, we want to use `read` and
+        ; call `ar-niltree` on the result.
+        ((mpair) (λ (port eof)
+                   (let ((x (read port)))
+                     (if (eof-object? x)
+                          eof
+                          (ar-niltree x)))))
+
+        ; For srcloc, we want to use `read-syntax`, and to return
+        ; the result without conversion.
+        ((srcloc) (λ (port eof)
+                    (let ((x (read-syntax (object-name port) port)))
+                      (if (eof-object? x)
+                           eof
+                           x))))
+
+        (else (err "unknown runtime" runtime))))
 
     (define (protect during after)
       (dynamic-wind (lambda () #t) during after))

@@ -128,9 +128,3 @@
   (ar-denil x))
 
 (define hasloc syntax?)
-
-(define (readport port eof)
-  (let ((x (read-syntax (object-name port) port)))
-    (if (eof-object? x)
-         eof
-         x)))

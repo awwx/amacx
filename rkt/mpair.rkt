@@ -86,20 +86,3 @@
 
 (define (hasloc x)
   #f)
-
-; TODO duplicate in runtime.rkt
-(define (ar-niltree x)
-  (cond ((pair? x)
-         (mcons (ar-niltree (car x))
-                (ar-niltree (cdr x))))
-
-        ((or (eq? x #f) (eq? x '()))
-         'nil)
-
-        (else x)))
-
-(define (readport port eof)
-  (let ((x (read port)))
-    (if (eof-object? x)
-         eof
-         (ar-niltree x))))
