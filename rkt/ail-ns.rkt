@@ -2,9 +2,10 @@
 
 (require racket/runtime-path)
 
-(provide ail-ns
-         default-mpair-namespace
-         default-srcloc-namespace)
+(require "common.rkt")
+(require "runtime.rkt")
+
+(provide ail-ns default-namespaces)
 
 (module ail-mpair racket
   (provide quote-xVrP8JItk2Ot
@@ -40,5 +41,5 @@
         (else (error "invalid runtime" runtime)))))
   ns)
 
-(define default-mpair-namespace  (ail-ns 'mpair))
-(define default-srcloc-namespace (ail-ns 'srcloc))
+(define default-namespaces
+  (map-hash ail-ns runtimes))

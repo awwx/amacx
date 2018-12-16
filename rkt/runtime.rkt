@@ -2,6 +2,8 @@
 
 (provide runtimes)
 
+(define runtimes '(mpair srcloc))
+
 (define-syntax-rule (create-runtime name spec)
   (module name racket
     (require "common.rkt")
@@ -568,8 +570,6 @@
         '-              (unwrap-args -)
         '*              (unwrap-args *)
         '/              (unwrap-args /)))))
-
-(define runtimes '(mpair srcloc))
 
 (create-runtime mpair  "mpair.rkt")
 (create-runtime srcloc "srcloc.rkt")

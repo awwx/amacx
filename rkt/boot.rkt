@@ -2,12 +2,13 @@
 
 (require racket/hash)
 
+(require "ail-ns.rkt")
 (require "common.rkt")
 (require "builtins.rkt")
 (require "readtables.rkt")
 (require "symtab.rkt")
 
-(provide phase1 phase2 new-container munch)
+(provide phase1 new-container munch)
 
 (define expanded-boot-path (build-path rootdir "xboot/boot.expanded"))
 (define test-boot-path     (build-path rootdir "xboot/boot-test.expanded"))
@@ -19,9 +20,9 @@
          (cond ((eq? (unbox x) '*module*)
                 container)
                (else
-                (((xruntime runtime) 'ref)
-                 container
-                 (unbox x)))))
+                ((runtimef runtime 'ref)
+                  container
+                  (unbox x)))))
 
         ((pair? x)
          (cons (inject runtime container (car x))
@@ -36,8 +37,8 @@
 (define (demunch runtime container x)
   (cond ((caris x 'quote-xVrP8JItk2Ot)
          `(quote-xVrP8JItk2Ot
-            ,(((xruntime runtime) 'quote-this)
-              (inject runtime container (cadr x)))))
+            ,((runtimef runtime 'quote-this)
+               (inject runtime container (cadr x)))))
 
         ((pair? x)
          (cons (demunch runtime container (car x))
@@ -47,7 +48,7 @@
 
 (define (exec1 runtime container x)
   (let ((a (demunch runtime container x)))
-    (eval a ((xruntime runtime) 'namespace)))
+    (eval a (hash-ref default-namespaces runtime)))
   (void))
 
 (define (file-each path f)
@@ -62,42 +63,21 @@
 (define (phase1 runtime (inline-tests #f))
   (when inline-tests
     (printf "~a ------ phase one~n" runtime))
-  (let ((container (new-symtab ((xruntime runtime) 'builtins))))
+  (let ((container (new-symtab (runtime-builtins runtime))))
     (file-each (if inline-tests test-boot-path expanded-boot-path)
                (λ (x)
                  (exec1 runtime container x)))
     container))
 
-
-;; Phase two
-
-(define (phase2 runtime inline-tests (container1 (phase1 runtime inline-tests)))
-  (when inline-tests
-    (printf "~a ------ phase two~n" runtime))
-
-  (define container2
-    ((((xruntime runtime) 'ref) container1 'provision-container)
-     (new-symtab)
-     (hash 'builtins       ((xruntime runtime) 'builtins)
-           'macro-expander (((xruntime runtime) 'ref) container1 'macro-expand)
-           'inline-tests   (((xruntime runtime) 'tnil) inline-tests)
-           'start          'container)))
-
-  (when inline-tests
-    (printf "phase two tests done\n")
-    (symtab-rm container2 '*inline-tests*))
-
-  container2)
-
 (define (new-container runtime (container1 (phase1 runtime)))
-  ((((xruntime runtime) 'ref) container1 'provision-container)
+  (((runtimef runtime 'ref) container1 'provision-container)
    (new-symtab)
-   (hash 'builtins ((xruntime runtime) 'builtins)
-         'macro-expander (((xruntime runtime) 'ref) container1 'macro-expand))))
+   (hash 'builtins (runtime-builtins runtime)
+         'macro-expander ((runtimef runtime 'ref) container1 'macro-expand))))
 
 (define (munch runtime xs)
   (define container1 (phase1 runtime #f))
-  (define aeval (((xruntime runtime) 'ref) container1 'eval))
+  (define aeval ((runtimef runtime 'ref) container1 'eval))
   (define container (new-container runtime container1))
   (w/readtables
     (λ ()

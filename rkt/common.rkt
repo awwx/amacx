@@ -2,11 +2,18 @@
 
 (require racket/runtime-path)
 
-(provide rootdir nth-set!)
+(provide rootdir map-hash nth-set!)
 
 (define-runtime-path here "here")
 
 (define rootdir (path->string (simplify-path (build-path here 'up 'up))))
+
+(define (map-hash f keys)
+  (if (null? keys)
+      (hash)
+      (hash-set (map-hash f (cdr keys))
+                (car keys)
+                (f (car keys)))))
 
 (define (mlist-tail lst n)
   (if (= n 0)
