@@ -7,12 +7,9 @@
 (require "common.rkt")
 (require "runtime.rkt")
 
-(provide runtimef runtime-builtins)
+(provide runtime-builtins)
 
 (define-runtime-path runtime-path "runtime.rkt")
-
-(define (runtimef runtime name)
-  (dynamic-require (list 'submod runtime-path runtime) name))
 
 (define (builtin-eval-ail-for runtime)
   (define runtime-eval-ail (runtimef runtime 'eval-ail))

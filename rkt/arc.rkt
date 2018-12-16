@@ -3,6 +3,7 @@
 (require "boot.rkt")
 (require "builtins.rkt")
 (require "readtables.rkt")
+(require "runtime.rkt")
 
 (provide runarc)
 

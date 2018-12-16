@@ -6,6 +6,7 @@
 (require "common.rkt")
 (require "builtins.rkt")
 (require "readtables.rkt")
+(require "runtime.rkt")
 (require "symtab.rkt")
 
 (provide phase1 new-container munch)

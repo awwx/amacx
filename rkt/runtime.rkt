@@ -1,8 +1,13 @@
 #lang racket
 
-(provide runtimes)
+(require syntax/location)
+
+(provide runtimes runtimef)
 
 (define runtimes '(mpair srcloc))
+
+(define (runtimef runtime name)
+  (dynamic-require (list 'submod (quote-module-path) runtime) name))
 
 (define-syntax-rule (create-runtime name spec)
   (module name racket
