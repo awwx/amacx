@@ -1,16 +1,8 @@
 (use arcbase unless contains load each)
 
 (def use-feature (container feature)
-  ; TODO duplicate in load.arc
-  (unless (contains (container '*features* nil) feature)
+  (unless (has-feature container feature)
     (load feature container))
-  nil)
-
-(def provides-feature (container feature)
-  (unless (has container '*features*)
-    (sref container '*features* nil))
-  (unless (contains (container '*features*) feature)
-    (sref container '*features* (cons feature (container '*features*))))
   nil)
 
 ; We want macros like this in the target container:
