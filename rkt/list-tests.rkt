@@ -1,6 +1,7 @@
 #lang racket
 
 (require json)
+(require "../rkt/runtime.rkt")
 (require "../rkt/runtests.rkt")
 
 (define (firstn n xs)

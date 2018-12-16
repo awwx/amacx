@@ -1,14 +1,12 @@
 #lang racket
 
 (require racket/runtime-path)
-(require "readtables.rkt")
 (require "boot.rkt")
 (require "builtins.rkt")
+(require "readtables.rkt")
+(require "runtime.rkt")
 
-(provide runtimes all-tests main)
-
-; TODO
-(define runtimes '(mpair srcloc))
+(provide all-tests main)
 
 (define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
