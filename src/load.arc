@@ -8,8 +8,7 @@
     (sref module '*features*
       (cons feature (module '*features* nil)))))
 
-(def load (name
-           (o target-module *module*))
+(def load (name (o target-module *module*))
   (when (a-sym name)
     (add-feature target-module name))
 

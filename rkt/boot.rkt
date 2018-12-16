@@ -81,7 +81,7 @@
      (hash 'builtins       ((xruntime runtime) 'builtins)
            'macro-expander (((xruntime runtime) 'ref) container1 'macro-expand)
            'inline-tests   (((xruntime runtime) 'tnil) inline-tests)
-           'start          'use-implementation)))
+           'start          'container)))
 
   (when inline-tests
     (printf "phase two tests done\n")

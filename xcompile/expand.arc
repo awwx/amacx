@@ -345,10 +345,8 @@
   (w/outfile out "../xboot/boot-test.expanded"
     (runtest t module out '$quote)
     (runtest t module out '$if)
-    (xload t module out 'macro)
     (xload t module out 'container)))
 
 (let module (create-boot-module)
   (w/outfile out "../xboot/boot.expanded"
-    (xload nil module out 'macro)
     (xload nil module out 'container)))

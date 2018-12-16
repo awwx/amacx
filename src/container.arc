@@ -8,7 +8,7 @@
     (copyinto container builtins)
     (when inline-tests
       (sref container '*inline-tests* t))
-    (sref container 'use      (implement-use      container macro-expander))
+    (sref container 'use      (implement-use      container))
     (sref container 'provides (implement-provides container))
     (when start
       (load start container macro-expander))

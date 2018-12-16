@@ -1,8 +1,9 @@
 (use arcbase unless contains load each)
 
-(def use-feature (feature container expander)
+(def use-feature (container feature)
+  ; TODO duplicate in load.arc
   (unless (contains (container '*features* nil) feature)
-    (load feature container expander))
+    (load feature container))
   nil)
 
 (def provides-feature (container feature)
@@ -12,27 +13,42 @@
     (sref container '*features* (cons feature (container '*features*))))
   nil)
 
-; This is like
+; We want macros like this in the target container:
 ;
-; (mac use features
-;   (each feature features
-;     (use-feature feature *module* macro-expand)))
+;     (mac use features
+;       (each feature features
+;         (use-feature *module* feature)))
 ;
-; except that if we imported such a `use` into a target container,
-; using `use` in the target container would load things into *our*
-; source container, not the target container.
+;     (mac provides (feature)
+;       (provide-feature *module* feature))
 ;
-; Thus `implement-use` here, when called with a target container,
-; returns a macro suitable for being injected into the target
-; container.  For example,
+; however at the beginning of the load process with an empty
+; container, `mac` and so on isn't defined yet, so we can't simply
+; load these macro definitions inside the container.
 ;
-; (= target!use (implement-use target macro-expand))
+; We could define these macros in our environment and copy them into
+; the target container:
+;
+;     (= container!use use)
+;     (= container!provides provides)
+;
+; however when loading the macro definitions into our environment,
+; `*module*` would end up referring to *our* environment, not the
+; target container... and features loaded in the target container
+; would get loaded into *our* environment.
+;
+; Thus `implement-use` and `implement-provides`, when called with a
+; target container, returns macros suitable for being copied into the
+; target container:
+;
+;     (= container!use      (implement-use      container))
+;     (= container!provides (implement-provides container))
 
-(def implement-use (container expander)
+(def implement-use (container)
   (annotate 'mac
     (fn features
       (each feature features
-        (use-feature feature container expander))
+        (use-feature container feature))
       nil)))
 
 (def implement-provides (container)
