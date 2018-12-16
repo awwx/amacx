@@ -3,23 +3,9 @@
 (require racket/hash)
 (require racket/runtime-path)
 
+(require "ail-ns.rkt")
 (require "common.rkt")
 (require "runtime.rkt")
-(require (only-in (submod "runtime.rkt" mpair)
-                  (ar-nillist       mpair:ar-nillist)
-                  (eval-ail         mpair:eval-ail)
-                  (ref              mpair:ref)
-                  (runtime-builtins mpair:builtins)
-                  (tnil             mpair:tnil)))
-
-(require (only-in (submod "runtime.rkt" srcloc)
-                  (ar-nillist       srcloc:ar-nillist)
-                  (eval-ail         srcloc:eval-ail)
-                  (ref              srcloc:ref)
-                  (runtime-builtins srcloc:builtins)
-                  (tnil             srcloc:tnil)))
-
-(require "ail-ns.rkt")
 
 (provide runtimef runtime-builtins)
 
