@@ -1,4 +1,4 @@
-(use simple-def if is - equals let prn time reduce +)
+(use simple-def if is - equals let prn time reduce for)
 
 ; We don't have setforms yet, so a version of n-of which
 ; simply repeats the same value.
@@ -11,4 +11,5 @@
 (equals (nvs 3 1) '(1 1 1))
 
 (let xs (nvs 1000000 1)
-  (prn (time (reduce + xs))))
+  (for i 0 10
+    (time (reduce + xs))))
