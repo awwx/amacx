@@ -7,25 +7,19 @@
 
 (provide ail-ns default-namespaces)
 
-(module ail-mpair racket
-  (provide quote-xVrP8JItk2Ot
-           fn-xVrP8JItk2Ot
-           assign-xVrP8JItk2Ot
-           if-xVrP8JItk2Ot
-           call-xVrP8JItk2Ot
-           ns-var-xVrP8JItk2Ot
-           #%top)
-  (require (submod "runtime.rkt" mpair)))
+(define-syntax-rule (create-ail-module name runtime)
+  (module name racket
+    (provide quote-xVrP8JItk2Ot
+             fn-xVrP8JItk2Ot
+             assign-xVrP8JItk2Ot
+             if-xVrP8JItk2Ot
+             call-xVrP8JItk2Ot
+             ns-var-xVrP8JItk2Ot
+             #%top)
+    (require (submod "runtime.rkt" runtime))))
 
-(module ail-srcloc racket
-  (provide quote-xVrP8JItk2Ot
-           fn-xVrP8JItk2Ot
-           assign-xVrP8JItk2Ot
-           if-xVrP8JItk2Ot
-           call-xVrP8JItk2Ot
-           ns-var-xVrP8JItk2Ot
-           #%top)
-  (require (submod "runtime.rkt" srcloc)))
+(create-ail-module ail-mpair  mpair)
+(create-ail-module ail-srcloc srcloc)
 
 (define-namespace-anchor anchor)
 
