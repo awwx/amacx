@@ -2,7 +2,7 @@
 
 (require racket/runtime-path)
 
-(provide rootdir map-hash nth-set!)
+(provide rootdir map-hash nth-set! all-tests)
 
 (define-runtime-path here "here")
 
@@ -22,3 +22,15 @@
 
 (define (nth-set! lst n val)
   (set-mcar! (mlist-tail lst n) val))
+
+(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
+
+(define (tests-in-dir dir)
+  (map (λ (filename)
+         (path->string (build-path dir filename)))
+       (filter (λ (filename)
+                 (string-suffix? (path->string filename) ".t"))
+               (directory-list (build-path rootdir dir)))))
+
+(define (all-tests)
+  (append-map tests-in-dir srcdirs))

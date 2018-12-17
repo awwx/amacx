@@ -2,7 +2,7 @@
 
 (require json)
 (require "../rkt/runtime.rkt")
-(require "../rkt/runtests.rkt")
+(require "../rkt/common.rkt")
 
 (define (firstn n xs)
   (cond ((null? xs)

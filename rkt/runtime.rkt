@@ -451,6 +451,7 @@
 
     (define runtime-builtins
       (hash
+        'all-tests      (λ () (ar-niltree (all-tests)))
         'acons          (λ (x)
                           (tnil (acons x)))
         'annotate       ar-tag

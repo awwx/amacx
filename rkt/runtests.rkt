@@ -6,9 +6,7 @@
 (require "readtables.rkt")
 (require "runtime.rkt")
 
-(provide all-tests main)
-
-(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
+(provide main)
 
 (define-runtime-path here "here")
 
@@ -25,16 +23,6 @@
 (define (run-tests runtime module1 srcs)
   (for ((src srcs))
     (runtest runtime module1 src)))
-
-(define (tests-in-dir dir)
-  (map (λ (filename)
-         (path->string (build-path dir filename)))
-       (filter (λ (filename)
-                 (string-suffix? (path->string filename) ".t"))
-               (directory-list (build-path root dir)))))
-
-(define (all-tests)
-  (append-map tests-in-dir srcdirs))
 
 (define (run-tests-in-runtime runtime srcs)
   (let ((module1 (phase1 runtime)))
