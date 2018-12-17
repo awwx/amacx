@@ -1,4 +1,4 @@
-(use arcbase disp tostring equals)
+(use arcbase disp tostring simple-equals)
 
 (equals (tostring (disp 123))
         "123")

@@ -1,4 +1,4 @@
-(use arcbase equals literal-value)
+(use arcbase simple-equals literal-value)
 
 (equals (literal-value 3)              3)
 (equals (literal-value car)            car)

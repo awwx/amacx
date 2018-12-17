@@ -1,4 +1,4 @@
-(use arcboot equals type annotate table stdout stdin)
+(use arcboot simple-equals type annotate table stdout stdin)
 
 (equals (type (annotate 'foo 123)) 'foo)
 (equals (type '(1 . 2))            'cons)

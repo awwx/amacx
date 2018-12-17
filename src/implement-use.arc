@@ -46,4 +46,5 @@
 (def implement-provides (container)
   (annotate 'mac
     (fn (feature)
-      (provides-feature container feature))))
+      (provides-feature container feature)
+      nil)))

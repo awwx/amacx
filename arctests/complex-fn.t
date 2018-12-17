@@ -1,4 +1,4 @@
-(use arcbase equals complex-fn)
+(use arcbase simple-equals complex-fn)
 
 (equals (fn-complex-args? '())      nil)
 (equals (fn-complex-args? 'a)       nil)

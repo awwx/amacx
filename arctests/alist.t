@@ -1,4 +1,4 @@
-(use equals alist)
+(use simple-equals alist)
 
 (equals (alist nil)     t)
 (equals (alist '(a))    t)

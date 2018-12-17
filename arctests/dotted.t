@@ -1,4 +1,4 @@
-(use equals dotted)
+(use simple-equals dotted)
 
 (equals (dotted 1)          nil)
 (equals (dotted '(1 . 2))   t)

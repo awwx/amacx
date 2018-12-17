@@ -6,7 +6,8 @@
 (def provides-feature (module feature)
   (unless (has-feature module feature)
     (sref module '*features*
-      (cons feature (module '*features* nil)))))
+      (cons feature (module '*features* nil))))
+  nil)
 
 (def load (name (o target-module *module*))
   (when (a-sym name)

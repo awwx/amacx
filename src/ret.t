@@ -1,4 +1,4 @@
-(use equals ret)
+(use simple-equals ret)
 
 (equals (ret a nil
           (assign a 3)

@@ -221,6 +221,7 @@
        mod           mod
        namefn        namefn
        numstr        (fn (x n) (coerce x 'string n))
+       on-err        on-err
        open-outfile  (fn (filename . args) (outfile filename))
        open-socket   open-socket
        outstring     outstring

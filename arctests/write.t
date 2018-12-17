@@ -1,4 +1,4 @@
-(use arcbase write tostring equals)
+(use arcbase write tostring simple-equals)
 
 (equals (tostring (write 123))
         "123")

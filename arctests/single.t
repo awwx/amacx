@@ -1,4 +1,4 @@
-(use equals single)
+(use simple-equals single)
 
 (equals (single '())      nil)
 (equals (single '(a))     t)
