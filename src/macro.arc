@@ -5,9 +5,7 @@
 
 (def macro (module x)
   (or (amacro x)
-      (and (isa x 'sym)
-           (has module x)
-           (amacro (module x)))))
+      (and (isa x 'sym) (amacro (module x nil)))))
 
 (def is-lexical (context var)
   (and (isa var 'sym) (contains (context 'env) var)))
