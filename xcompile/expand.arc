@@ -346,7 +346,7 @@
 
 (let module (create-boot-module)
   (w/outfile out "../xboot/boot-test.expanded"
-    ; TODO ail.t?
+    (runtest t module out 'ail)
     (runtest t module out '$quote)
     (runtest t module out '$if)
     (xload t module out 'container)))
