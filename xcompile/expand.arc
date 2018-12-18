@@ -143,12 +143,12 @@
     (equals (ailarc '($call a b c))
             '(a b c))))
 
-(def expand-eval-arc (context x)
-  (eval:ailarc:compile-xVrP8JItk2Ot context x))
+(def expand-eval-arc (container x)
+  (eval:ailarc:compile-xVrP8JItk2Ot container x))
 
 ($ail
   (test
-    (= zilch (obj module (obj)))
+    (= zilch (obj))
 
     (equals (expand-eval-arc zilch '($quote 88)) 88)
 
@@ -246,73 +246,70 @@
        *             *
        /             /))
 
-(def create-boot-module ()
-  (ret boot-module (builtins)
-    (= boot-module!*features* (keys boot-module))))
-
-(def context (module)
-  (obj module module validate validate-ail))
+(def create-boot-container ()
+  (ret boot-container (builtins)
+    (= boot-container!*features* (keys boot-container))))
 
 (def findval (g val)
   (catch
     (each (k v) g
       (when (eq? v val)
         (throw k)))
-    (err "fn not found in module" val)))
+    (err "fn not found in container" val)))
 
 (test
   (equals (findval (obj a 1 b 2 c 3) 2) 'b))
 
-(def munch (module x)
-  (if (eq? x module)
+(def munch (container x)
+  (if (eq? x container)
        (box 'this-container)
 
       (isa x 'fn)
-       (box (findval module x))
+       (box (findval container x))
 
       (acons x)
-       (cons (munch module (car x))
-             (munch module (cdr x)))
+       (cons (munch container (car x))
+             (munch container (cdr x)))
 
        x))
 
-(let module (create-boot-module)
+(let container (create-boot-container)
   (test
-    (equals (tostring (write (munch module `(a ,module b))))
+    (equals (tostring (write (munch container `(a ,container b))))
             "(a #&this-container b)")
 
-    (equals (tostring (write (munch module `(a ,module!cons b))))
+    (equals (tostring (write (munch container `(a ,container!cons b))))
             "(a #&cons b)")))
 
-(def execf (module out src x)
+(def execf (container out src x)
   ; TODO validate-ail
-  (let m (compile-xVrP8JItk2Ot module x)
+  (let m (compile-xVrP8JItk2Ot container x)
     (when out
       (disp "\n; " out)
       (write src out)
       (disp "\n\n" out)
-      (write (munch module m) out)
+      (write (munch container m) out)
       (disp "\n\n" out))
     (eval (ailarc m))))
 
-(def use-feature (inline-tests module out feature)
-  (unless (mem feature module!*features*)
-    (xload inline-tests module out feature)))
+(def use-feature (inline-tests container out feature)
+  (unless (mem feature container!*features*)
+    (xload inline-tests container out feature)))
 
-(def process-use (inline-tests module out x)
+(def process-use (inline-tests container out x)
   (each feature (cdr x)
-    (use-feature inline-tests module out feature)))
+    (use-feature inline-tests container out feature)))
 
-(def add-feature (module feature)
-  (unless (mem feature module!*features*)
-    (push feature module!*features*)))
+(def add-feature (container feature)
+  (unless (mem feature container!*features*)
+    (push feature container!*features*)))
 
-(def process (inline-tests module out src x)
+(def process (inline-tests container out src x)
   (if (caris x 'use)
-       (process-use inline-tests module out x)
+       (process-use inline-tests container out x)
       (caris x 'provides)
-       (add-feature module (cadr x))
-       (execf module out src x)))
+       (add-feature container (cadr x))
+       (execf container out src x)))
 
 (= source-dirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
 
@@ -324,33 +321,33 @@
   (aand (findfile rootdir source-dirs (+ (asfilename name) ".t"))
         (+ rootdir it)))
 
-(def loadfile (inline-tests module out src)
+(def loadfile (inline-tests container out src)
   (prn src)
 
   (each x (readfile src)
-    (process inline-tests module out src x)))
+    (process inline-tests container out src x)))
 
-(def runtest (inline-tests module out name)
+(def runtest (inline-tests container out name)
   (awhen (findtest name)
-    (loadfile inline-tests module out it)))
+    (loadfile inline-tests container out it)))
 
-(def xload (inline-tests module out name)
+(def xload (inline-tests container out name)
   (when (isa name 'sym)
-    (add-feature module name))
+    (add-feature container name))
   (let src (if (isa name 'sym) (findsrc name) name)
     (unless src
       (err "src not found" name))
-    (loadfile inline-tests module out src))
+    (loadfile inline-tests container out src))
   (when inline-tests
-    (runtest inline-tests module out name)))
+    (runtest inline-tests container out name)))
 
-(let module (create-boot-module)
+(let container (create-boot-container)
   (w/outfile out "../xboot/boot-test.expanded"
-    (runtest t module out 'ail)
-    (runtest t module out '$quote)
-    (runtest t module out '$if)
-    (xload t module out 'container)))
+    (runtest t container out 'ail)
+    (runtest t container out '$quote)
+    (runtest t container out '$if)
+    (xload t container out 'container)))
 
-(let module (create-boot-module)
+(let container (create-boot-container)
   (w/outfile out "../xboot/boot.expanded"
-    (xload nil module out 'container)))
+    (xload nil container out 'container)))

@@ -3,9 +3,9 @@
 (def amacro (x)
   (and (isa x 'mac) x))
 
-(def macro (module x)
+(def macro (container x)
   (or (amacro x)
-      (and (isa x 'sym) (amacro (module x nil)))))
+      (and (isa x 'sym) (amacro (container x nil)))))
 
 (def is-lexical (context var)
   (and (isa var 'sym) (contains (context 'env) var)))
@@ -44,13 +44,13 @@
             action (fn (context e it) ,@body)))))
 
 (def module-var-macro (context)
-  (let macro ((context 'module) 'module-var nil)
+  (let macro ((context 'container) 'module-var nil)
     (unless macro
       (err "need module-var macro defined for topvar" var))
     macro))
 
 (def set-topvar-macro (context)
-  (let macro ((context 'module) 'set-module-var nil)
+  (let macro ((context 'container) 'set-module-var nil)
     (unless macro
       (err "need set-module-var macro defined to assign to a topvar" var))
     macro))
@@ -65,7 +65,7 @@
 (def macro-form (context e)
   (and (acons e)
        (no (is-lexical context (car e)))
-       (macro (context 'module) (car e))))
+       (macro (context 'container) (car e))))
 
 (def map-compile (context xs)
   (map1 (fn (x)
@@ -84,7 +84,7 @@
     e)
 
   (ac-rule this-container (is e 'this-container)
-    `($quote ,(context 'module)))
+    `($quote ,(context 'container)))
 
   (ac-rule topvar (isa e 'sym)
     ((context 'expand) context `(,(module-var-macro context) ,e)))
@@ -139,10 +139,10 @@
                     (or (match-rule rules context e)
                         (err "invalid expression" e))))
       (fn (container e)
-        (let context (obj rules rule-names
-                          module container
-                          env    '()
-                          expand expand)
+        (let context (obj rules     rule-names
+                          container container
+                          env       '()
+                          expand    expand)
           (expand context e))))))
 
 (def match-rule (rules context e)

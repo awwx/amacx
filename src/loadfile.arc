@@ -1,17 +1,17 @@
 (use arcbase when findfile prn file-each eval)
 
-(def runtest-if-exists (name target-module)
+(def runtest-if-exists (name target-container)
   (let src (findtest nil name)
     (when src
-      (loadfile src target-module))))
+      (loadfile src target-container))))
 
-(def loadfile (src target-module)
-  (when (target-module '*inline-tests* nil)
+(def loadfile (src target-container)
+  (when (target-container '*inline-tests* nil)
     (prn "=> " src))
 
   (file-each (completepath rootdir src)
     (fn (x)
-      (eval x target-module)))
+      (eval x target-container)))
 
-  (when (target-module '*inline-tests* nil)
+  (when (target-container '*inline-tests* nil)
     (prn "<= " src)))
