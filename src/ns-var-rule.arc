@@ -1,4 +1,7 @@
-(use arcbase rule macro)
+(use arcbase rule ac quasiquote)
 
-(rule macro-expand (context e) (caris e 'ns-var-xVrP8JItk2Ot)
+(ac-rule namespace-topvar (caris e 'ns-var-xVrP8JItk2Ot)
   e)
+
+(assign ns-topvar-ac
+  (gen-ac `(namespace-topvar ,@ac-rules)))

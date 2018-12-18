@@ -1,10 +1,9 @@
-(use arcbase complex-fn eval-ail obj macro)
+(use arcbase complex-fn eval-ail obj ac)
 
 (def eval (x (o module *module*))
-  (let expander (or (module 'macro-expand nil) macro-expand)
-    (let ailcode (expander (obj module module
-                                env '())
-                           x)
+  (let compile (or (module 'compile-xVrP8JItk2Ot nil)
+                   compile-xVrP8JItk2Ot)
+    (let ailcode (compile module x)
       (if (a-namespace module)
           (eval-ail ailcode module)
           (eval-ail ailcode)))))

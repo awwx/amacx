@@ -8,6 +8,6 @@
 
 (def racket-topvar-container ()
   (ret container (ail-namespace)
-    (provision-container container (obj))
+    (provision-container container (obj compiler ns-topvar-ac))
     (= container!module-var ns-topvar)
     (provides-feature container 'module-var)))

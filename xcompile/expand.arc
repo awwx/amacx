@@ -98,7 +98,8 @@
 
 (load "../src/contains.arc")
 
-(load "../src/macro.arc")
+(= runtime 'arc3_2)
+(load "../src/ac.arc")
 (load "../src/macro.t")
 
 (each bootfile (dir "../boot")
@@ -143,7 +144,7 @@
             '(a b c))))
 
 (def expand-eval-arc (context x)
-  (eval:ailarc:macro-expand context x))
+  (eval:ailarc:compile-xVrP8JItk2Ot context x))
 
 ($ail
   (test
@@ -284,7 +285,8 @@
             "(a #&cons b)")))
 
 (def execf (module out src x)
-  (let m (macro-expand (context module) x)
+  ; TODO validate-ail
+  (let m (compile-xVrP8JItk2Ot module x)
     (when out
       (disp "\n; " out)
       (write src out)
@@ -344,6 +346,7 @@
 
 (let module (create-boot-module)
   (w/outfile out "../xboot/boot-test.expanded"
+    ; TODO ail.t?
     (runtest t module out '$quote)
     (runtest t module out '$if)
     (xload t module out 'container)))

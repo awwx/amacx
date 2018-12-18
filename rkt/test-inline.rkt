@@ -16,10 +16,12 @@
   (define container2
     (((runtimef runtime 'ref) container1 'provision-container)
      (new-symtab)
-     (hash 'builtins       (runtime-builtins runtime)
-           'macro-expander ((runtimef runtime 'ref) container1 'macro-expand)
-           'inline-tests   ((runtimef runtime 'tnil) #t)
-           'start          'container)))
+     (hash 'builtins      (runtime-builtins runtime)
+           'compiler      ((runtimef runtime 'ref)
+                            container1
+                            'compile-xVrP8JItk2Ot)
+           'inline-tests  ((runtimef runtime 'tnil) #t)
+           'start         'container)))
 
   (printf "phase two ~a tests done\n" runtime)
   (symtab-rm container2 '*inline-tests*)

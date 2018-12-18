@@ -74,7 +74,9 @@
   (((runtimef runtime 'ref) container1 'provision-container)
    (new-symtab)
    (hash 'builtins (runtime-builtins runtime)
-         'macro-expander ((runtimef runtime 'ref) container1 'macro-expand))))
+         'compiler ((runtimef runtime 'ref)
+                     container1
+                     'compile-xVrP8JItk2Ot))))
 
 (define (munch runtime xs)
   (define container1 (phase1 runtime #f))

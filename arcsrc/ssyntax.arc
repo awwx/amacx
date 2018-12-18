@@ -1,7 +1,11 @@
-(use rule macro expand-ssyntax)
+(use ac expand-ssyntax)
 
-(rule macro-expand (context e) (is-ssyntax e)
-  (macro-expand context (expand-ssyntax e)))
+(ac-rule ssyntax-sym (is-ssyntax e)
+  ((context 'expand) context (expand-ssyntax e)))
 
-(rule macro-expand (context e) (and (acons e) (is-ssyntax (car e)))
-  (macro-expand context (cons (expand-ssyntax (car e)) (cdr e))))
+(ac-rule ssyntax-form (and (acons e) (is-ssyntax (car e)))
+  ((context 'expand) context
+    (cons (expand-ssyntax (car e))
+          (cdr e))))
+
+(extend-ac 'ssyntax-sym 'ssyntax-form)

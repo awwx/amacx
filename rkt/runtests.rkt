@@ -3,6 +3,7 @@
 (require racket/runtime-path)
 (require "boot.rkt")
 (require "builtins.rkt")
+(require "common.rkt")
 (require "readtables.rkt")
 (require "runtime.rkt")
 
