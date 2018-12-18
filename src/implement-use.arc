@@ -9,10 +9,10 @@
 ;
 ;     (mac use features
 ;       (each feature features
-;         (use-feature *module* feature)))
+;         (use-feature this-container feature)))
 ;
 ;     (mac provides (feature)
-;       (provide-feature *module* feature))
+;       (provide-feature this-container feature))
 ;
 ; however at the beginning of the load process with an empty
 ; container, `mac` and so on isn't defined yet, so we can't simply
@@ -25,8 +25,8 @@
 ;     (= container!provides provides)
 ;
 ; however when loading the macro definitions into our environment,
-; `*module*` would end up referring to *our* environment, not the
-; target container... and features loaded in the target container
+; `this-container` would end up referring to *our* environment, not
+; the target container... and features loaded in the target container
 ; would get loaded into *our* environment.
 ;
 ; Thus `implement-use` and `implement-provides`, when called with a

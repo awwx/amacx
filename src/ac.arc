@@ -83,7 +83,7 @@
   (ac-rule lexvar (and (isa e 'sym) (is-lexical context e))
     e)
 
-  (ac-rule this-container (is e '*module*)
+  (ac-rule this-container (is e 'this-container)
     `($quote ,(context 'module)))
 
   (ac-rule topvar (isa e 'sym)

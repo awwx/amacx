@@ -18,7 +18,7 @@
 
 (define (inject runtime container x)
   (cond ((box? x)
-         (cond ((eq? (unbox x) '*module*)
+         (cond ((eq? (unbox x) 'this-container)
                 container)
                (else
                 ((runtimef runtime 'ref)

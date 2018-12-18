@@ -265,7 +265,7 @@
 
 (def munch (module x)
   (if (eq? x module)
-       (box '*module*)
+       (box 'this-container)
 
       (isa x 'fn)
        (box (findval module x))
@@ -279,7 +279,7 @@
 (let module (create-boot-module)
   (test
     (equals (tostring (write (munch module `(a ,module b))))
-            "(a #&*module* b)")
+            "(a #&this-container b)")
 
     (equals (tostring (write (munch module `(a ,module!cons b))))
             "(a #&cons b)")))

@@ -1,31 +1,31 @@
 ; Bootstrap!
 ;
 ; (mac module-var (var)
-;   `(,*module* ($quote ,var)))
+;   `(,this-container ($quote ,var)))
 ;
 ; -->
 ;
-; (sref *module* 'module-var
+; (sref this-container 'module-var
 ;   (annotate 'mac
 ;     (fn (var)
-;       (cons *module*
+;       (cons this-container
 ;         (cons (cons '$quote (cons var nil))
 ;           nil)))))
 ;
 ; -->
 
-((*module* ($quote sref))
-  *module*
+((this-container ($quote sref))
+  this-container
   ($quote module-var)
-  ((*module* ($quote annotate))
+  ((this-container ($quote annotate))
     ($quote mac)
     ($fn (var)
-      ((*module* ($quote cons))
-       *module*
-       ((*module* ($quote cons))
-        ((*module* ($quote cons))
+      ((this-container ($quote cons))
+       this-container
+       ((this-container ($quote cons))
+        ((this-container ($quote cons))
          ($quote $quote)
-         ((*module* ($quote cons))
+         ((this-container ($quote cons))
           var
           ($quote nil)))
         ($quote nil))))))

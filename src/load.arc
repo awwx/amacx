@@ -9,7 +9,7 @@
       (cons feature (module '*features* nil))))
   nil)
 
-(def load (name (o target-module *module*))
+(def load (name (o target-module this-container))
   (when (a-sym name)
     (provides-feature target-module name))
 
