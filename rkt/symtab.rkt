@@ -24,7 +24,7 @@
   (hash-ref (symtab-hash g) k default))
 
 (define (symtab-ref g k)
-  (symtab-ref-default g k (λ () (error "key not found" k))))
+  (symtab-ref-default g k (λ () (error "not defined" k))))
 
 (define (symtab-set! g k v)
   (hash-set! (symtab-hash g) k v))
