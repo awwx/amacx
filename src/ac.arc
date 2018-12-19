@@ -138,9 +138,8 @@
                          (err "compiler rule not found" rule-name)))
                    rule-names)
     (let compile (fn (context e)
-                   ((or (context 'validate) idfn)
-                     (or (match-rule rules context e)
-                         (err "invalid expression" e))))
+                   (or (match-rule rules context e)
+                       (err "invalid expression" e)))
       (fn (container e)
         (let context (obj rules     rule-names
                           container container
