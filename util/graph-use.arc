@@ -14,7 +14,7 @@
           (fn (x)
             (when (caris x 'use)
               (each feature (cdr x)
-                (prn (asfilename src) "(" (asfilename src) ") --> "
+                (prn (asfilename src) "(\"" src "\") --> "
                      (asfilename feature))
                 (process feature)))))))))
 
