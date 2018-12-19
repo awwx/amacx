@@ -1,5 +1,5 @@
 (use findfile ssyntax setforms andf set unless +str when caris prn
-     tostring)
+     tostring file-each)
 
 (= seen (table))
 
