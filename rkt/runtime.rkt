@@ -511,10 +511,6 @@
         'ar-<2          builtin-ar-<2
         'ar->2          builtin-ar->2
         'atomic-invoke  atomic-invoke
-        'iround         (λ (x)
-                          (inexact->exact (round (unwrap x))))
-        'is2            builtin-is2
-        'loc            builtin-loc
         'call-w/stdout  builtin-call-w/stdout
         'car            xcar
         'cdr            xcdr
@@ -524,6 +520,7 @@
                           (string (unwrap x)))
         'close          builtin-close
         'cons           xcons
+        'cwd            (λ () (path->string (current-directory)))
         'details        (λ (c)
                           (disp-to-string (exn-message c)))
         'dir            (λ (path)
@@ -545,6 +542,10 @@
         'inside         get-output-string
         'inspect        inspect
         'instring       instring
+        'is2            builtin-is2
+        'iround         (λ (x)
+                          (inexact->exact (round (unwrap x))))
+        'loc            builtin-loc
         'mod            (unwrap-args modulo)
         'msec           current-milliseconds
         'namefn         (λ (name fn)
