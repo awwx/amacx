@@ -137,14 +137,14 @@
                      (or (compiler-rules rule-name)
                          (err "compiler rule not found" rule-name)))
                    rule-names)
-    (let compile (fn (context e)
+    (let expand (fn (context e)
                    (or (match-rule rules context e)
                        (err "invalid expression" e)))
       (fn (container e)
         (let context (obj rules     rule-names
                           container container
                           env       '()
-                          compile   compile)
+                          compile   expand)
           (compile context e))))))
 
 (def match-rule (rules context e)
