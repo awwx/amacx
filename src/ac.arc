@@ -67,9 +67,12 @@
        (no (is-lexical context (car e)))
        (macro (context 'container) (car e))))
 
+(def compile (context x)
+  ((context 'expand) context x))
+
 (def map-compile (context xs)
   (map1 (fn (x)
-          ((context 'expand) context x))
+          (compile context x))
         xs))
 
 ($ail
@@ -87,7 +90,7 @@
     `($quote ,(context 'container)))
 
   (ac-rule topvar (isa e 'sym)
-    ((context 'expand) context `(,(module-var-macro context) ,e)))
+    (compile context `(,(module-var-macro context) ,e)))
 
   (ac-rule quote (caris e '$quote)
     (srcloc e `($quote ,(cadr e))))
@@ -95,11 +98,11 @@
   (ac-rule assign-lexvar (and (caris e '$assign)
                               (is-lexical context (cadr e)))
     (check-assign (cadr e))
-    `($assign ,(cadr e) ,((context 'expand) context (caddr e))))
+    `($assign ,(cadr e) ,(compile context (caddr e))))
 
   (ac-rule assign-topvar (caris e '$assign)
     (check-assign (cadr e))
-    ((context 'expand) context
+    (compile context
       `(,(set-topvar-macro context) ,(cadr e) ,(caddr e))))
 
   (ac-rule fn (caris e '$fn)
@@ -116,7 +119,7 @@
 
   (ac-rule macro (macro-form context e)
     (let expansion (heuristic-loc e (apply (rep it) (cdr e)))
-      ((context 'expand) context expansion)))
+      (compile context expansion)))
 
   (ac-rule implicit-call (acons e)
     (compile-call context e e))
@@ -143,7 +146,7 @@
                           container container
                           env       '()
                           expand    expand)
-          (expand context e))))))
+          (compile context e))))))
 
 (def match-rule (rules context e)
   (when rules
