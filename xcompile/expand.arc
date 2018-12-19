@@ -1,6 +1,3 @@
-(mac xtest body
-  `(do ,@body))
-
 (= caddr car:cddr)
 
 (def xhash (x)
@@ -46,8 +43,7 @@
               (disp "\n")
               (quit 1))))))
 
-(xtest
-  (equals (+ 1 2) 3))
+(equals (+ 1 2) 3)
 
 (mac true (x)
   `(if ,x
@@ -63,11 +59,10 @@
 (mac ret (var val . body)
   `(let ,var ,val ,@body ,var))
 
-(xtest
-  (equals (ret a nil
-            (= a 3)
-            nil)
-          3))
+(equals (ret a nil
+          (= a 3)
+          nil)
+        3)
 
 (= as-str   [coerce _ 'string])
 (= strchars [coerce _ 'cons])
@@ -127,39 +122,37 @@
 
          (err "don't recognize ail expr" x)))
 
-  (xtest
-    (equals (ailarc '($quote foo))
-            ''foo)
+  (equals (ailarc '($quote foo))
+          ''foo)
 
-    (equals (ailarc 'foo) 'foo)
-    (equals (ailarc '($assign foo bar)) '(assign foo bar))
+  (equals (ailarc 'foo) 'foo)
+  (equals (ailarc '($assign foo bar)) '(assign foo bar))
 
-    (equals (ailarc '($fn (x) y ($quote 3)))
-            '(fn (x) y '3))
+  (equals (ailarc '($fn (x) y ($quote 3)))
+          '(fn (x) y '3))
 
-    (equals (ailarc '($if a b c))
-            '(if a b c))
+  (equals (ailarc '($if a b c))
+          '(if a b c))
 
-    (equals (ailarc '($call a b c))
-            '(a b c))))
+  (equals (ailarc '($call a b c))
+          '(a b c)))
 
 (def expand-eval-arc (container x)
   (eval:ailarc:compile-xVrP8JItk2Ot container x))
 
 ($ail
-  (xtest
-    (= zilch (obj))
+  (= zilch (obj))
 
-    (equals (expand-eval-arc zilch '($quote 88)) 88)
+  (equals (expand-eval-arc zilch '($quote 88)) 88)
 
-    (equals (expand-eval-arc zilch `(($quote ,+)
-                                     ($quote 3)
-                                     ($quote 4)))
-            7)
+  (equals (expand-eval-arc zilch `(($quote ,+)
+                                   ($quote 3)
+                                   ($quote 4)))
+          7)
 
-    (equals ((fn (call) (call))
-             (fn () 42))
-            42)))
+  (equals ((fn (call) (call))
+           (fn () 42))
+          42))
 
 (def ar-assert (v)
   (if v
@@ -258,8 +251,7 @@
         (throw k)))
     (err "fn not found in container" val)))
 
-(xtest
-  (equals (findval (obj a 1 b 2 c 3) 2) 'b))
+(equals (findval (obj a 1 b 2 c 3) 2) 'b)
 
 (def munch (container x)
   (if (eq? x container)
@@ -275,12 +267,11 @@
        x))
 
 (let container (create-boot-container)
-  (xtest
-    (equals (tostring (write (munch container `(a ,container b))))
-            "(a #&this-container b)")
+  (equals (tostring (write (munch container `(a ,container b))))
+          "(a #&this-container b)")
 
-    (equals (tostring (write (munch container `(a ,container!cons b))))
-            "(a #&cons b)")))
+  (equals (tostring (write (munch container `(a ,container!cons b))))
+          "(a #&cons b)"))
 
 (def execf (container out src x)
   ; TODO validate-ail
