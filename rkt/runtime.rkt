@@ -453,10 +453,9 @@
     (define (quote-this x)
       (hide (ar-niltree x)))
 
-    (require readline/readline)
-
     (define (builtin-readline prompt)
-      (let ((s (readline (unwrap prompt))))
+      (let ((s ((dynamic-require 'readline/readline 'readline)
+                 (unwrap prompt))))
         (if (eof-object? s) 'nil s)))
 
     (define runtime-builtins
@@ -568,7 +567,10 @@
         'racket-list    list
         'readline       builtin-readline
         'readline-add-history
-                        add-history
+                        (λ args
+                          (apply
+                            (dynamic-require 'readline/readline 'add-history)
+                            (deep-unwrap args)))
         'readport       readport
         'rep            ar-rep
         'runtime        runtime
