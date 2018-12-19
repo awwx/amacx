@@ -433,6 +433,10 @@
       (with-handlers ((exn:fail? errfn))
         (f)))
 
+    (define (on-break breakfn f)
+      (with-handlers ((exn:break? (λ (exn) (breakfn))))
+        (f)))
+
     (define (wrapnil f)
       (λ args
         (apply f args) 'nil))
@@ -448,6 +452,12 @@
 
     (define (quote-this x)
       (hide (ar-niltree x)))
+
+    (require readline/readline)
+
+    (define (builtin-readline prompt)
+      (let ((s (readline (unwrap prompt))))
+        (if (eof-object? s) 'nil s)))
 
     (define runtime-builtins
       (hash
@@ -521,6 +531,8 @@
                           (ar-niltree (map path->string
                                            (directory-list (unwrap path)))))
         'err            err
+        'error-display-handler
+                        error-display-handler
         'eval-racket    builtin-eval-racket
         'file-exists    (λ (name)
                           (if (file-exists? (unwrap name)) name 'nil))
@@ -539,6 +551,7 @@
         'namefn         (λ (name fn)
                           (procedure-rename fn (unwrap name)))
         'numstr         (unwrap-args number->string)
+        'on-break       on-break
         'on-err         on-err
         'open-outfile   (λ (name mode exists)
                           (open-output-file (unwrap name)
@@ -553,6 +566,9 @@
         'racket-r-apply r-apply
         'racket-eval    eval
         'racket-list    list
+        'readline       builtin-readline
+        'readline-add-history
+                        add-history
         'readport       readport
         'rep            ar-rep
         'runtime        runtime
