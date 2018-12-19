@@ -227,6 +227,7 @@
        open-socket   open-socket
        outstring     outstring
        protect       protect
+       quit          quit
        readport      sread
        rep           rep
        rootdir       rootdir
