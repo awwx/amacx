@@ -1,4 +1,4 @@
-(mac test body
+(mac xtest body
   `(do ,@body))
 
 (= caddr car:cddr)
@@ -46,7 +46,7 @@
               (disp "\n")
               (quit 1))))))
 
-(test
+(xtest
   (equals (+ 1 2) 3))
 
 (mac true (x)
@@ -63,7 +63,7 @@
 (mac ret (var val . body)
   `(let ,var ,val ,@body ,var))
 
-(test
+(xtest
   (equals (ret a nil
             (= a 3)
             nil)
@@ -127,7 +127,7 @@
 
          (err "don't recognize ail expr" x)))
 
-  (test
+  (xtest
     (equals (ailarc '($quote foo))
             ''foo)
 
@@ -147,7 +147,7 @@
   (eval:ailarc:compile-xVrP8JItk2Ot container x))
 
 ($ail
-  (test
+  (xtest
     (= zilch (obj))
 
     (equals (expand-eval-arc zilch '($quote 88)) 88)
@@ -258,7 +258,7 @@
         (throw k)))
     (err "fn not found in container" val)))
 
-(test
+(xtest
   (equals (findval (obj a 1 b 2 c 3) 2) 'b))
 
 (def munch (container x)
@@ -275,7 +275,7 @@
        x))
 
 (let container (create-boot-container)
-  (test
+  (xtest
     (equals (tostring (write (munch container `(a ,container b))))
             "(a #&this-container b)")
 
