@@ -11,3 +11,11 @@
 (let a (obj a 1 b 2 c 3)
   (equals (++ a!c) 4)
   (equals a!c 4))
+
+(let a 3
+  (equals (-- a) 2)
+  (equals a 2))
+
+(let a (obj a 1 b 2 c 3)
+  (equals (-- a!c) 2)
+  (equals a!c 2))
