@@ -68,7 +68,7 @@
        (macro (context 'container) (car e))))
 
 (def compile (context x)
-  ((context 'expand) context x))
+  ((context 'compile) context x))
 
 (def map-compile (context xs)
   (map1 (fn (x)
@@ -137,15 +137,15 @@
                      (or (compiler-rules rule-name)
                          (err "compiler rule not found" rule-name)))
                    rule-names)
-    (let expand (fn (context e)
-                  ((or (context 'validate) idfn)
-                    (or (match-rule rules context e)
-                        (err "invalid expression" e))))
+    (let compile (fn (context e)
+                   ((or (context 'validate) idfn)
+                     (or (match-rule rules context e)
+                         (err "invalid expression" e))))
       (fn (container e)
         (let context (obj rules     rule-names
                           container container
                           env       '()
-                          expand    expand)
+                          compile   compile)
           (compile context e))))))
 
 (def match-rule (rules context e)
