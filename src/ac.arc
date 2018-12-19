@@ -1,4 +1,4 @@
-(use arcbase aif quasiquote unless contains $ail when obj)
+(use arcbase aif quasiquote unless contains $ail when obj validate-ail)
 
 (def amacro (x)
   (and (isa x 'mac) x))
@@ -68,8 +68,9 @@
        (macro (context 'container) (car e))))
 
 (def compile (context x)
-  (or (match-rule (context 'rules) context x)
-      (err "invalid expression" x)))
+  (validate-ail
+    (or (match-rule (context 'rules) context x)
+        (err "invalid expression" x))))
 
 (def map-compile (context xs)
   (map1 (fn (x)

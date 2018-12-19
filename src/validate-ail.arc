@@ -26,13 +26,18 @@
     (and (caris x '$call)
          (all ail-expr (cdr x))))
 
+  (def ail-namespace-var (x)
+    (and (caris x 'ns-var-xVrP8JItk2Ot)
+         (a-sym (cadr x))))
+
   (def ail-expr (x)
     (or (isa x 'sym)
         (ail-quote x)
         (ail-assign x)
         (ail-fn x)
         (ail-if x)
-        (ail-call x))))
+        (ail-call x)
+        (ail-namespace-var x))))
 
 (def validate-ail (x)
   (unless (ail-expr x)
