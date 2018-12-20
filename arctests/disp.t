@@ -17,3 +17,5 @@
 
 (equals (tostring (disp #\A))
         "A")
+
+(equals (disp "") nil)

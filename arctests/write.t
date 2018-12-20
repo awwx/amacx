@@ -1,4 +1,4 @@
-(use arcbase write tostring simple-equals)
+(use arcbase write tostring simple-equals do1)
 
 (equals (tostring (write 123))
         "123")
@@ -17,3 +17,7 @@
 
 (equals (tostring (write #\A))
         "#\\A")
+
+(equals (do1 (write 'yes)
+             (ar-disp "\n" (stdout)))
+        nil)
