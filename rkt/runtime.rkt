@@ -67,7 +67,8 @@
       (and (acons x)
            (ar-is (xcar x) v)))
 
-    ; This is like ar-denil except that quoted values are left unconverted.
+    ; This is like ar-denil except that quoted values are hidden and
+    ; left unconverted.
 
     (define (arcail x)
       (cond ((xcaris x 'quote-xVrP8JItk2Ot)
