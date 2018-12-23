@@ -68,8 +68,9 @@
        (macro (context 'container) (car e))))
 
 (def compile (context x)
-  (or (match-rule (context 'rules) context x)
-      (err "invalid expression" x)))
+  (heuristic-loc x
+    (or (match-rule (context 'rules) context x)
+        (err "invalid expression" x))))
 
 (def map-compile (context xs)
   (map1 (fn (x)
@@ -78,11 +79,10 @@
 
 ($ail
   (def compile-call (context loc es)
-    (srcloc loc
-      `($call ,@(map-compile context es))))
+    `($call ,@(map-compile context es)))
 
   (ac-rule nil-sym (no e)
-    (srcloc e `($quote ,e)))
+    `($quote ,e))
 
   (ac-rule lexvar (and (isa e 'sym) (is-lexical context e))
     e)
@@ -94,7 +94,7 @@
     (compile context `(,(module-var-macro context) ,e)))
 
   (ac-rule quote (caris e '$quote)
-    (srcloc e `($quote ,(cadr e))))
+    `($quote ,(cadr e)))
 
   (ac-rule assign-lexvar (and (caris e '$assign)
                               (is-lexical context (cadr e)))
@@ -108,9 +108,8 @@
 
   (ac-rule fn (caris e '$fn)
     (let context (extend-env context (arglist (cadr e)))
-      (srcloc e
-        `($fn ,(cadr e)
-           ,@(map-compile context (cddr e))))))
+      `($fn ,(cadr e)
+         ,@(map-compile context (cddr e)))))
 
   (ac-rule if (caris e '$if)
     `($if ,@(map-compile context (cdr e))))
@@ -119,14 +118,14 @@
     (compile-call context e (cdr e)))
 
   (ac-rule macro (macro-form context e)
-    (let expansion (heuristic-loc e (apply (rep it) (cdr e)))
+    (let expansion (apply (rep it) (cdr e))
       (compile context expansion)))
 
   (ac-rule implicit-call (acons e)
     (compile-call context e e))
 
   (ac-rule default-quote t
-    (srcloc e `($quote ,e))))
+    `($quote ,e)))
 
 (assign ac-rules
   '(nil-sym this-container lexvar topvar quote assign-lexvar
