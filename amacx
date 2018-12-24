@@ -1,0 +1,195 @@
+#! /usr/bin/env perl
+#|
+
+# Usage:
+#
+# amacx                   start a REPL with the default runtime
+# amacx -r mpair          start a REPL with the mpair runtime
+# amacx foo.arc           load foo.arc (with the default runtime)
+# amacx -r mpair foo.arc  load foo.arc (with the mpair runtime)
+# amacx -i foo.arc        load foo.arc, then start a REPL
+# amacx -u bar foo.arc    use bar, then load foo.arc
+
+# Everyone has Perl, right?  :)
+#
+# The shenanigans here are because if we want to be able to choose
+# whether or not to use errortrace in Racket, we have to load it at
+# the command line with "racket -l errortrace ..."; we can't load it
+# once Racket is running.
+#
+# So we trampoline into Perl here so that we can look for the
+# `--no-errortrace` / `-n` option to tell whether to exec Racket
+# with "-l errortrace" or not.  (We default to yes).
+#
+# The "# |" on the second line above (written without a space) starts
+# a block comment in Racket, and thus this Perl code is ignored by
+# Racket.
+#
+# Fortunately, "#" also starts a comment in Perl so the "# |" line
+# above is also ignored by Perl.
+#
+# Here in Perl we use "__END__" to end the Perl script, which causes
+# Perl to ignore the Racket code below.
+
+use strict;
+use warnings;
+
+my $errortrace = 1;
+my @args;
+
+my $i = 0;
+while ($i < @ARGV) {
+  my $arg = $ARGV[$i];
+
+  # if we find a non-option, or "--", stop looking and pass on the
+  # rest of the arguments
+  if ($arg !~ m/^\-/ or $arg eq '--') {
+    push @args, @ARGV[$i .. $#ARGV];
+    last;
+  }
+
+  # allow errortrace to be disabled
+  elsif ($arg eq '--no-errortrace' or $arg eq '-n') {
+    ++$i;
+    $errortrace = 0;
+  }
+
+  # otherwise keep looking
+  else {
+    ++$i;
+    push @args, $arg;
+  }
+}
+
+# cause Racket to load this file
+unshift @args, '-u', $0;
+
+# and, if we want errortrace to be enabled, load errortrace first
+if ($errortrace) {
+  unshift @args, '-l', 'errortrace';
+}
+
+exec 'racket', @args;
+
+__END__
+
+Here in no man's land, I can put ^%@#$* anything I want, ignored by
+both Perl and Racket.  Ha!
+
+And here's the end of the Racket block comment:
+
+|#
+
+; Now we're in Racket
+
+#lang racket
+
+; Well, that was a silly amount of work to parse a single
+; `--no-errortrace` option.
+;
+; What next?
+;
+; Let's parse some more command line options.
+
+(require racket/cmdline)
+
+(require (only-in "rkt/runtime.rkt" runtimes runtimef))
+(require (only-in "rkt/boot.rkt" phase1 new-container))
+
+(define runtime #f)
+(define repl #f)
+(define no-repl #f)
+(define program #f)
+(define args '())
+
+(define (default-runtime)
+  (unless runtime
+    (set! runtime 'srcloc)))
+
+(define boot-container #f)
+(define container #f)
+
+; TODO this should all be done in Arc!
+;
+; Maybe make the boot container always load with a particular runtime
+; such as mpair?  And have it construct the new container.
+
+(define (init-container)
+  (unless container
+    (default-runtime)
+    (set! boot-container (phase1 runtime))
+    (set! container (new-container runtime boot-container))))
+
+(define (use feature)
+  (let ((feature (string->symbol feature)))
+    (init-container)
+    (((runtimef runtime 'ref) boot-container 'use-feature)
+     container feature)))
+
+(define (load file)
+  (init-container)
+  ((runtimef runtime 'aload) file container boot-container))
+
+(define (set-argv)
+  (init-container)
+  ((runtimef runtime 'sref) container 'argv
+   ((runtimef runtime 'ar-nillist) args))
+  (void))
+
+(define (run-repl)
+  (init-container)
+  (((runtimef runtime 'ref) boot-container 'repl)
+   container))
+
+(parse-command-line "compile" (current-command-line-arguments)
+  `((once-each
+     (("-n" "--no-errortrace")
+      ,(λ (flag)
+        ; Not reached because the option is consumed by Perl; but
+        ; include so that the option appears in the help output.
+        (void))
+      ("Don't load errortrace"))
+
+     (("-r" "--runtime")
+      ,(λ (flag the-runtime)
+         (let ((runtime-sym (string->symbol the-runtime)))
+           (unless (memq runtime-sym runtimes)
+             (error "Unknown runtime" runtime-sym))
+           (when runtime
+             (error (format "Can't set runtime to ~s, already set to ~s"
+                            runtime-sym runtime)))
+           (set! runtime runtime-sym)))
+      ("Specify runtime: \"mpair\" or \"srcloc\"" "runtime"))
+
+     (("-i" "--repl")
+      ,(λ (flag)
+         (set! repl #t))
+      ("Start an interactive REPL (this is the default if no program is specified)")))
+
+    (multi
+     (("-u" "--use")
+      ,(λ (flag feature)
+         (use feature))
+      ("like (use feature)" "feature"))
+
+     (("-l" "--load")
+      ,(λ (flag file)
+         (printf "load: ~s~n" file))
+      ("like (load \"file\")" "file"))))
+
+  (lambda (flag-accum . arglist)
+    (when (pair? arglist)
+      (set! program (car arglist))
+      (set! args (cdr arglist))))
+  '("program" "arg"))
+
+(set-argv)
+
+(void
+  (cond (program
+         (load program)
+         (when repl
+           (run-repl)))
+        (else
+         (unless no-repl
+           (run-repl)))))

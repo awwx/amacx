@@ -342,4 +342,5 @@
 
 (let container (create-boot-container)
   (w/outfile out "../xboot/boot.expanded"
-    (xload nil container out 'container)))
+    (xload nil container out 'container)
+    (xload nil container out 'repl)))
