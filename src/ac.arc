@@ -46,7 +46,7 @@
 (def module-var-macro (context)
   (let macro ((context 'container) 'module-var nil)
     (unless macro
-      (err "need module-var macro defined for topvar" var))
+      (err "need module-var macro defined for topvar"))
     macro))
 
 (def set-topvar-macro (context)
