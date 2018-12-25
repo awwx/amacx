@@ -1,4 +1,4 @@
-#lang reader "ame.rkt"
+#lang reader "amacx.rkt"
 
 (use arcbase defloc)
 
