@@ -1,4 +1,4 @@
-(use topvar set-module-var assign quote)
+(use topvar set-topvar assign quote)
 
 ; (mac fn (parms . body)
 ;   `($fn ,parms ,@body))

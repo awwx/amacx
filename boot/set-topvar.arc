@@ -1,11 +1,11 @@
 (use topvar)
 
-; (mac set-module-var (var value)
+; (mac set-topvar (var value)
 ;   `(,sref ,this-container ',var ,value))
 
 (sref
   this-container
-  ($quote set-module-var)
+  ($quote set-topvar)
   (annotate ($quote mac)
     ($fn (var value)
       (cons sref

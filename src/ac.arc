@@ -50,9 +50,9 @@
     macro))
 
 (def set-topvar-macro (context)
-  (let macro ((context 'container) 'set-module-var nil)
+  (let macro ((context 'container) 'set-topvar nil)
     (unless macro
-      (err "need set-module-var macro defined to assign to a topvar" var))
+      (err "need set-topvar macro defined to assign to a topvar" var))
     macro))
 
 (def check-assign (var)

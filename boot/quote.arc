@@ -1,4 +1,4 @@
-(use topvar set-module-var)
+(use topvar set-topvar)
 
 ; (mac quote (x)
 ;   `($quote ,x))
