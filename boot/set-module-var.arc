@@ -1,4 +1,4 @@
-(use module-var)
+(use topvar)
 
 ; (mac set-module-var (var value)
 ;   `(,sref ,this-container ',var ,value))

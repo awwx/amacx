@@ -1,4 +1,4 @@
-(use module-var list)
+(use topvar list)
 
 (ar-assert (is2 (car (list 'a 'b)) 'a))
 (ar-assert (is2 (car (cdr (list 'a 'b))) 'b))

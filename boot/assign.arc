@@ -1,4 +1,4 @@
-(use module-var set-module-var quote)
+(use topvar set-module-var quote)
 
 ; (mac assign args
 ;   `($assign ,@args))

@@ -1,1 +1,1 @@
-(use assign module-var quote set-module-var simple-fn)
+(use assign topvar quote set-module-var simple-fn)

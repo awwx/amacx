@@ -1,4 +1,4 @@
-(use module-var)
+(use topvar)
 
 (ar-assert (is2 (acons (cons 1 2)) t))
 (ar-assert (is2 (acons nil)        nil))

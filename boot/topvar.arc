@@ -1,11 +1,11 @@
 ; Bootstrap!
 ;
-; (mac module-var (var)
+; (mac topvar (var)
 ;   `(,this-container ($quote ,var)))
 ;
 ; -->
 ;
-; (sref this-container 'module-var
+; (sref this-container 'topvar
 ;   (annotate 'mac
 ;     (fn (var)
 ;       (cons this-container
@@ -16,7 +16,7 @@
 
 ((this-container ($quote sref))
   this-container
-  ($quote module-var)
+  ($quote topvar)
   ((this-container ($quote annotate))
     ($quote mac)
     ($fn (var)

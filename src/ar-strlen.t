@@ -1,4 +1,4 @@
-(use module-var true is)
+(use topvar true is)
 
 (true (is (ar-strlen "abc") 3))
 

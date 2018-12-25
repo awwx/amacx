@@ -43,10 +43,10 @@
        (obj test   (fn (context e) ,test-expr)
             action (fn (context e it) ,@body)))))
 
-(def module-var-macro (context)
-  (let macro ((context 'container) 'module-var nil)
+(def topvar-macro (context)
+  (let macro ((context 'container) 'topvar nil)
     (unless macro
-      (err "need module-var macro defined for topvar"))
+      (err "need topvar macro defined for topvar"))
     macro))
 
 (def set-topvar-macro (context)
@@ -91,7 +91,7 @@
     `($quote ,(context 'container)))
 
   (ac-rule topvar (isa e 'sym)
-    (compile context `(,(module-var-macro context) ,e)))
+    (compile context `(,(topvar-macro context) ,e)))
 
   (ac-rule quote (caris e '$quote)
     `($quote ,(cadr e)))
