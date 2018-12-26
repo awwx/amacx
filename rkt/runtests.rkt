@@ -4,6 +4,7 @@
 (require "boot.rkt")
 (require "builtins.rkt")
 (require "common.rkt")
+(require "prefix.rkt")
 (require "readtables.rkt")
 (require "runtime.rkt")
 
@@ -14,12 +15,13 @@
 (define root (simplify-path (build-path here 'up 'up)))
 
 (define (runtest runtime module1 src)
-  (printf "~a ~a~n" runtime src)
-  (let ((module (new-container runtime module1)))
-    ((runtimef runtime 'aload)
-      (path->string (build-path root src))
-      module
-      module1)))
+  (w/prefix (format "~a ~a " runtime src)
+    (λ ()
+      (let ((module (new-container runtime module1)))
+        ((runtimef runtime 'aload)
+          (path->string (build-path root src))
+          module
+          module1)))))
 
 (define (run-tests runtime module1 srcs)
   (for ((src srcs))

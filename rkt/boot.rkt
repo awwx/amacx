@@ -62,8 +62,6 @@
             (loop)))))))
 
 (define (phase1 runtime (inline-tests #f))
-  (when inline-tests
-    (printf "~a ------ phase one~n" runtime))
   (let ((container (new-symtab (runtime-builtins runtime))))
     (file-each (if inline-tests test-boot-path expanded-boot-path)
                (λ (x)

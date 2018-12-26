@@ -2,6 +2,7 @@
 
 (require "builtins.rkt")
 (require "boot.rkt")
+(require "prefix.rkt")
 (require "readtables.rkt")
 (require "runtime.rkt")
 (require "symtab.rkt")
@@ -9,24 +10,27 @@
 (print-hash-table #f)
 
 (define (test-inline runtime)
-  (define container1 (phase1 runtime #t))
+  (define container1
+    (w/prefix (format "~a phase one " runtime)
+      (λ ()
+        (phase1 runtime #t))))
 
-  (printf "------ ~a phase two inline tests~n" runtime)
+  (newline)
 
   (define container2
-    (((runtimef runtime 'ref) container1 'provision-container)
-     (new-symtab)
-     (hash 'builtins      (runtime-builtins runtime)
-           'compiler      ((runtimef runtime 'ref)
-                            container1
-                            'compile-xVrP8JItk2Ot)
-           'inline-tests  ((runtimef runtime 'tnil) #t)
-           'start         'container)))
+    (w/prefix (format "~a phase two " runtime)
+      (λ ()
+        (((runtimef runtime 'ref) container1 'provision-container)
+         (new-symtab)
+         (hash 'builtins      (runtime-builtins runtime)
+               'compiler      ((runtimef runtime 'ref)
+                                container1
+                                'compile-xVrP8JItk2Ot)
+               'inline-tests  ((runtimef runtime 'tnil) #t)
+               'start         'container)))))
 
-  (printf "phase two ~a tests done\n" runtime)
   (symtab-rm container2 '*inline-tests*)
-
-  container2)
+  (void))
 
 (void
   (w/readtables
