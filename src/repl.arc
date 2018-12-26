@@ -1,4 +1,4 @@
-(use arcbase whilet write prn eval readstr complex-fn)
+(use arcbase whilet disp write prn eval readstr complex-fn)
 
 (def repl ((o container this-container) (o prompt "> "))
   (whilet s (readline prompt)
@@ -9,7 +9,14 @@
       (fn ()
         (on-err
           (fn (e)
-            ((error-display-handler) (details e) e))
+            ; The stack trace has some useful information in the
+            ; srcloc runtime (though the output could be improved);
+            ; not much point in dumping the stack trace output
+            ; otherwise.
+            (if (is runtime 'srcloc)
+                 ((error-display-handler) 'ignored e)
+                 (do (disp "Error: ")
+                     (write (details e)))))
           (fn ()
             ; TODO we should have a way for a container to define
             ; its own reader
