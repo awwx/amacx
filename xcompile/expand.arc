@@ -303,7 +303,7 @@
        (add-feature container (cadr x))
        (execf container out src x)))
 
-(= source-dirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
+(= source-dirs '("arc" "arctests" "qq" "qqtests" "src" "xboot"))
 
 (def findsrc (name)
   (aand (findfile rootdir source-dirs (+ (asfilename name) ".arc"))

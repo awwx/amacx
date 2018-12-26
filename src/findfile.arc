@@ -14,7 +14,7 @@
         dirs))
 
 (assign *srcdirs*
-  '("arcsrc" "arctests" "extras" "qq" "qqtests" "src" "xboot"))
+  '("arc" "arctests" "extras" "qq" "qqtests" "src" "xboot"))
 
 (def findsrc (container name)
   (findfile rootdir

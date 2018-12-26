@@ -23,7 +23,7 @@
 (define (nth-set! lst n val)
   (set-mcar! (mlist-tail lst n) val))
 
-(define srcdirs '("arcsrc" "arctests" "qq" "qqtests" "src" "xboot"))
+(define srcdirs '("arc" "arctests" "qq" "qqtests" "src" "xboot"))
 
 (define (tests-in-dir dir)
   (map (λ (filename)
