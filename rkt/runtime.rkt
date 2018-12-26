@@ -270,12 +270,12 @@
               (else (err "has: not a table" g)))))
 
     (define (aload name
-                   target-module
-                   (macro-module target-module))
-      ((or (ref target-module 'load #f)
-           (ref macro-module  'load))
+                   target-container
+                   (macro-container target-container))
+      ((or (ref target-container 'load #f)
+           (ref macro-container  'load))
        name
-       target-module))
+       target-container))
 
     ; shallow convert Arc list to Racket
     (define (ar-denillist x)

@@ -14,22 +14,22 @@
 
 (define root (simplify-path (build-path here 'up 'up)))
 
-(define (runtest runtime module1 src)
+(define (runtest runtime container1 src)
   (w/prefix (format "~a ~a " runtime src)
     (λ ()
-      (let ((module (new-container runtime module1)))
+      (let ((container (new-container runtime container1)))
         ((runtimef runtime 'aload)
           (path->string (build-path root src))
-          module
-          module1)))))
+          container
+          container1)))))
 
-(define (run-tests runtime module1 srcs)
+(define (run-tests runtime container1 srcs)
   (for ((src srcs))
-    (runtest runtime module1 src)))
+    (runtest runtime container1 src)))
 
 (define (run-tests-in-runtime runtime srcs)
-  (let ((module1 (phase1 runtime)))
-    (run-tests runtime module1 srcs)))
+  (let ((container1 (phase1 runtime)))
+    (run-tests runtime container1 srcs)))
 
 (define (run-all-tests-in-runtime runtime)
   (run-tests-in-runtime runtime (all-tests)))
