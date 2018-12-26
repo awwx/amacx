@@ -23,4 +23,4 @@
                 (disp "\n")
                 (write ,expect)
                 (disp "\n")
-                (quit 1))))))
+                (err 'test-failed))))))
