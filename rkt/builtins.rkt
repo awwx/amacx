@@ -17,8 +17,11 @@
   (λ (x (ns default-namespace))
     (runtime-eval-ail x ns)))
 
+(define builtin-features '(scxr blockstr))
+
 (define (features runtime container)
-  ((runtimef runtime 'ar-nillist) (cons 'scxr (hash-keys container))))
+  ((runtimef runtime 'ar-nillist)
+   (append builtin-features (hash-keys container))))
 
 (define (add-features runtime container)
   (hash-set container '*features* (features runtime container)))

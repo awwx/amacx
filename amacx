@@ -95,7 +95,6 @@ And here's the end of the Racket block comment:
 
 (require (only-in "rkt/runtime.rkt" runtimes runtimef))
 (require (only-in "rkt/boot.rkt" phase1 new-container))
-(require "rkt/readtables.rkt")
 
 (define runtime #f)
 (define repl #f)
@@ -142,57 +141,55 @@ And here's the end of the Racket block comment:
   (((runtimef runtime 'ref) boot-container 'repl)
    container))
 
-(w/readtables
-  (λ ()
-    (parse-command-line "compile" (current-command-line-arguments)
-      `((once-each
-         (("-n" "--no-errortrace")
-          ,(λ (flag)
-            ; Not reached because the option is consumed by Perl; but
-            ; include so that the option appears in the help output.
-            (void))
-          ("Don't load errortrace"))
+(parse-command-line "compile" (current-command-line-arguments)
+  `((once-each
+     (("-n" "--no-errortrace")
+      ,(λ (flag)
+        ; Not reached because the option is consumed by Perl; but
+        ; include so that the option appears in the help output.
+        (void))
+      ("Don't load errortrace"))
 
-         (("-r" "--runtime")
-          ,(λ (flag the-runtime)
-             (let ((runtime-sym (string->symbol the-runtime)))
-               (unless (memq runtime-sym runtimes)
-                 (error "Unknown runtime" runtime-sym))
-               (when runtime
-                 (error (format "Can't set runtime to ~s, already set to ~s"
-                                runtime-sym runtime)))
-               (set! runtime runtime-sym)))
-          ("Specify runtime: \"mpair\" or \"srcloc\"" "runtime"))
+     (("-r" "--runtime")
+      ,(λ (flag the-runtime)
+         (let ((runtime-sym (string->symbol the-runtime)))
+           (unless (memq runtime-sym runtimes)
+             (error "Unknown runtime" runtime-sym))
+           (when runtime
+             (error (format "Can't set runtime to ~s, already set to ~s"
+                            runtime-sym runtime)))
+           (set! runtime runtime-sym)))
+      ("Specify runtime: \"mpair\" or \"srcloc\"" "runtime"))
 
-         (("-i" "--repl")
-          ,(λ (flag)
-             (set! repl #t))
-          ("Start an interactive REPL (this is the default if no program is specified)")))
+     (("-i" "--repl")
+      ,(λ (flag)
+         (set! repl #t))
+      ("Start an interactive REPL (this is the default if no program is specified)")))
 
-        (multi
-         (("-u" "--use")
-          ,(λ (flag feature)
-             (use feature))
-          ("like (use feature)" "feature"))
+    (multi
+     (("-u" "--use")
+      ,(λ (flag feature)
+         (use feature))
+      ("like (use feature)" "feature"))
 
-         (("-l" "--load")
-          ,(λ (flag file)
-             (printf "load: ~s~n" file))
-          ("like (load \"file\")" "file"))))
+     (("-l" "--load")
+      ,(λ (flag file)
+         (printf "load: ~s~n" file))
+      ("like (load \"file\")" "file"))))
 
-      (lambda (flag-accum . arglist)
-        (when (pair? arglist)
-          (set! program (car arglist))
-          (set! args (cdr arglist))))
-      '("program" "arg"))
+  (lambda (flag-accum . arglist)
+    (when (pair? arglist)
+      (set! program (car arglist))
+      (set! args (cdr arglist))))
+  '("program" "arg"))
 
-    (set-argv)
+(set-argv)
 
-    (void
-      (cond (program
-             (load program)
-             (when repl
-               (run-repl)))
-            (else
-             (unless no-repl
-               (run-repl)))))))
+(void
+  (cond (program
+         (load program)
+         (when repl
+           (run-repl)))
+        (else
+         (unless no-repl
+           (run-repl)))))

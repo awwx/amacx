@@ -8,6 +8,6 @@
   (define-runtime-path amacx-module-path "amacx-module.rkt")
 
   (define (wrapper2 input-port proceed stx?)
-    (w/readtables
-      (λ ()
-        (proceed input-port)))))
+    (w/readtables input-port
+      (λ (splicing-port)
+        (proceed splicing-port)))))

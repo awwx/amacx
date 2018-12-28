@@ -2,6 +2,8 @@
 
 (def file-each (filename f)
   (w/infile in filename
-    (w/uniq eof
-      (whiler x (read in eof) eof
-        (f x)))))
+    (w/splicing-port in
+      (fn (splicing-port)
+        (w/uniq eof
+          (whiler x (read splicing-port eof) eof
+            (f x)))))))

@@ -235,6 +235,9 @@
        t             t
        table         table
        table-each    (fn (g f) (maptable f g))
+       w/splicing-port
+                     (fn (input-port f)
+                       (f input-port))
        +             +
        -             -
        *             *

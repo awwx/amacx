@@ -10,5 +10,11 @@ echo '=============== xcompile'
 echo '=============== load phase 2 in racket with inline tests'
 racket rkt/test-inline.rkt
 
+echo '=============== test blockstr'
+racket rkt/test-blockstr.rkt
+
+echo '=============== test readtables from the Racket "amacx" language'
+racket rkt/test-readtables.rkt
+
 echo '=============== run all tests individually'
 racket -tm rkt/runtests.rkt

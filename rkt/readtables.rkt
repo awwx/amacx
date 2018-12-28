@@ -1,17 +1,18 @@
 #lang racket
 
+(require "blockstr.rkt")
 (require "curly.rkt")
 (require "square.rkt")
 
-(provide w/readtables)
+(provide readtables w/readtables)
 
 (define readtables
   (curly-readtable
     (square-readtable #f)))
 
-(define (w/readtables f)
-  (parameterize ((current-readtable readtables))
-    (f)))
+(define (w/readtables port f)
+  (with-blockstr-readtable readtables port f))
+
 
 ; (module+ test (require rackunit/chk)
 ;   (define (parse s)

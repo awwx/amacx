@@ -33,7 +33,5 @@
   (void))
 
 (void
-  (w/readtables
-    (λ ()
-      (for ((runtime runtimes))
-        (test-inline runtime)))))
+  (for ((runtime runtimes))
+    (test-inline runtime)))

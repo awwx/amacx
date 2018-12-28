@@ -80,7 +80,5 @@
   (define container1 (phase1 runtime #f))
   (define aeval ((runtimef runtime 'ref) container1 'eval))
   (define container (new-container runtime container1))
-  (w/readtables
-    (λ ()
-      (for ((x (syntax->list xs)))
-        (aeval x container)))))
+  (for ((x (syntax->list xs)))
+    (aeval x container)))

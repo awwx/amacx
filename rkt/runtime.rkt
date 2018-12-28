@@ -11,7 +11,9 @@
 
 (define-syntax-rule (create-runtime name spec)
   (module name racket
+    (require "blockstr.rkt")
     (require "common.rkt")
+    (require "readtables.rkt")
     (require "symtab.rkt")
     (require "uniq.rkt")
     (require spec)
@@ -459,6 +461,9 @@
                  (unwrap prompt))))
         (if (eof-object? s) 'nil s)))
 
+    (define (w/splicing-port input-port f)
+      (with-blockstr-readtable readtables input-port f))
+
     (define runtime-builtins
       (hash
         'all-tests      (λ () (ar-niltree (all-tests)))
@@ -601,6 +606,8 @@
         'table-each     table-each
         'thread         thread
         'thread-wait    thread-wait
+        'w/splicing-port
+                        w/splicing-port
         '+              (unwrap-args +)
         '-              (unwrap-args -)
         '*              (unwrap-args *)
