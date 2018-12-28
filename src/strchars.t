@@ -1,3 +1,3 @@
-(use equals strchars)
+(use equals)
 
 (equals (strchars "abc") '(#\a #\b #\c))

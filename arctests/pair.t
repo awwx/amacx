@@ -1,4 +1,4 @@
-(use arcboot ar-assert is2 pair)
+(use arcboot pair)
 
 ((fn (x)
   (ar-assert (is2 (car  (car x))  'a))

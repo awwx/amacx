@@ -1,4 +1,4 @@
-(use equals eval-ail $ail)
+(use equals $ail)
 
 ($ail
   (equals (eval-ail '($quote 42))

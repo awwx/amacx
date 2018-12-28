@@ -1,4 +1,4 @@
-(use arcbase complex-fn inspect)
+(use arcbase complex-fn)
 
 (def as-str (x (o radix))
   (if (a-str x)

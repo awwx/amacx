@@ -1,4 +1,4 @@
-(use equals findfile rootdir)
+(use equals findfile)
 
 (equals (findfile rootdir '("arc" "src") "list.arc")
         "src/list.arc")

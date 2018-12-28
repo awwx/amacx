@@ -1,4 +1,4 @@
-(use equals -)
+(use equals)
 
 (equals (- 3) -3)
 (equals (- 10 2) 8)

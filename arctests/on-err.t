@@ -1,4 +1,4 @@
-(use arcbase equals on-err)
+(use arcbase equals)
 
 (equals
   (on-err

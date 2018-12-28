@@ -1,3 +1,3 @@
-(use true is +)
+(use true is)
 
 (true (is (+ 1 2) 3))

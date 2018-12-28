@@ -1,4 +1,4 @@
-(use arcbase simple-equals withs +)
+(use arcbase simple-equals withs)
 
 (equals (withs (a 1)) nil)
 

@@ -1,4 +1,4 @@
-(use arcboot annotate named-fn list)
+(use arcboot named-fn list)
 
 ; (assign mac
 ;   (annotate 'mac

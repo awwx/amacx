@@ -1,4 +1,4 @@
-(use equals map + square-fn)
+(use equals map square-fn)
 
 (equals (map +)
         '())

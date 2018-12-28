@@ -1,4 +1,4 @@
-(use simple-equals rreduce +)
+(use simple-equals rreduce)
 
 (equals (rreduce +    '())        0)
 (equals (rreduce +    '(1))       1)

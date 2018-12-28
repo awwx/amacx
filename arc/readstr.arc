@@ -1,4 +1,4 @@
-(use arcbase complex-fn w/open readport)
+(use arcbase complex-fn w/open)
 
 (def readstr (s (o eof nil))
   (w/instring in s

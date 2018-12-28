@@ -16,6 +16,7 @@
 (define (runtest runtime container1 src)
   (w/prefix (format "~a ~a " runtime src)
     (λ ()
+      (printf "~a~n" src)
       (let ((container (new-container runtime container1)))
         ((runtimef runtime 'aload)
           (path->string (build-path root src))
