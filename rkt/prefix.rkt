@@ -14,6 +14,10 @@
                    ; return, which shuts down the thread
                    (void))
                   (else
+                   ; TODO errors writing to stdout (e.g. redirecting
+                   ; to a pipe in the shell which is closed) should
+                   ; propagate back to the caller instead of being
+                   ; ignored.
                    (when at-beginning-of-line
                      (display prefix))
                    (write-char c)
