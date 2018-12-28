@@ -17,4 +17,4 @@ echo '=============== test readtables from the Racket "amacx" language'
 racket rkt/test-readtables.rkt
 
 echo '=============== run all tests individually'
-racket -tm rkt/runtests.rkt
+racket rkt/runtests.rkt

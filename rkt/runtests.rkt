@@ -52,3 +52,5 @@
            (run-tests-in-runtime (string->symbol (car argv))
                                  (cdr argv)))))
   (void))
+
+(apply main (vector->list (current-command-line-arguments)))
