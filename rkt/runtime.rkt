@@ -471,6 +471,7 @@
                           (tnil (acons x)))
         'annotate       ar-tag
         'apply          ar-apply
+        'apply1         ar-apply
         'a-char         (λ (x)
                           (tnil (char? (unwrap x))))
         'a-fn           (λ (x)
@@ -503,7 +504,6 @@
                             (tnil (and (integer? x) (exact? x)))))
         'an-output      (λ (x)
                           (tnil (output-port? x)))
-        'ar-apply       ar-apply
         'ar-assert      builtin-ar-assert
         'ar-disp        builtin-ar-disp
         'ar-iso         builtin-ar-iso

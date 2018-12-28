@@ -1,4 +1,4 @@
 (use simple-def combine-apply)
 
 (def apply (f . args)
-  (ar-apply f (combine-apply args)))
+  (apply1 f (combine-apply args)))

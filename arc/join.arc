@@ -7,5 +7,5 @@
         (if (no (cdr args))
              a
             (no a)
-             (ar-apply join (cdr args))
-             (cons (car a) (ar-apply join (cons (cdr a) (cdr args))))))))
+             (apply1 join (cdr args))
+             (cons (car a) (apply1 join (cons (cdr a) (cdr args))))))))

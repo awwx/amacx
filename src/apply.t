@@ -1,4 +1,4 @@
-(use equals apply +)
+(use simple-equals apply +)
 
 (equals (apply +)     0)
 (equals (apply + '()) 0)

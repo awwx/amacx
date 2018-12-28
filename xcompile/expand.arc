@@ -171,7 +171,7 @@
   (obj acons         [isa _ 'cons]
        annotate      annotate
        apply         apply
-       ar-apply      apply
+       apply1        apply
        ar-assert     ar-assert
        ar-disp       disp
        ar-iso        iso
