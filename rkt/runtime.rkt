@@ -194,6 +194,9 @@
     (define (builtin-call-w/stdout port thunk)
       (parameterize ((current-output-port port)) (thunk)))
 
+    (define (builtin-call-w/stderr port thunk)
+      (parameterize ((current-error-port port)) (thunk)))
+
     ; TODO sockets, custodians
     (define (builtin-close port)
       (cond ((input-port? port) (close-input-port port))
@@ -517,6 +520,7 @@
         'ar-<2          builtin-ar-<2
         'ar->2          builtin-ar->2
         'atomic-invoke  atomic-invoke
+        'call-w/stderr  builtin-call-w/stderr
         'call-w/stdout  builtin-call-w/stdout
         'car            xcar
         'cdr            xcdr
