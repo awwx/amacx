@@ -195,6 +195,7 @@
        an-input      [isa _ 'input]
        an-int        [isa _ 'int]
        an-output     [isa _ 'output]
+       call-w/stdin  call-w/stdin
        call-w/stdout call-w/stdout
        car           car
        cdr           cdr
