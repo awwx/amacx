@@ -16,4 +16,4 @@
                         16)))
     (if (eq? sym 'nil)
         (string->symbol r)
-        (string->symbol (string-append (symbol->string sym) "-" r)))))
+        (string->symbol (string-append (symbol->string sym) "--" r)))))

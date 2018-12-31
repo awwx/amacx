@@ -151,8 +151,8 @@
             ((rule 'action) context e it)
             (match-rule (cdr rules) context e)))))
 
-(assign compile-xVrP8JItk2Ot (gen-ac ac-rules))
+(assign compile--xVrP8JItk2Ot (gen-ac ac-rules))
 
 (def extend-ac rule-names
   (assign ac-rules (join rule-names ac-rules))
-  (assign compile-xVrP8JItk2Ot (gen-ac ac-rules)))
+  (assign compile--xVrP8JItk2Ot (gen-ac ac-rules)))

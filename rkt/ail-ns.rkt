@@ -9,12 +9,12 @@
 
 (define-syntax-rule (create-ail-module name runtime)
   (module name racket
-    (provide quote-xVrP8JItk2Ot
-             fn-xVrP8JItk2Ot
-             assign-xVrP8JItk2Ot
-             if-xVrP8JItk2Ot
-             call-xVrP8JItk2Ot
-             ns-var-xVrP8JItk2Ot
+    (provide quote--xVrP8JItk2Ot
+             fn--xVrP8JItk2Ot
+             assign--xVrP8JItk2Ot
+             if--xVrP8JItk2Ot
+             call--xVrP8JItk2Ot
+             ns-var--xVrP8JItk2Ot
              #%top)
     (require (submod "runtime.rkt" runtime))))
 

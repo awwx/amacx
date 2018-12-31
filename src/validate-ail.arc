@@ -27,7 +27,7 @@
          (all ail-expr (cdr x))))
 
   (def ail-namespace-var (x)
-    (and (caris x 'ns-var-xVrP8JItk2Ot)
+    (and (caris x 'ns-var--xVrP8JItk2Ot)
          (a-sym (cadr x))))
 
   (def ail-expr (x)

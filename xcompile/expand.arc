@@ -138,7 +138,7 @@
           '(a b c)))
 
 (def expand-eval-arc (container x)
-  (eval:ailarc:compile-xVrP8JItk2Ot container x))
+  (eval:ailarc:compile--xVrP8JItk2Ot container x))
 
 ($ail
   (= zilch (obj))
@@ -279,7 +279,7 @@
 
 (def execf (container out src x)
   ; TODO validate-ail
-  (let m (compile-xVrP8JItk2Ot container x)
+  (let m (compile--xVrP8JItk2Ot container x)
     (when out
       (disp "\n; " out)
       (write src out)

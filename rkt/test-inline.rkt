@@ -25,7 +25,7 @@
          (hash 'builtins      (runtime-builtins runtime)
                'compiler      ((runtimef runtime 'ref)
                                 container1
-                                'compile-xVrP8JItk2Ot)
+                                'compile--xVrP8JItk2Ot)
                'inline-tests  ((runtimef runtime 'tnil) #t)
                'start         'container)))))
 

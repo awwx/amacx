@@ -73,8 +73,8 @@
     ; left unconverted.
 
     (define (arcail x)
-      (cond ((xcaris x 'quote-xVrP8JItk2Ot)
-             (ar-srcloc x (list 'quote-xVrP8JItk2Ot (hide (xcadr x)))))
+      (cond ((xcaris x 'quote--xVrP8JItk2Ot)
+             (ar-srcloc x (list 'quote--xVrP8JItk2Ot (hide (xcadr x)))))
 
             ((acons x)
              (ar-srcloc x
@@ -332,29 +332,29 @@
            (λ args
              (r-apply f args))))
 
-    (define-syntax quote-xVrP8JItk2Ot
+    (define-syntax quote--xVrP8JItk2Ot
       (syntax-rules ()
-        ((quote-xVrP8JItk2Ot x)
+        ((quote--xVrP8JItk2Ot x)
          (unhide 'x))))
 
-    (define-syntax fn-xVrP8JItk2Ot
+    (define-syntax fn--xVrP8JItk2Ot
       (syntax-rules ()
-        ((fn-xVrP8JItk2Ot (arg (... ...)) e (... ...))
+        ((fn--xVrP8JItk2Ot (arg (... ...)) e (... ...))
          (lambda (arg (... ...)) e (... ...)))
 
-        ((fn-xVrP8JItk2Ot (arg (... ...) . rest) e (... ...))
+        ((fn--xVrP8JItk2Ot (arg (... ...) . rest) e (... ...))
          (lambda (arg (... ...) . racket-rest)
            (let ((rest (ar-nillist racket-rest)))
              e (... ...))))))
 
-    (define-syntax if-xVrP8JItk2Ot
+    (define-syntax if--xVrP8JItk2Ot
       (syntax-rules ()
-        ((if-xVrP8JItk2Ot e1 e2 e3)
+        ((if--xVrP8JItk2Ot e1 e2 e3)
          (if (ar-true? e1) e2 e3))))
 
-    (define-syntax assign-xVrP8JItk2Ot
+    (define-syntax assign--xVrP8JItk2Ot
       (syntax-rules ()
-        ((assign-xVrP8JItk2Ot v x)
+        ((assign--xVrP8JItk2Ot v x)
          (let ((val x))
            (set! v val)
            val))))
@@ -389,29 +389,29 @@
          (quasisyntax/loc stx
            (#,(syntax/loc #'fn (caller fn)) arg1 arg2 arg3 arg4)))))
 
-  (define-syntax call-xVrP8JItk2Ot
+  (define-syntax call--xVrP8JItk2Ot
     (syntax-rules ()
-      ((call-xVrP8JItk2Ot f)
+      ((call--xVrP8JItk2Ot f)
        (funcall0 f))
 
-      ((call-xVrP8JItk2Ot f arg1)
+      ((call--xVrP8JItk2Ot f arg1)
        (funcall1 f arg1))
 
-      ((call-xVrP8JItk2Ot f arg1 arg2)
+      ((call--xVrP8JItk2Ot f arg1 arg2)
        (funcall2 f arg1 arg2))
 
-      ((call-xVrP8JItk2Ot f arg1 arg2 arg3)
+      ((call--xVrP8JItk2Ot f arg1 arg2 arg3)
        (funcall3 f arg1 arg2 arg3))
 
-      ((call-xVrP8JItk2Ot f arg1 arg2 arg3 arg4)
+      ((call--xVrP8JItk2Ot f arg1 arg2 arg3 arg4)
        (funcall4 f arg1 arg2 arg3 arg4))
 
-      ((call-xVrP8JItk2Ot f e (... ...))
+      ((call--xVrP8JItk2Ot f e (... ...))
        (r-apply f (list e (... ...))))))
 
-    (define-syntax ns-var-xVrP8JItk2Ot
+    (define-syntax ns-var--xVrP8JItk2Ot
       (syntax-rules ()
-        ((ns-var-xVrP8JItk2Ot v)
+        ((ns-var--xVrP8JItk2Ot v)
          v)))
 
     (define (sref g key val)

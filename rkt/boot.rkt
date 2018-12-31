@@ -36,8 +36,8 @@
   (and (pair? x) (eq? (car x) v)))
 
 (define (demunch runtime container x)
-  (cond ((caris x 'quote-xVrP8JItk2Ot)
-         `(quote-xVrP8JItk2Ot
+  (cond ((caris x 'quote--xVrP8JItk2Ot)
+         `(quote--xVrP8JItk2Ot
             ,((runtimef runtime 'quote-this)
                (inject runtime container (cadr x)))))
 
@@ -74,7 +74,7 @@
    (hash 'builtins (runtime-builtins runtime)
          'compiler ((runtimef runtime 'ref)
                      container1
-                     'compile-xVrP8JItk2Ot))))
+                     'compile--xVrP8JItk2Ot))))
 
 (define (munch runtime xs)
   (define container1 (phase1 runtime #f))
