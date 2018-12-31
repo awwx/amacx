@@ -120,7 +120,7 @@
         ((null? x)
          '())
         ((syntax? x)
-         (ar-denil-car (syntax-e x)))
+         (ar-denil-cdr (syntax-e x)))
         (else
          (ar-denil x))))
 
