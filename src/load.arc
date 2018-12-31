@@ -3,7 +3,7 @@
 (def has-feature (container feature)
   (contains (container '*features* nil) feature))
 
-(def provides-feature (container feature)
+(def provide-feature (container feature)
   (unless (has-feature container feature)
     (sref container '*features*
       (cons feature (container '*features* nil))))
@@ -11,10 +11,10 @@
 
 (def load (name (o target-container this-container))
   (when (a-sym name)
-    (provides-feature target-container name))
+    (provide-feature target-container name))
 
   (let src (if (a-sym name)
-                (findsrc nil name)
+                (findsrc target-container name)
                 name)
     (unless src
       (err "load: unable to find in srcdirs:" name))

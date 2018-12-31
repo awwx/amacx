@@ -1,8 +1,32 @@
-(use arcbase unless contains load each)
+(use arcbase unless contains load each afn)
+
+(def use-lib (container path)
+  (sref container 'usepath--xVrP8JItk2Ot
+    (cons path (usepath container)))
+  nil)
 
 (def use-feature (container feature)
   (unless (has-feature container feature)
-    (load feature container))
+    (load feature container)))
+
+; TODO use-lib path should be able to be an expression
+
+(def munch-feature (container features)
+  (let feature (car features)
+    (let remainder (cdr features)
+      (if (is feature 'lib)
+           (if (no remainder)
+                (error "use lib not followed by path")
+                (do (use-lib container (car remainder))
+                    (cdr remainder)))
+           (do (use-feature container feature)
+               remainder)))))
+
+(def use-features (container features)
+  ((afn (features)
+     (when features
+       (self (munch-feature container features))))
+   features)
   nil)
 
 ; We want macros like this in the target container:
@@ -39,12 +63,10 @@
 (def implement-use (container)
   (annotate 'mac
     (fn features
-      (each feature features
-        (use-feature container feature))
-      nil)))
+      (use-features container features))))
 
 (def implement-provides (container)
   (annotate 'mac
     (fn (feature)
-      (provides-feature container feature)
+      (provide-feature container feature)
       nil)))

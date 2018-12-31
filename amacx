@@ -126,6 +126,11 @@ And here's the end of the Racket block comment:
     (((runtimef runtime 'ref) boot-container 'use-feature)
      container feature)))
 
+(define (include path)
+  (init-container)
+  (((runtimef runtime 'ref) boot-container 'use-lib)
+   container path))
+
 (define (load file)
   (init-container)
   ((runtimef runtime 'aload) file container boot-container))
@@ -176,6 +181,11 @@ And here's the end of the Racket block comment:
       ,(λ (flag feature)
          (use feature))
       ("like (use feature)" "feature"))
+
+     (("-I")
+      ,(λ (flag path)
+         (include path))
+      ("include" "path"))
 
      (("-l" "--load")
       ,(λ (flag file)

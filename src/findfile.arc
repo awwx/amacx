@@ -13,15 +13,20 @@
                  (+ _ "/" filename)]
         dirs))
 
-(assign *srcdirs*
-  '("arc" "arctests" "extras" "qq" "qqtests" "src" "xboot"))
+(def default-usepath ()
+  (map1 (fn (_) (+ rootdir _))
+       '("arc" "arctests" "extras" "qq" "qqtests" "src" "xboot")))
+
+(def usepath (container)
+  (or (and container (container 'usepath--xVrP8JItk2Ot nil))
+      (default-usepath)))
 
 (def findsrc (container name)
   (findfile rootdir
-            *srcdirs*
+            (usepath container)
             (str-append (asfilename name) ".arc")))
 
 (def findtest (container name)
   (findfile rootdir
-            *srcdirs*
+            (usepath container)
             (str-append (asfilename name) ".t")))

@@ -4,7 +4,7 @@
   (equals (eval '(+ 1 2) container)
           3)
 
-  (use-feature container 'reduce)
+  (use-features container '(reduce))
 
   (equals (eval '(reduce + '(1 2 3 4)) container)
           10)

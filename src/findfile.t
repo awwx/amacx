@@ -4,7 +4,7 @@
         "src/list.arc")
 
 (equals (findsrc nil 'w/uniq)
-        "arc/w_slash_uniq.arc")
+        (+ rootdir "arc/w_slash_uniq.arc"))
 
 (equals (findtest nil 'literal)
-        "src/literal.t")
+        (+ rootdir "src/literal.t"))

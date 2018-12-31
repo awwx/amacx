@@ -1,7 +1,7 @@
 (use arcbase when findfile prn file-each eval)
 
 (def runtest-if-exists (name target-container)
-  (let src (findtest nil name)
+  (let src (findtest target-container name)
     (when src
       (loadfile src target-container))))
 

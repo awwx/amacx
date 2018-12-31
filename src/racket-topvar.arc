@@ -10,4 +10,4 @@
   (ret container (ail-namespace)
     (provision-container container (obj compiler ns-topvar-ac))
     (= container!topvar ns-topvar)
-    (provides-feature container 'topvar)))
+    (provide-feature container 'topvar)))
