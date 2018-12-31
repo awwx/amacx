@@ -474,11 +474,17 @@
       (let ((c (read-char port)))
         (if (eof-object? c) 'nil c)))
 
+    ; TODO all procedures should be named with the name they're
+    ; referenced with in Arc.  E.g. `(prn apply)` in Arc should
+    ; print `#<procedure:apply>`.
+
     (define runtime-builtins
       (hash
         'all-tests      (λ () (ar-niltree (all-tests)))
-        'acons          (λ (x)
-                          (tnil (acons x)))
+        'acons          (procedure-rename
+                          (λ (x)
+                            (tnil (acons x)))
+                          'acons)
         'annotate       ar-tag
         'apply          ar-apply
         'apply1         ar-apply
