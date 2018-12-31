@@ -164,7 +164,12 @@ And here's the end of the Racket block comment:
      (("-i" "--repl")
       ,(λ (flag)
          (set! repl #t))
-      ("Start an interactive REPL (this is the default if no program is specified)")))
+      ("Start an interactive REPL (this is the default if no program is specified)"))
+
+     (("--no-repl")
+      ,(λ (flag)
+         (set! no-repl #t))
+      ("Don't start an interactive REPL (even if no program is specified)")))
 
     (multi
      (("-u" "--use")
@@ -174,7 +179,7 @@ And here's the end of the Racket block comment:
 
      (("-l" "--load")
       ,(λ (flag file)
-         (printf "load: ~s~n" file))
+         (load file))
       ("like (load \"file\")" "file"))))
 
   (lambda (flag-accum . arglist)
