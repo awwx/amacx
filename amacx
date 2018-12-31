@@ -141,7 +141,7 @@ And here's the end of the Racket block comment:
   (((runtimef runtime 'ref) boot-container 'repl)
    container))
 
-(parse-command-line "compile" (current-command-line-arguments)
+(parse-command-line "amacx" (current-command-line-arguments)
   `((once-each
      (("-n" "--no-errortrace")
       ,(λ (flag)
