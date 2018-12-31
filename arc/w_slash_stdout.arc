@@ -1,5 +1,8 @@
 (use arcbase quasiquote)
 
+(mac w/stdin (str . body)
+  `(,call-w/stdin ,str (,fn () ,@body)))
+
 (mac w/stdout (str . body)
   `(,call-w/stdout ,str (,fn () ,@body)))
 

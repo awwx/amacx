@@ -191,6 +191,9 @@
                     ((and (char? x)   (char? y)) (char>? x y))
                     (else (> x y))))))
 
+    (define (builtin-call-w/stdin port thunk)
+      (parameterize ((current-input-port port)) (thunk)))
+
     (define (builtin-call-w/stdout port thunk)
       (parameterize ((current-output-port port)) (thunk)))
 
@@ -467,6 +470,10 @@
     (define (w/splicing-port input-port f)
       (with-blockstr-readtable readtables input-port f))
 
+    (define (ar-readc port)
+      (let ((c (read-char port)))
+        (if (eof-object? c) 'nil c)))
+
     (define runtime-builtins
       (hash
         'all-tests      (λ () (ar-niltree (all-tests)))
@@ -511,6 +518,7 @@
         'ar-disp        builtin-ar-disp
         'ar-iso         builtin-ar-iso
         'ar-print       builtin-ar-print
+        'ar-readc       ar-readc
         'ar-strlen      builtin-ar-strlen
         'ar-symstr      builtin-ar-symstr
         'ar-tag-type    ar-tag-type
@@ -521,6 +529,7 @@
         'ar->2          builtin-ar->2
         'atomic-invoke  atomic-invoke
         'call-w/stderr  builtin-call-w/stderr
+        'call-w/stdin   builtin-call-w/stdin
         'call-w/stdout  builtin-call-w/stdout
         'car            xcar
         'cdr            xcdr
