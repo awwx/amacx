@@ -3,7 +3,7 @@
 (use arcbase quasiquote complex-fn ssyntax square-fn def assoc withs
      rfn afn compose complement rev isnt w/uniq in iso when unless
      while empty reclist recstring testify some all mem find map
-     mappend > warn atomic setforms setform-cons forloop for)
+     mappend > warn atomic setforms setform-cons forloop for accum)
 
 ; Arc 3.2 arc.arc:282
 
@@ -31,3 +31,11 @@
 
 (mac defs args
   `(do ,@(map [cons 'def _] (tuples args 3))))
+
+; Arc 3.2 arc.arc:458
+
+(mac down (v init min . body)
+  (w/uniq (gi gm)
+    `(,with (,v nil ,gi ,init ,gm (,- ,min 1))
+       (,forloop (,assign ,v ,gi) (,> ,v ,gm) (,assign ,v (- ,v 1))
+         ,@body))))
