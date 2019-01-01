@@ -58,3 +58,5 @@ or additions that might be able to be used separately.
   runtime.
 
 * `warn` prints to stderr.
+
+* `loop` renamed to `forloop`.

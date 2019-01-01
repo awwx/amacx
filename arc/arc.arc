@@ -3,7 +3,7 @@
 (use arcbase quasiquote complex-fn ssyntax square-fn def assoc withs
      rfn afn compose complement rev isnt w/uniq in iso when unless
      while empty reclist recstring testify some all mem find map
-     mappend > warn atomic setforms setform-cons)
+     mappend > warn atomic setforms setform-cons forloop for)
 
 ; Arc 3.2 arc.arc:282
 
