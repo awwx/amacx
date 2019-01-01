@@ -1,5 +1,50 @@
 #lang racket
 
+; Our goal here is to be able to support different runtime
+; implementations without a lot of code duplication.
+;
+; For example, in the `srcloc` runtime values may be syntax objects
+; which need to be unwrapped before being passed to Racket functions:
+;
+;   (define (infile path)
+;     (let ((port (open-input-file (unwrap path))))
+;       ...))
+;
+; In the `mpair` runtime we define `unwrap` as a macro which is simply
+; replaced with its argument:
+;
+;   (define-syntax-rule (unwrap x)
+;     x)
+;
+; Thus here we can use the same definition for `infile` in both
+; runtimes, without incurring any slowdown in the `mpair` runtime.
+;
+; This is somewhat awkward to do in Racket; code generation might be a
+; better approach.
+;
+; The strategy used here is we create a submodule for each runtime
+;
+;   (create-runtime mpair  "mpair.rkt")
+;   (create-runtime srcloc "srcloc.rkt")
+;
+; where `mpair.rkt` and `srcloc.rkt` contains the code specific to
+; each runtime.
+;
+; `create-runtime` is itself a macro which expands into a submodule
+; named after the runtime.
+;
+; From Racket we can then reference a particular runtime implementation
+; using Racket's require submodule syntax, e.g.:
+;
+;   (require (submod "runtime.rkt" mpair))`
+;
+; `runtimef` allows us to retrieve a function for a particular runtime,
+; e.g.:
+;
+;   (runtimef 'mpair 'ar-niltree)
+;
+; returns mpair's implementation of `ar-niltree`.
+
 (require syntax/location)
 
 (provide runtimes runtimef)
@@ -495,8 +540,12 @@
       (let ((c (read-char port)))
         (if (eof-object? c) 'nil c)))
 
-    ; TODO all procedures should be named with the name they're
-    ; referenced with in Arc.  E.g. `(prn apply)` in Arc should
+    ; This is *most* of the builtins, but a few builtins depend on
+    ; ail-ns.rkt which depends on runtime.rkt here, so builtins.rkt
+    ; completes gathering all the builtins for each runtime.
+
+    ; TODO procedures should be named with the name they're
+    ; referenced with in Arc, e.g. `(prn apply)` in Arc should
     ; print `#<procedure:apply>`.
 
     (define runtime-builtins
@@ -653,5 +702,5 @@
         '*              (unwrap-args *)
         '/              (unwrap-args /)))))
 
-(create-runtime mpair  "../rkt/mpair.rkt")
-(create-runtime srcloc "../rkt/srcloc.rkt")
+(create-runtime mpair  "mpair.rkt")
+(create-runtime srcloc "srcloc.rkt")

@@ -1,7 +1,7 @@
 #lang racket
 
-(require "common.rkt")
-(require "symtab.rkt")
+(require "../rkt/common.rkt")
+(require "../rkt/symtab.rkt")
 
 (provide (all-defined-out))
 

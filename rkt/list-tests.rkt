@@ -2,7 +2,7 @@
 
 (require json)
 (require "../arc/runtime.rkt")
-(require "../rkt/common.rkt")
+(require "common.rkt")
 
 (define (firstn n xs)
   (cond ((null? xs)
