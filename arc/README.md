@@ -18,15 +18,17 @@ versions:
 > documenting any non-standard features, executables, or modules, and
 > provided that you do at least ONE of the following:
 
-We are using the first option:
+We’re using the first option:
 
 > (a) make the Modified Version available to the Copyright Holder of
 > the Standard Version, under the Original License, so that the
 > Copyright Holder may include your modifications in the Standard
 > Version.
 
-Modifications copyright 2018 Andrew Wilcox, licensed under the
-Original License (the Artistic License 2.0).
+Modifications and additions copyright 2018, 2019 Andrew Wilcox, dual
+licensed under the Original License (the Artistic License 2.0) for
+incorporating code with Arc, and the MIT license for any modifications
+or additions that might be able to be used separately.
 
 
 ## Differences from the Standard Version
