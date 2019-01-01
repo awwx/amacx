@@ -11,8 +11,8 @@
 
 (provide phase1 new-container munch)
 
-(define expanded-boot-path (build-path rootdir "xboot/boot.expanded"))
-(define test-boot-path     (build-path rootdir "xboot/boot-test.expanded"))
+(define expanded-boot-path (build-path rootdir "xboot/compiler.nail"))
+(define test-boot-path     (build-path rootdir "xboot/compiler-test.nail"))
 
 ;; Phase one
 

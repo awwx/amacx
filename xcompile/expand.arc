@@ -338,13 +338,13 @@
     (runtest inline-tests container out name)))
 
 (let container (create-boot-container)
-  (w/outfile out "../xboot/boot-test.expanded"
+  (w/outfile out "../xboot/compiler-test.nail"
     (runtest t container out 'ail)
     (runtest t container out '$quote)
     (runtest t container out '$if)
     (xload t container out 'container)))
 
 (let container (create-boot-container)
-  (w/outfile out "../xboot/boot.expanded"
+  (w/outfile out "../xboot/compiler.nail"
     (xload nil container out 'container)
     (xload nil container out 'repl)))
