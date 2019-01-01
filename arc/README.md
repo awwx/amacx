@@ -56,3 +56,5 @@ or additions that might be able to be used separately.
   optional arguments have an implementation in Arc which handles the
   optional arguments and then calls a simpler builtin provided by the
   runtime.
+
+* `warn` prints to stderr.

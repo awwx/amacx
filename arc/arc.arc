@@ -3,7 +3,7 @@
 (use arcbase quasiquote complex-fn ssyntax square-fn def assoc withs
      rfn afn compose complement rev isnt w/uniq in iso when unless
      while empty reclist recstring testify some all mem find map
-     mappend >)
+     mappend > warn atomic setforms setform-cons)
 
 ; Arc 3.2 arc.arc:282
 
@@ -24,3 +24,10 @@
       nil
       (cons (firstn n xs)
             (tuples (nthcdr n xs) n))))
+
+; If ok to do with =, why not with def?  But see if use it.
+
+; TODO test
+
+(mac defs args
+  `(do ,@(map [cons 'def _] (tuples args 3))))

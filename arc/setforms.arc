@@ -1,5 +1,5 @@
 (use arcbase w/uniq expand-ssyntax quasiquote warn mappend compose
-     complement afn ssyntax complex-fn +list)
+     complement afn ssyntax complex-fn +list atomic)
 
 (assign setter (table))
 
@@ -61,7 +61,7 @@
       `(assign ,place ,val)
       (let (vars prev setter) (setforms place)
         (w/uniq g
-          `(with ,(+ vars (list g val))
+          `(atwith ,(+ vars (list g val))
              (,setter ,g))))))
 
 (def expand=list (terms)
