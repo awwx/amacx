@@ -36,8 +36,8 @@
   (and (pair? x) (eq? (car x) v)))
 
 (define (demunch runtime container x)
-  (cond ((caris x 'quote--xVrP8JItk2Ot)
-         `(quote--xVrP8JItk2Ot
+  (cond ((caris x '$quote--xVrP8JItk2Ot)
+         `($quote--xVrP8JItk2Ot
             ,((runtimef runtime 'quote-this)
                (inject runtime container (cadr x)))))
 

@@ -4,7 +4,7 @@
 (= ns-topvar
   (annotate 'mac
     (fn (varname)
-      `(ns-var--xVrP8JItk2Ot ,varname))))
+      `($ns-var--xVrP8JItk2Ot ,varname))))
 
 (def racket-topvar-container ()
   (ret container (ail-namespace)
