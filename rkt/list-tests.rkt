@@ -1,7 +1,7 @@
 #lang racket
 
 (require json)
-(require "../rkt/runtime.rkt")
+(require "../arc/runtime.rkt")
 (require "../rkt/common.rkt")
 
 (define (firstn n xs)

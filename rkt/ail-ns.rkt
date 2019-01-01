@@ -3,7 +3,7 @@
 (require racket/runtime-path)
 
 (require "common.rkt")
-(require "runtime.rkt")
+(require "../arc/runtime.rkt")
 
 (provide construct-ail-ns default-namespaces)
 
@@ -16,7 +16,7 @@
              $call--xVrP8JItk2Ot
              $ns-var--xVrP8JItk2Ot
              #%top)
-    (require (submod "runtime.rkt" runtime))))
+    (require (submod "../arc/runtime.rkt" runtime))))
 
 (create-ail-module ail-mpair  mpair)
 (create-ail-module ail-srcloc srcloc)

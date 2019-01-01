@@ -5,11 +5,11 @@
 
 (require "ail-ns.rkt")
 (require "common.rkt")
-(require "runtime.rkt")
+(require "../arc/runtime.rkt")
 
 (provide runtime-builtins)
 
-(define-runtime-path runtime-path "runtime.rkt")
+(define-runtime-path runtime-path "../arc/runtime.rkt")
 
 (define (builtin-eval-ail-for runtime)
   (define runtime-eval-ail (runtimef runtime 'eval-ail))

@@ -11,11 +11,11 @@
 
 (define-syntax-rule (create-runtime name spec)
   (module name racket
-    (require "blockstr.rkt")
-    (require "common.rkt")
-    (require "readtables.rkt")
-    (require "symtab.rkt")
-    (require "uniq.rkt")
+    (require "../rkt/blockstr.rkt")
+    (require "../rkt/common.rkt")
+    (require "../rkt/readtables.rkt")
+    (require "../rkt/symtab.rkt")
+    (require "../rkt/uniq.rkt")
     (require spec)
 
     (provide (all-defined-out)
@@ -38,6 +38,7 @@
 
             (else x)))
 
+    ; Arc 3.2 ac.scm:545
     (define (ar-niltree x)
       (cond ((pair? x)
              (mcons (ar-niltree (car x))
@@ -48,17 +49,20 @@
 
             (else x)))
 
+    ; Arc 3.2 ac.scm:818
     (define (ar-tag type rep)
       (if (eq? (unwrap (ar-tag-type rep)) (unwrap type))
            rep
            (vector 'tagged type rep)))
 
+    ; Arc 3.2 ac.scm:815
     (define (ar-tagged? x)
       (and (vector? x) (eq? (vector-ref x 0) 'tagged)))
 
     (define (ar-tag-type x)
       (and (ar-tagged? x) (vector-ref x 1)))
 
+    ; Arc 3.2 ac.scm:847
     (define (ar-rep x)
       (if (ar-tagged? x) (vector-ref x 2) x))
 
@@ -118,6 +122,7 @@
 
         (else (err "unknown runtime" runtime))))
 
+    ; Arc 3.2 ac.scm:1087
     (define (protect during after)
       (dynamic-wind (lambda () #t) during after))
 
@@ -126,6 +131,8 @@
            (printf "OK\n")
            (begin (printf "FAIL\n")
                   (error 'fail)))) ; TODO
+
+    ; TODO explicit-flush?  Arc 3.2 ac.scm:927
 
     (define (builtin-ar-disp x port)
       (display (ar-denil x) port)
@@ -137,9 +144,9 @@
       (flush-output port)
       x)
 
+    ; Arc 3.2 ac.scm:913
     (define (builtin-ar-writec c port)
       (write-char (unwrap c) port)
-      (flush-output port)
       c)
 
     ; used by some early tests before iso is loaded
@@ -173,6 +180,7 @@
     (define (builtin-ar-uniq gen sym)
       (ar-uniq (unwrap gen) (unwrap sym)))
 
+    ; Arc 3.2 ac.scm:800
     (define (builtin-ar-<2 x y)
       (unwraps (x y)
         (tnil (cond ((and (number? x) (number? y)) (< x y))
@@ -182,6 +190,7 @@
                     ((and (char? x)   (char? y)) (char<? x y))
                     (else (< x y))))))
 
+    ; Arc 3.2 ac.scm:790
     (define (builtin-ar->2 x y)
       (unwraps (x y)
         (tnil (cond ((and (number? x) (number? y)) (> x y))
@@ -191,21 +200,27 @@
                     ((and (char? x)   (char? y)) (char>? x y))
                     (else (> x y))))))
 
+    ; Arc 3.2 ac.scm:890
     (define (builtin-call-w/stdin port thunk)
       (parameterize ((current-input-port port)) (thunk)))
 
+    ; Arc 3.2 ac.scm:886
     (define (builtin-call-w/stdout port thunk)
       (parameterize ((current-output-port port)) (thunk)))
 
     (define (builtin-call-w/stderr port thunk)
       (parameterize ((current-error-port port)) (thunk)))
 
-    ; TODO sockets, custodians
+    ; TODO sockets, custodians, custodian-shutdown-all:
+    ; see Arc 3.2 ac.scm:1358
+
+    ; Arc 3.2 ac.scm:1386
     (define (builtin-close port)
       (cond ((input-port? port) (close-input-port port))
             ((output-port? port) (close-output-port port))
             (else (err "can't close" port))))
 
+    ; Arc 3.2 ac.scm:1224
     (define (disp-to-string x)
       (let ((p (open-output-string)))
         (display x p)
@@ -226,6 +241,7 @@
            (xlist-ref (xcdr xs) (- n 1))))
 
     ; where args is a Racket list
+    ; Arc 3.2 ac.scm:635
     (define (r-apply fn args)
       (cond ((procedure? fn)
              (apply fn args))
@@ -294,21 +310,23 @@
              '())
             (else x)))
 
-    (define (combine-apply args)
+    ; Arc 3.2 ac.scm:697
+    (define (ar-apply-args args)
       (cond ((null? args)
              '())
             ((null? (cdr args))
              (ar-denillist (car args)))
             (else
-             (cons (car args) (combine-apply (cdr args))))))
+             (cons (car args) (ar-apply-args (cdr args))))))
 
     ; where args is an Arc list
     (define ar-apply
       (case-lambda
         ((fn)        (r-apply fn '()))
         ((fn args)   (r-apply fn (ar-denillist args)))
-        ((fn . rest) (r-apply fn (combine-apply rest)))))
+        ((fn . rest) (r-apply fn (ar-apply-args rest)))))
 
+    ; Arc 3.2 ac.scm:1327
     (define ar-the-sema (make-semaphore 1))
 
     (define ar-sema-cell (make-thread-cell #f))
@@ -414,6 +432,7 @@
         (($ns-var--xVrP8JItk2Ot v)
          v)))
 
+    ; Arc 3.2 ac.scm:1280
     (define (sref g key val)
       (let ((key (deep-unwrap key)))
         (cond ((hash? g)   (if (eq? val 'nil)
@@ -446,6 +465,7 @@
       (with-handlers ((exn:break? (λ (exn) (breakfn))))
         (f)))
 
+    ; Arc 3.2 ac.scm:1033
     (define (wrapnil f)
       (λ args
         (apply f args) 'nil))
@@ -470,6 +490,7 @@
     (define (w/splicing-port input-port f)
       (with-blockstr-readtable readtables input-port f))
 
+    ; Arc 3.2 ac.scm:894
     (define (ar-readc port)
       (let ((c (read-char port)))
         (if (eof-object? c) 'nil c)))
@@ -632,5 +653,5 @@
         '*              (unwrap-args *)
         '/              (unwrap-args /)))))
 
-(create-runtime mpair  "mpair.rkt")
-(create-runtime srcloc "srcloc.rkt")
+(create-runtime mpair  "../rkt/mpair.rkt")
+(create-runtime srcloc "../rkt/srcloc.rkt")

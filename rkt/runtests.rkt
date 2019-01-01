@@ -5,7 +5,7 @@
 (require "builtins.rkt")
 (require "common.rkt")
 (require "prefix.rkt")
-(require "runtime.rkt")
+(require "../arc/runtime.rkt")
 
 (provide main)
 

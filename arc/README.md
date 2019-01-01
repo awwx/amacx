@@ -38,6 +38,8 @@ or additions that might be able to be used separately.
 * “arc.arc” is split into smaller source code files so that they can
   be loaded individually.
 
+* I swapped the arguments to `sref`: it's now `(sref g key val)`.
+
 * To enable being copied into different containers, macros often
   insert their dependencies (for example, `` `(,let ...)`` is used
   instead of `` `(let ...) ``).

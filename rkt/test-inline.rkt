@@ -4,7 +4,7 @@
 (require "boot.rkt")
 (require "prefix.rkt")
 (require "readtables.rkt")
-(require "runtime.rkt")
+(require "../arc/runtime.rkt")
 (require "symtab.rkt")
 
 (print-hash-table #f)

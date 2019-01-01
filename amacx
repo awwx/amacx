@@ -93,7 +93,7 @@ And here's the end of the Racket block comment:
 
 (require racket/cmdline)
 
-(require (only-in "rkt/runtime.rkt" runtimes runtimef))
+(require (only-in "arc/runtime.rkt" runtimes runtimef))
 (require (only-in "rkt/boot.rkt" phase1 new-container))
 
 (define runtime #f)
