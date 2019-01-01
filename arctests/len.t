@@ -7,3 +7,6 @@
 
 (equals (len "")    0)
 (equals (len "abc") 3)
+
+; `len` is used in the cross compiler but not len on tables;
+; so defer those tests to table-len.t

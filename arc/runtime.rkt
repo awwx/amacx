@@ -597,6 +597,8 @@
         'ar-readc       ar-readc
         'ar-strlen      builtin-ar-strlen
         'ar-symstr      builtin-ar-symstr
+        'ar-table-len   (λ (g)
+                          (hash-count (unwrap g)))
         'ar-tag-type    ar-tag-type
         'ar-uniq        builtin-ar-uniq
         'ar-write       builtin-ar-write

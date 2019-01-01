@@ -7,4 +7,6 @@
        (len (cdr xs) (+ l 1))
       (a-str xs)
        (ar-strlen xs)
+      (a-table xs)
+       (ar-table-len xs)
        (err "invalid list" xs)))

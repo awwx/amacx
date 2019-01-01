@@ -9,4 +9,4 @@
   (equals (eval '(reduce + '(1 2 3 4)) container)
           10)
 
-  (load "src/len.t" container))
+  (load "arctests/len.t" container))
