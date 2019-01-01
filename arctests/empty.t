@@ -1,0 +1,10 @@
+(use arcbase true false empty obj)
+
+(false (empty 'a))
+(false (empty 123))
+(true  (empty '()))
+(false (empty '(a)))
+(true  (empty ""))
+(false (empty "abc"))
+(true  (empty (obj)))
+(false (empty (obj a 1)))
