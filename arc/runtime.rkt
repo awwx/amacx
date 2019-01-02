@@ -647,6 +647,8 @@
         'msec           current-milliseconds
         'namefn         (λ (name fn)
                           (procedure-rename fn (unwrap name)))
+        'newstring      (λ (k (char #\nul))
+                          (make-string (unwrap k) (unwrap char)))
         'numstr         (unwrap-args number->string)
         'on-break       on-break
         'on-err         on-err
