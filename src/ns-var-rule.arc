@@ -4,4 +4,4 @@
   e)
 
 (assign ns-topvar-ac
-  (gen-ac `(namespace-topvar ,@ac-rules)))
+  (gen-compiler `(namespace-topvar ,@ac-rules)))

@@ -40,3 +40,15 @@
   (heuristic-loc x
     (or (match-compiler-rule (context 'rules) context x)
         (err "invalid expression" x))))
+
+(def gen-compiler (rule-names)
+  (let rules (map1 (fn (rule-name)
+                     (or (compiler-rules rule-name)
+                         (err "compiler rule not found" rule-name)))
+                   rule-names)
+    (fn (container e)
+      (let context (obj rules      rules
+                        rule-names rule-names
+                        container  container
+                        env        '())
+        (compile context e)))))

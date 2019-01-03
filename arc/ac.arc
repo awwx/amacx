@@ -78,7 +78,7 @@
     `($quote ,(cadr e)))
 
   (compiler-rule assign-lexvar (and (caris e '$assign)
-                              (is-lexical context (cadr e)))
+                                    (is-lexical context (cadr e)))
     (check-assign (cadr e))
     `($assign ,(cadr e) ,(compile context (caddr e))))
 
@@ -113,20 +113,8 @@
     assign-topvar fn if explicit-call macro implicit-call
     default-quote))
 
-(def gen-ac (rule-names)
-  (let rules (map1 (fn (rule-name)
-                     (or (compiler-rules rule-name)
-                         (err "compiler rule not found" rule-name)))
-                   rule-names)
-    (fn (container e)
-      (let context (obj rules      rules
-                        rule-names rule-names
-                        container  container
-                        env        '())
-        (compile context e)))))
-
-(assign compile--xVrP8JItk2Ot (gen-ac ac-rules))
+(assign compile--xVrP8JItk2Ot (gen-compiler ac-rules))
 
 (def extend-ac rule-names
   (assign ac-rules (join rule-names ac-rules))
-  (assign compile--xVrP8JItk2Ot (gen-ac ac-rules)))
+  (assign compile--xVrP8JItk2Ot (gen-compiler ac-rules)))
