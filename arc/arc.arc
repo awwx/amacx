@@ -6,6 +6,9 @@
      mappend > warn atomic setforms setform-cons forloop for accum
      repeat each whilet coerce even do1 caselet case)
 
+(def copylist (xs)
+  (apply1 list xs))
+
 ; Arc 3.2 arc.arc:282
 
 (def firstn (n xs)
@@ -113,3 +116,10 @@
                 (list setter g))
               (+ (cdr vars) (list (car vars)))
               forms))))
+
+(mac pop (place)
+  (w/uniq g
+    (let (binds val setter) (setforms place)
+      `(,atwiths ,(+ binds (list g val))
+         (,do1 (,car ,g)
+               (,setter (,cdr ,g)))))))
