@@ -94,6 +94,7 @@
 (load "../src/contains.arc")
 
 (= runtime 'arc3_2)
+(load "../src/compile.arc")
 (load "../arc/ac.arc")
 (load "../src/macro.t")
 
