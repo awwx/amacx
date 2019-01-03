@@ -645,6 +645,11 @@
         'loc            builtin-loc
         'mod            (unwrap-args modulo)
         'msec           current-milliseconds
+        ; Arc 3.2 ac.scm:1111
+        'mvfile         (λ (old new)
+                          (unwraps (old new)
+                            (rename-file-or-directory old new #t)
+                            'nil))
         'namefn         (λ (name fn)
                           (procedure-rename fn (unwrap name)))
         'newstring      (λ (k (char #\nul))
@@ -653,9 +658,10 @@
         'on-break       on-break
         'on-err         on-err
         'open-outfile   (λ (name mode exists)
-                          (open-output-file (unwrap name)
-                                            #:mode (unwrap mode)
-                                            #:exists (unwrap exists)))
+                          (unwraps (name mode exists)
+                            (open-output-file (unwrap name)
+                                              #:mode (unwrap mode)
+                                              #:exists (unwrap exists))))
         'open-socket    (λ (num)
                           (tcp-listen (unwrap num) 50 #t))
         'outstring      open-output-string

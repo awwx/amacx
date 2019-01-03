@@ -28,3 +28,4 @@ extend or modify Arc.
 * readfile
 * readfile1
 * readall
+* writefile

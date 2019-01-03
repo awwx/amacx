@@ -288,3 +288,9 @@
 
 (def filechars (name)
   (w/infile s name (allchars s)))
+
+(def writefile (val file)
+  (let tmpfile (+ file ".tmp")
+    (w/outfile o tmpfile (write val o))
+    (mvfile tmpfile file))
+  val)
