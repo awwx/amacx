@@ -1,4 +1,4 @@
-(use equals accum loadfile)
+(use equals accum load)
 
 (equals
   (accum a

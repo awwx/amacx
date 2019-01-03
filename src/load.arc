@@ -1,5 +1,29 @@
-(use arcbase contains unless complex-fn when findfile loadfile)
+(use arcbase w/open w/uniq whiler read prn eval contains unless
+     complex-fn when findfile)
 
+(def readfile-each (filename f)
+  (w/infile in filename
+    (w/splicing-port in
+      (fn (splicing-port)
+        (w/uniq eof
+          (whiler x (read splicing-port eof) eof
+            (f x)))))))
+
+(def runtest-if-exists (name target-container)
+  (let src (findtest target-container name)
+    (when src
+      (loadfile src target-container))))
+
+(def loadfile (src target-container)
+  (when (target-container '*inline-tests* nil)
+    (prn "=> " src))
+
+  (readfile-each (completepath rootdir src)
+    (fn (x)
+      (eval x target-container)))
+
+  (when (target-container '*inline-tests* nil)
+    (prn "<= " src)))
 (def has-feature (container feature)
   (contains (container '*features* nil) feature))
 
