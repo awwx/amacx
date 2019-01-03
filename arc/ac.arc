@@ -7,8 +7,13 @@
   (or (amacro x)
       (and (isa x 'sym) (amacro (container x nil)))))
 
+; Use `contains` here instead of `mem` because we don’t have `mem` yet
+; in the load process.
+
 (def is-lexical (context var)
   (and (isa var 'sym) (contains (context 'env) var)))
+
+; Arc 3.2 ac.scm:355
 
 (def arglist (args)
   (if (no args)
@@ -23,16 +28,17 @@
   (functional-extend context 'env
     (join vars (context 'env))))
 
-(def topvar-macro (context)
+(def topvar-macro (context var)
   (let macro ((context 'container) 'topvar nil)
     (unless macro
-      (err "need topvar macro defined for topvar"))
+      (err "need topvar macro defined for top level variable" var))
     macro))
 
-(def set-topvar-macro (context)
+(def set-topvar-macro (context var)
   (let macro ((context 'container) 'set-topvar nil)
     (unless macro
-      (err "need set-topvar macro defined to assign to a topvar" var))
+      (err "need set-topvar macro defined to assign to top level variable"
+           var))
     macro))
 
 (def check-assign (var)
@@ -66,7 +72,7 @@
     `($quote ,(context 'container)))
 
   (compiler-rule topvar (isa e 'sym)
-    (compile context `(,(topvar-macro context) ,e)))
+    (compile context `(,(topvar-macro context e) ,e)))
 
   (compiler-rule quote (caris e '$quote)
     `($quote ,(cadr e)))
@@ -79,7 +85,7 @@
   (compiler-rule assign-topvar (caris e '$assign)
     (check-assign (cadr e))
     (compile context
-      `(,(set-topvar-macro context) ,(cadr e) ,(caddr e))))
+      `(,(set-topvar-macro context (cadr e)) ,(cadr e) ,(caddr e))))
 
   (compiler-rule fn (caris e '$fn)
     (let context (extend-env context (arglist (cadr e)))
