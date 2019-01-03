@@ -101,3 +101,15 @@
       `(,atwiths ,(+ binds1 (list g1 val1) binds2 (list g2 val2))
          (,setter1 ,g2)
          (,setter2 ,g1)))))
+
+(mac rotate places
+  (with (vars (map [uniq] places)
+         forms (map setforms places))
+    `(,atwiths ,(mappend (fn (g (binds val setter))
+                           (+ binds (list g val)))
+                         vars
+                         forms)
+       ,@(map (fn (g (binds val setter))
+                (list setter g))
+              (+ (cdr vars) (list (car vars)))
+              forms))))
