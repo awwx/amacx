@@ -27,7 +27,7 @@ We’re using the first option:
 
 Modifications and additions copyright 2018, 2019 Andrew Wilcox, dual
 licensed under the Original License (the Artistic License 2.0) for
-incorporating code with Arc, and the MIT license for any modifications
+code combined with Arc, and the MIT license for any modifications
 or additions that might be able to be used separately.
 
 
@@ -36,9 +36,9 @@ or additions that might be able to be used separately.
 * Only parts of Arc are included.
 
 * “arc.arc” is split into smaller source code files so that they can
-  be loaded individually.
+  be loaded individually for cross compilation.
 
-* I swapped the arguments to `sref`: it's now `(sref g key val)`.
+* The arguments to `sref` are swapped: it's now `(sref g key val)`.
 
 * To enable being copied into different containers, macros often
   insert their dependencies (for example, `` `(,let ...)`` is used
@@ -60,3 +60,8 @@ or additions that might be able to be used separately.
 * `warn` prints to stderr.
 
 * `loop` renamed to `forloop`.
+
+* Lexical variables override macros.
+
+* Along with literals, arbitrary values (not otherwise recognized as
+  forms to compile) are self-quoting.
