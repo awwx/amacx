@@ -25,3 +25,6 @@ extend or modify Arc.
 * odd
 * w/appendfile
 * readstring1
+* readfile
+* readfile1
+* readall
