@@ -6,7 +6,7 @@
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
      tostring keys aif whiler string even after w/open w/outstring
-     w/stdout fromstring)
+     w/stdout fromstring read)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -263,3 +263,11 @@
 (mac w/appendfile (var name . body)
   `(,let ,var (,outfile ,name 'append)
      (,after (,do ,@body) (,close ,var))))
+
+; Arc 3.2 arc.arc:816
+
+(def readstring1 (s (o eof nil)) (w/instring i s (read i eof)))
+
+; Arc 3.2 arc.arc:823
+
+(def readfile (name) (w/infile s name (drain (read s))))

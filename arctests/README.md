@@ -24,3 +24,4 @@ extend or modify Arc.
 * pos used with lists
 * odd
 * w/appendfile
+* readstring1

@@ -1,3 +1,4 @@
 (use arcbase equals prn +str)
 
-(prn (dir (+ rootdir "sample-dir")))
+(equals (dir (+ rootdir "samples/sample-dir"))
+        '("a" "b" "c"))
