@@ -94,7 +94,7 @@
 (load "../src/contains.arc")
 
 (= runtime 'arc3_2)
-(load "../src/ac.arc")
+(load "../arc/ac.arc")
 (load "../src/macro.t")
 
 (each bootfile (dir "../boot")
