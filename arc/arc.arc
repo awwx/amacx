@@ -134,3 +134,33 @@
     (let (binds val setter) (setforms place)
       `(,atwiths ,(+ (list gx x) binds)
          (,setter (,adjoin ,gx ,val ,@args))))))
+
+(mac pull (test place)
+  (w/uniq g
+    (let (binds val setter) (setforms place)
+      `(,atwiths ,(+ (list g test) binds)
+         (,setter (,rem ,g ,val))))))
+
+(mac togglemem (x place . args)
+  (w/uniq gx
+    (let (binds val setter) (setforms place)
+      `(,atwiths ,(+ (list gx x) binds)
+         (,setter (,if (,mem ,gx ,val)
+                       (,rem ,gx ,val)
+                       (,adjoin ,gx ,val ,@args)))))))
+
+(mac ++ (place (o i 1))
+  (if (isa place 'sym)
+      `(,= ,place (,+ ,place ,i))
+      (w/uniq gi
+        (let (binds val setter) (setforms place)
+          `(,withs ,(+ binds (list gi i))
+             (,setter (,+ ,val ,gi)))))))
+
+(mac -- (place (o i 1))
+  (if (isa place 'sym)
+      `(,= ,place (,- ,place ,i))
+      (w/uniq gi
+        (let (binds val setter) (setforms place)
+          `(,withs ,(+ binds (list gi i))
+             (,setter (,- ,val ,gi)))))))

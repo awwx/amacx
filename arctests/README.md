@@ -11,3 +11,5 @@ extend or modify Arc.
 
 * keep
 * trues
+* pull
+* togglemem

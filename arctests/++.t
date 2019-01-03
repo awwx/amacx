@@ -1,10 +1,12 @@
-(use arcbase equals ++ obj ssyntax setforms setform-cons mlist)
+(use arc equals)
 
 (let a 3
   (equals (++ a) 4)
   (equals a 4))
 
-(let x (mlist 1 2 3)
+; TODO mutable-list-assumption
+
+(let x (copylist '(1 2 3))
   (++ (car x))
   (equals x '(2 2 3)))
 

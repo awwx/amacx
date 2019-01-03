@@ -1,4 +1,6 @@
-(use arcbase equals accum repeat ++)
+(use arc equals)
+
+(use accum) ; TODO
 
 (equals
   (accum a
