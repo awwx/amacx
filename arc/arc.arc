@@ -5,7 +5,7 @@
      when unless while empty reclist recstring testify some all mem
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
-     tostring keys)
+     tostring keys aif)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -191,3 +191,11 @@
 
 (mac set args
   `(,do ,@(map (fn (a) `(,= ,a ,t)) args)))
+
+(mac iflet (var expr then . rest)
+  (w/uniq gv
+    `(,let ,gv ,expr
+       (,if ,gv (,let ,var ,gv ,then) ,@rest))))
+
+(mac whenlet (var expr . body)
+  `(,iflet ,var ,expr (,do ,@body)))

@@ -14,3 +14,5 @@ extend or modify Arc.
 * pull
 * togglemem
 * zap
+* iflet
+* whenlet
