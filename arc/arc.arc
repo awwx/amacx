@@ -5,7 +5,7 @@
      when unless while empty reclist recstring testify some all mem
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
-     tostring keys aif)
+     tostring keys aif whiler string)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -211,3 +211,44 @@
       (no (cdr args))
        (car args)
       `(,let it ,(car args) (,and it (,aand ,@(cdr args))))))
+
+(mac drain (expr (o eof nil))
+  (w/uniq (gacc gdone gres)
+    `(,with (,gacc nil ,gdone nil)
+       (,while (,no ,gdone)
+         (,let ,gres ,expr
+           (,if (,is ,gres ,eof)
+               (,= ,gdone t)
+               (,push ,gres ,gacc))))
+       (,rev ,gacc))))
+
+; Arc 3.2 arc.arc:732
+
+(def consif (x y) (if x (cons x y) y))
+
+; Arc 3.2 arc.arc:737
+
+(def flat x
+  ((afn (x acc)
+     (if (no x)   acc
+         (atom x) (cons x acc)
+                  (self (car x) (self (cdr x) acc))))
+   x nil))
+
+(mac check (x test (o alt))
+  (w/uniq gx
+    `(,let ,gx ,x
+       (,if (,test ,gx) ,gx ,alt))))
+
+(def pos (test seq (o start 0))
+  (let f (testify test)
+    (if (alist seq)
+        ((afn (seq n)
+           (if (no seq)
+                nil
+               (f (car seq))
+                n
+               (self (cdr seq) (+ n 1))))
+         (nthcdr start seq)
+         start)
+        (recstring [if (f (seq _)) _] seq start))))

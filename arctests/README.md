@@ -17,3 +17,8 @@ extend or modify Arc.
 * iflet
 * whenlet
 * awhen
+* drain
+* consif
+* flat
+* check
+* pos used with lists
