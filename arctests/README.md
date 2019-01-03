@@ -16,3 +16,4 @@ extend or modify Arc.
 * zap
 * iflet
 * whenlet
+* awhen

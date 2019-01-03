@@ -199,3 +199,15 @@
 
 (mac whenlet (var expr . body)
   `(,iflet ,var ,expr (,do ,@body)))
+
+; Arc 3.2 arc.arc:687
+
+(mac awhen (expr . body)
+  `(,let it ,expr (,if it (,do ,@body))))
+
+(mac aand args
+  (if (no args)
+      't
+      (no (cdr args))
+       (car args)
+      `(,let it ,(car args) (,and it (,aand ,@(cdr args))))))
