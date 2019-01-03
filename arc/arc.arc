@@ -4,7 +4,7 @@
      rfn afn compose complement rev isnt w/uniq in iso when unless
      while empty reclist recstring testify some all mem find map
      mappend > warn atomic setforms setform-cons forloop for accum
-     repeat each whilet coerce even)
+     repeat each whilet coerce even do1 caselet case)
 
 ; Arc 3.2 arc.arc:282
 
@@ -72,3 +72,24 @@
                             (cons (car s) (self (cdr s)))))
           seq)
         (coerce (rem test (coerce seq 'cons)) 'string))))
+
+; Arc 3.2 arc.arc:524
+
+(def keep (test seq)
+  (rem (complement (testify test)) seq))
+
+(def trues (f xs)
+  (and xs
+      (let fx (f (car xs))
+        (if fx
+            (cons fx (trues f (cdr xs)))
+            (trues f (cdr xs))))))
+
+; Arc 3.2 arc.arc:558
+
+(mac push (x place)
+  (w/uniq gx
+    (let (binds val setter) (setforms place)
+      `(,let ,gx ,x
+         (,atwiths ,binds
+           (,setter (,cons ,gx ,val)))))))
