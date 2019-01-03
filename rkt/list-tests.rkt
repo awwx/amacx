@@ -28,6 +28,6 @@
   (append-map (λ (runtime)
                 (map (λ (testlist)
                        (cons (symbol->string runtime) testlist))
-                     (tuples (all-tests) 5)))
+                     (tuples (all-tests) 4)))
               runtimes))
 (newline)
