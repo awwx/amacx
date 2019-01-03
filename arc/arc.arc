@@ -1,10 +1,10 @@
 ; TODO incomplete
 
-(use arcbase quasiquote complex-fn ssyntax square-fn def assoc withs
-     rfn afn compose complement rev isnt w/uniq in iso when unless
-     while empty reclist recstring testify some all mem find map
-     mappend > warn atomic setforms setform-cons forloop for accum
-     repeat each whilet coerce even do1 caselet case)
+(use arcbase +list +str quasiquote complex-fn ssyntax square-fn def
+     assoc withs rfn afn compose complement rev isnt w/uniq in iso
+     when unless while empty reclist recstring testify some all mem
+     find map mappend > warn atomic setforms setform-cons forloop for
+     accum repeat each whilet coerce even do1 caselet case)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -128,3 +128,9 @@
   (if (some [test x _] xs)
       xs
       (cons x xs)))
+
+(mac pushnew (x place . args)
+  (w/uniq gx
+    (let (binds val setter) (setforms place)
+      `(,atwiths ,(+ (list gx x) binds)
+         (,setter (,adjoin ,gx ,val ,@args))))))
