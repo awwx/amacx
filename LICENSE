@@ -1,3 +1,9 @@
+Libraries and components used by Amacx have their own license: Arc in
+the `arc` subdirectory is licensed under the Artistic license, and the
+quasiquotation library ported from CLisp in the `qq` subdirectory is
+licensed under the LGPL.
+
+
 MIT License
 
 Copyright (c) 2019 Andrew Wilcox

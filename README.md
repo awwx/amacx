@@ -3,8 +3,8 @@
 Amacx is a compiler for [Arc](http://arclanguage.org/) and Arc
 inspired languages.
 
-So far, only parts of Arc are implemented and various details are
-messy; this is a work in progress.
+Currently, about 50% of `arc.arc` is implemented, various details
+are messy, and there are a lot of TODO’s.  This is a work in progress.
 
 
 ## Features
