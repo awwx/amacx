@@ -1,4 +1,4 @@
-#lang reader "amacx.rkt"
+#lang amacx
 
 ; Test readtables using the "amacx" Racket language.
 
