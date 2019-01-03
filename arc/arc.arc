@@ -6,7 +6,7 @@
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
      tostring keys aif whiler string even after w/open w/outstring
-     w/stdout fromstring read readc writec)
+     w/stdout fromstring read readc writec readb)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -294,3 +294,30 @@
     (w/outfile o tmpfile (write val o))
     (mvfile tmpfile file))
   val)
+
+(def sym (x) (coerce x 'sym))
+
+(def int (x (o b 10)) (coerce x 'int b))
+
+(mac rand-choice exprs
+  `(,case (,rand ,(len exprs))
+     ,@(let key -1
+         (mappend [list (++ key) _]
+                  exprs))))
+
+(mac n-of (n expr)
+  (w/uniq ga
+    `(,let ,ga nil
+       (,repeat ,n (,push ,expr ,ga))
+       (,rev ,ga))))
+
+(def rand-string (n)
+  (let c "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    (with (nc 62 s (newstring n) i 0)
+      (w/infile str "/dev/urandom"
+        (while (< i n)
+          (let x (readb str)
+             (unless (> x 247)
+               (= (s i) (c (mod x nc)))
+               (++ i)))))
+      s)))

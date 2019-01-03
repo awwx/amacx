@@ -29,3 +29,8 @@ extend or modify Arc.
 * readfile1
 * readall
 * writefile
+* sym
+* int
+* rand-choice
+* n-of
+* rand-string

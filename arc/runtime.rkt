@@ -535,7 +535,14 @@
     (define (w/splicing-port input-port f)
       (with-blockstr-readtable readtables input-port f))
 
+    ; Arc 3.2 ac.scm:901
+
+    (define (ar-readb port)
+      (let ((b (read-byte port)))
+        (if (eof-object? b) 'nil b)))
+
     ; Arc 3.2 ac.scm:894
+
     (define (ar-readc port)
       (let ((c (read-char port)))
         (if (eof-object? c) 'nil c)))
@@ -594,6 +601,7 @@
         'ar-disp        builtin-ar-disp
         'ar-iso         builtin-ar-iso
         'ar-print       builtin-ar-print
+        'ar-readb       ar-readb
         'ar-readc       ar-readc
         'ar-strlen      builtin-ar-strlen
         'ar-symstr      builtin-ar-symstr
@@ -667,10 +675,10 @@
         'outstring      open-output-string
         'protect        protect
         'quit           (unwrap-args exit)
-        'sref           sref
         'racket-r-apply r-apply
         'racket-eval    eval
         'racket-list    list
+        'rand           (unwrap-args random)
         'readline       builtin-readline
         'readline-add-history
                         (λ args
@@ -685,6 +693,7 @@
         'scdr           set-mcdr!
         'sleep          (wrapnil (unwrap-args sleep))
         'srcloc         ar-srcloc
+        'sref           sref
         'stdin          current-input-port
         'stderr         current-error-port
         'stdout         current-output-port
