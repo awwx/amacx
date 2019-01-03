@@ -1,7 +1,5 @@
 (use arc equals)
 
-(use accum) ; TODO
-
 (equals
   (accum a
     (let n 0
