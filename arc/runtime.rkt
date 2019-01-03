@@ -480,7 +480,7 @@
     ; Arc 3.2 ac.scm:1280
     (define (sref g key val)
       (let ((key (deep-unwrap key)))
-        (cond ((hash? g)   (if (eq? val 'nil)
+        (cond ((hash? g)   (if (ar-is val 'nil)
                                 (hash-remove! g key)
                                 (hash-set! g key val)))
               ((symtab? g) (symtab-set! g key val))
