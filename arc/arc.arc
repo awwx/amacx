@@ -321,3 +321,6 @@
                (= (s i) (c (mod x nc)))
                (++ i)))))
       s)))
+
+(mac forlen (var s . body)
+  `(,for ,var 0 (,- (,len ,s) 1) ,@body))
