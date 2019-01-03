@@ -4,7 +4,8 @@
      assoc withs rfn afn compose complement rev isnt w/uniq in iso
      when unless while empty reclist recstring testify some all mem
      find map mappend > warn atomic setforms setform-cons forloop for
-     accum repeat each whilet coerce even do1 caselet case)
+     accum repeat each whilet coerce even do1 caselet case pr prn
+     tostring)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -164,3 +165,21 @@
         (let (binds val setter) (setforms place)
           `(,withs ,(+ binds (list gi i))
              (,setter (,- ,val ,gi)))))))
+
+(mac zap (op place . args)
+  (with (gop    (uniq)
+         gargs  (map [uniq] args)
+         mix    (afn seqs
+                  (if (some no seqs)
+                      nil
+                      (+ (map car seqs)
+                         (apply self (map cdr seqs))))))
+    (let (binds val setter) (setforms place)
+      `(,atwiths ,(+ binds (list gop op) (mix gargs args))
+         (,setter (,gop ,val ,@gargs))))))
+
+; Arc 3.2 arc.arc:656
+
+(def prt args
+  (map1 [if _ (disp _)] args)
+  (car args))
