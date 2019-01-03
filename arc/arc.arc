@@ -5,7 +5,8 @@
      when unless while empty reclist recstring testify some all mem
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
-     tostring keys aif whiler string even)
+     tostring keys aif whiler string even after w/open w/outstring
+     w/stdout fromstring)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -256,3 +257,9 @@
 ; Arc 3.2 arc.arc:764
 
 (def odd (n) (no (even n)))
+
+; Arc 3.2 arc.arc:796
+
+(mac w/appendfile (var name . body)
+  `(,let ,var (,outfile ,name 'append)
+     (,after (,do ,@body) (,close ,var))))

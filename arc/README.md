@@ -65,3 +65,5 @@ or additions that might be able to be used separately.
 
 * Along with literals, arbitrary values (not otherwise recognized as
   forms to compile) are self-quoting.
+
+* `w/stderr` is included along with Arc’s `w/stdout` and `w/stdin`.

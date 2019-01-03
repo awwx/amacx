@@ -23,3 +23,4 @@ extend or modify Arc.
 * check
 * pos used with lists
 * odd
+* w/appendfile
