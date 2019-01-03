@@ -123,3 +123,8 @@
       `(,atwiths ,(+ binds (list g val))
          (,do1 (,car ,g)
                (,setter (,cdr ,g)))))))
+
+(def adjoin (x xs (o test iso))
+  (if (some [test x _] xs)
+      xs
+      (cons x xs)))
