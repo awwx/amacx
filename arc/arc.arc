@@ -183,3 +183,11 @@
 (def prt args
   (map1 [if _ (disp _)] args)
   (car args))
+
+; Arc 3.2 arc.arc:664
+
+(mac wipe args
+  `(,do ,@(map (fn (a) `(,= ,a nil)) args)))
+
+(mac set args
+  `(,do ,@(map (fn (a) `(,= ,a ,t)) args)))

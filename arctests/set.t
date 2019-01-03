@@ -1,4 +1,4 @@
-(use set equals obj setform-cons)
+(use arc equals)
 
 (let x nil
   (set x)
