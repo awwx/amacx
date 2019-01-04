@@ -1464,6 +1464,12 @@ block strings:
   to implement peeking.
 
 
+## Discuss
+
+Browse or join the email discussion list at
+[https://lists.sr.ht/~awwx/amacs-discuss](https://lists.sr.ht/%7Eawwx/amacs-discuss)
+
+
 ## Contribute
 
 * Feature requests: if you might like to use Amacx as a compiler for
