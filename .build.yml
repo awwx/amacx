@@ -1,7 +1,10 @@
+# This is a build manifest (https://man.sr.ht/builds.sr.ht/)
+# for running tests on sr.ht
+
 image: debian/stretch
 
 sources:
-  - https://git.sr.ht/~awwx/ame
+  - https://github.com/awwx/amacx.git
 
 tasks:
   - install_racket: |
@@ -9,9 +12,10 @@ tasks:
       sudo sh racket-7.1-x86_64-linux.sh --unix-style --dest /usr/local
       racket -v
 
-  - install_chk: |
-      raco pkg install --skip-installed --deps search-auto rackunit-chk
+  # no longer using rackunit
+  # - install_chk: |
+  #     raco pkg install --skip-installed --deps search-auto rackunit-chk
 
   - test: |
-      cd ame
+      cd amacx
       ./test
