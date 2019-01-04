@@ -1468,7 +1468,7 @@ block strings:
 ## Discuss
 
 Browse or join the email discussion list at
-[https://lists.sr.ht/~awwx/amacs-discuss](https://lists.sr.ht/%7Eawwx/amacs-discuss)
+[https://lists.sr.ht/~awwx/amacx-discuss](https://lists.sr.ht/%7Eawwx/amacx-discuss)
 
 
 ## Contribute
