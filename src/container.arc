@@ -14,3 +14,6 @@
     (when start
       (load start container))
     container))
+
+(def new-container ()
+  (provision-container (symtab) (obj)))
