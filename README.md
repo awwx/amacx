@@ -264,6 +264,7 @@ nil
 #<procedure:foo>
 > (c!foo)
 123
+```
 
 Here, `new-container` creates a new container and populates it with
 Arc’s builtins such as `cons`.  The container however doesn’t have the
