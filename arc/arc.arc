@@ -6,7 +6,7 @@
      find map mappend > warn atomic setforms setform-cons forloop for
      accum repeat each whilet coerce even do1 caselet case pr prn
      tostring keys aif whiler string even after w/open w/outstring
-     w/stdout fromstring read readc writec readb)
+     w/stdout fromstring read readc writec readb <= >=)
 
 (def copylist (xs)
   (apply1 list xs))
@@ -324,3 +324,72 @@
 
 (mac forlen (var s . body)
   `(,for ,var 0 (,- (,len ,s) 1) ,@body))
+
+(mac on (var s . body)
+  (if (is var 'index)
+      (err "Can't use index as first arg to on.")
+      (w/uniq gs
+        `(,let ,gs ,s
+           (,forlen index ,gs
+             (,let ,var (,gs index)
+               ,@body))))))
+
+(def best (f seq)
+  (if (no seq)
+      nil
+      (let wins (car seq)
+        (each elt (cdr seq)
+          (if (f elt wins) (= wins elt)))
+        wins)))
+
+(def max args (best > args))
+(def min args (best < args))
+
+(def most (f seq)
+  (unless (no seq)
+    (withs (wins (car seq) topscore (f wins))
+      (each elt (cdr seq)
+        (let score (f elt)
+          (if (> score topscore) (= wins elt topscore score))))
+      wins)))
+
+(def insert-sorted (test elt seq)
+  (if (no seq)
+       (list elt)
+      (test elt (car seq))
+       (cons elt seq)
+      (cons (car seq) (insert-sorted test elt (cdr seq)))))
+
+(mac insort (test elt seq)
+  `(,zap [,insert-sorted ,test ,elt _] ,seq))
+
+(def reinsert-sorted (test elt seq)
+  (if (no seq)
+       (list elt)
+      (is elt (car seq))
+       (reinsert-sorted test elt (cdr seq))
+      (test elt (car seq))
+       (cons elt (rem elt seq))
+      (cons (car seq) (reinsert-sorted test elt (cdr seq)))))
+
+(mac insortnew (test elt seq)
+  `(,zap [,reinsert-sorted ,test ,elt _] ,seq))
+
+(def memo (f)
+  (with (cache (table) nilcache (table))
+    (fn args
+      (or (cache args)
+          (and (no (nilcache args))
+               (aif (apply f args)
+                    (= (cache args) it)
+                    (do (set (nilcache args))
+                        nil)))))))
+
+(mac defmemo (name parms . body)
+  `(,safeset ,name (,memo (,fn ,parms ,@body))))
+
+; Arc 3.2 arc.arc:1576
+
+(def len< (x n) (< (len x) n))
+
+(def len> (x n) (> (len x) n))

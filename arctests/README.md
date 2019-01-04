@@ -34,3 +34,6 @@ extend or modify Arc.
 * rand-choice
 * n-of
 * rand-string
+* most
+* memo
+* defmemo
