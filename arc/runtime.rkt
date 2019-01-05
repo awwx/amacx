@@ -472,9 +472,9 @@
       (($call--xVrP8JItk2Ot f e (... ...))
        (r-apply f (list e (... ...))))))
 
-    (define-syntax $ns-var--xVrP8JItk2Ot
+    (define-syntax $topvar--xVrP8JItk2Ot
       (syntax-rules ()
-        (($ns-var--xVrP8JItk2Ot v)
+        (($topvar--xVrP8JItk2Ot v)
          v)))
 
     ; Arc 3.2 ac.scm:1280

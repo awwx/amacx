@@ -14,7 +14,7 @@
              $assign--xVrP8JItk2Ot
              $if--xVrP8JItk2Ot
              $call--xVrP8JItk2Ot
-             $ns-var--xVrP8JItk2Ot
+             $topvar--xVrP8JItk2Ot
              #%top)
     (require (submod "../arc/runtime.rkt" runtime))))
 

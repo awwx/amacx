@@ -1,5 +1,8 @@
 (use arcbase racket-topvar equals eval load)
 
+(equals (ail-topvar-ac (obj) '($topvar--xVrP8JItk2Ot foo))
+        '($topvar--xVrP8JItk2Ot foo))
+
 (let container (racket-topvar-container)
   (equals (eval '(+ 1 2) container)
           3)
