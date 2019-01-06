@@ -222,6 +222,7 @@
        inspect       (fn (x) (tostring (write x)))
        instring      instring
        mod           mod
+       msec          msec
        namefn        namefn
        numstr        (fn (x n) (coerce x 'string n))
        on-err        on-err
