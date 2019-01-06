@@ -18,14 +18,14 @@
 (equals (ssyntax-tokens #\: '(#\a #\b #\c #\: #\d #\e #\f) nil nil nil)
   '((#\a #\b #\c) (#\d #\e #\f)))
 
-(let check
+(let checkss
      (fn (a b)
        (equals (ssyntax-tokens [in _ #\. #\!]
                                (strchars (as-str a))
                                nil nil t)
                b))
-  (check 'a.b!c  '((#\a) #\. (#\b) #\! (#\c)))
-  (check 'a!b!!  '((#\a) #\! (#\b) #\! #\!)))
+  (checkss 'a.b!c  '((#\a) #\. (#\b) #\! (#\c)))
+  (checkss 'a!b!!  '((#\a) #\! (#\b) #\! #\!)))
 
 (equals (chars->value '(#\a \b)) 'ab)
 (equals (chars->value '(#\1 \2)) 12)

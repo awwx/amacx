@@ -1,5 +1,5 @@
-(use arcbase obj equals ssyntax even square-fn andf square-fn
-     true false)
+(use arcbase obj equals even square-fn andf square-fn
+     true false compose complement andf)
 
 (with (x (obj a 1 b 2 c 3)
        i 'b)

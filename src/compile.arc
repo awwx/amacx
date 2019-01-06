@@ -36,10 +36,10 @@
             ((rule 'action) context e it)
             (match-compiler-rule (cdr rules) context e)))))
 
-(def compile (context x)
-  (heuristic-loc x
-    (or (match-compiler-rule (context 'rules) context x)
-        (err "invalid expression" x))))
+(def compile (context e)
+  (heuristic-loc e
+    (or (match-compiler-rule (context 'rules) context e)
+        (err "invalid expression" e))))
 
 (def gen-compiler (rule-names)
   (let rules (map1 (fn (rule-name)

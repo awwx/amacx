@@ -1,5 +1,5 @@
 (use arcbase w/uniq expand-ssyntax quasiquote warn mappend compose
-     complement afn ssyntax complex-fn +list atomic)
+     complement afn complex-fn +list atomic)
 
 (assign setter (table))
 

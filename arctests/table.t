@@ -1,4 +1,4 @@
-(use arc equals ssyntax true false sets-iso)
+(use arc equals true false sets-iso)
 
 (let g (obj a 1 b 2)
   (true (has g 'a))

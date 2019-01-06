@@ -1,4 +1,4 @@
-(use each prn unless is len ssyntax setforms px file-each +str)
+(use each prn unless is len setforms px file-each +str)
 
 (unless (is len.argv 1)
   (prn "Usage: uses.arc <feature>")

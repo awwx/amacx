@@ -1,4 +1,4 @@
-(use arcbase testify reclist square-fn ssyntax)
+(use arcbase testify reclist square-fn compose)
 
 ; Arc 3.2 arc.arc:235
 

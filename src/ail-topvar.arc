@@ -1,5 +1,5 @@
 (use copyinto prn ret obj implement-use load container setforms
-     ssyntax rule ac quasiquote)
+     rule ac quasiquote)
 
 (compiler-rule ail-topvar (caris e '$topvar--xVrP8JItk2Ot)
   e)

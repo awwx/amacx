@@ -75,6 +75,11 @@
 (def hasloc (x) nil)
 (def srcloc (loc x) x)
 
+(def a-sym (x)
+  (isa x 'sym))
+
+(= readstr readstring1)
+
 (mac use args)
 
 (load "../src/asfilename.arc")
@@ -95,8 +100,10 @@
 
 (= runtime 'arc3_2)
 (load "../src/compile.arc")
+(load "../arc/expand-ssyntax.arc")
 (load "../arc/ac.arc")
 (load "../src/macro.t")
+(load "../arc/install-ac.arc")
 
 (each bootfile (dir "../boot")
   (ensure-dir "../xboot")
@@ -343,9 +350,11 @@
     (runtest t container out 'ail)
     (runtest t container out '$quote)
     (runtest t container out '$if)
-    (xload t container out 'container)))
+    (xload t container out 'container)
+    (xload t container out 'install-ac)))
 
 (let container (create-boot-container)
   (w/outfile out "../xboot/compiler.nail"
     (xload nil container out 'container)
+    (xload t container out 'install-ac)
     (xload nil container out 'repl)))

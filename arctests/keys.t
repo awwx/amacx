@@ -1,4 +1,4 @@
-(use arcbase true sets-iso setforms ssyntax keys some find
+(use arcbase true sets-iso setforms keys some find
      square-fn iso equals find)
 
 (let g (table)

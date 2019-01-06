@@ -99,6 +99,7 @@ And here's the end of the Racket block comment:
 (define runtime #f)
 (define repl #f)
 (define no-repl #f)
+(define timings #f)
 (define program #f)
 (define args '())
 
@@ -109,6 +110,14 @@ And here's the end of the Racket block comment:
 (define boot-container #f)
 (define container #f)
 
+(define-syntax-rule (ptime msg expr)
+  (let ((f (λ () expr)))
+    (if timings
+         (begin (display msg)
+                (display " ")
+                (time (f)))
+         (f))))
+
 ; TODO this should all be done in Arc!
 ;
 ; Maybe make the boot container always load with a particular runtime
@@ -117,14 +126,15 @@ And here's the end of the Racket block comment:
 (define (init-container)
   (unless container
     (default-runtime)
-    (set! boot-container (phase1 runtime))
+    (ptime "phase1" (set! boot-container (phase1 runtime)))
     (set! container (new-container runtime boot-container))))
 
 (define (use feature)
   (let ((feature (string->symbol feature)))
     (init-container)
-    (((runtimef runtime 'ref) boot-container 'use-feature)
-     container feature)))
+    (ptime (format "use ~a" feature)
+      (((runtimef runtime 'ref) boot-container 'use-feature)
+       container feature))))
 
 (define (include path)
   (init-container)
@@ -174,7 +184,12 @@ And here's the end of the Racket block comment:
      (("--no-repl")
       ,(λ (flag)
          (set! no-repl #t))
-      ("Don't start an interactive REPL (even if no program is specified)")))
+      ("Don't start an interactive REPL (even if no program is specified)"))
+
+     (("--time")
+      ,(λ (flag)
+         (set! timings #t))
+      ("Show the time it takes to run steps")))
 
     (multi
      (("-u" "--use")

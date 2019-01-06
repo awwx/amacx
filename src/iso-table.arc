@@ -1,4 +1,4 @@
-(use arcbase sets-iso keys all square-fn iso ssyntax rule)
+(use arcbase sets-iso keys all square-fn iso rule)
 
 (def table-equal (t1 t2)
   (and (sets-iso (keys t1) (keys t2))

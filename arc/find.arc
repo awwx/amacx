@@ -1,4 +1,4 @@
-(use arcbase testify reclist recstring ssyntax square-fn)
+(use arcbase testify reclist recstring square-fn compose)
 
 (def find (test seq)
   (let f (testify test)

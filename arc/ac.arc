@@ -1,4 +1,4 @@
-(use arcbase quasiquote unless contains $ail obj compile)
+(use arcbase quasiquote unless contains $ail obj compile expand-ssyntax)
 
 (def amacro (x)
   (and (isa x 'mac) x))
@@ -65,6 +65,14 @@
   (compiler-rule nil-sym (no e)
     `($quote ,e))
 
+  (compiler-rule ssyntax-sym (is-ssyntax e)
+    (compile context (expand-ssyntax e)))
+
+  (compiler-rule ssyntax-form (and (acons e) (is-ssyntax (car e)))
+    (compile context
+      (cons (expand-ssyntax (car e))
+            (cdr e))))
+
   (compiler-rule lexvar (and (isa e 'sym) (is-lexical context e))
     e)
 
@@ -109,12 +117,6 @@
     `($quote ,e)))
 
 (assign ac-rules
-  '(nil-sym this-container lexvar topvar quote assign-lexvar
-    assign-topvar fn if explicit-call macro implicit-call
-    default-quote))
-
-(assign compile--xVrP8JItk2Ot (gen-compiler ac-rules))
-
-(def extend-ac rule-names
-  (assign ac-rules (join rule-names ac-rules))
-  (assign compile--xVrP8JItk2Ot (gen-compiler ac-rules)))
+  '(nil-sym ssyntax-sym ssyntax-form this-container lexvar topvar
+    quote assign-lexvar assign-topvar fn if explicit-call macro
+    implicit-call default-quote))

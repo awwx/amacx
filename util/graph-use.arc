@@ -1,4 +1,4 @@
-(use findfile ssyntax setforms andf set unless +str when caris prn
+(use findfile setforms andf set unless +str when caris prn
      tostring file-each)
 
 (= seen (table))

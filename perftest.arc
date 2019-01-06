@@ -1,4 +1,4 @@
-(use simple-def if is - equals let prn time reduce for)
+(use arcbase equals prn time reduce for)
 
 ; We don't have setforms yet, so a version of n-of which
 ; simply repeats the same value.
