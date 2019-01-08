@@ -20,7 +20,7 @@
   (define bytes-and-locs '())
 
   ; location is (line-number column-number pos)
-  (define location #f)
+  (define location '(1 0 1))
 
   (define (read-next-char)
     (let ((c (read-char source-port)))

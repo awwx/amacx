@@ -43,6 +43,11 @@
 (define (check s)
   (equals s (one s) (two s)))
 
+(check "")
+(check "a")
+(check "ab")
+(check "abc")
+
 (check #<<END
 foo bar λ §
 three four
@@ -68,7 +73,6 @@ END
         (λ (in)
           (dump-to-str in))))
     expected))
-
 
 (test-blockstr #<<END
 one § two
