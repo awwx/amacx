@@ -18,7 +18,7 @@
   (when (target-container '*inline-tests* nil)
     (prn "=> " src))
 
-  (readfile-each (completepath rootdir src)
+  (readfile-each src
     (fn (x)
       (eval x target-container)))
 
