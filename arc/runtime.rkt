@@ -58,6 +58,7 @@
   (module name racket
     (require "../rkt/blockstr.rkt")
     (require "../rkt/common.rkt")
+    (require "../rkt/prefix.rkt")
     (require "../rkt/readtables.rkt")
     (require "../rkt/symtab.rkt")
     (require "../rkt/uniq.rkt")
@@ -474,7 +475,7 @@
 
     (define-syntax $topvar--xVrP8JItk2Ot
       (syntax-rules ()
-        (($topvar--xVrP8JItk2Ot v)
+        (($topvar--xVrP8JItk2Ot container v)
          v)))
 
     ; Arc 3.2 ac.scm:1280
@@ -714,6 +715,10 @@
         'table-each     table-each
         'thread         thread
         'thread-wait    thread-wait
+        'w/prefix       (λ (prefix thunk)
+                          (w/prefix (unwrap prefix)
+                            (λ ()
+                              (r-apply thunk '()))))
         'w/splicing-port
                         w/splicing-port
         '+              (unwrap-args +)

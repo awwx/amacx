@@ -26,9 +26,10 @@
     (and (caris x '$call)
          (all ail-expr (cdr x))))
 
-  (def ail-namespace-var (x)
-    (and (caris x '$ns-var--xVrP8JItk2Ot)
-         (a-sym (cadr x))))
+  (def ail-topvar (x)
+    (and (caris x '$topvar)
+         ; TODO cadr is table or namespace
+         (a-sym (caddr x))))
 
   (def ail-expr (x)
     (or (isa x 'sym)
@@ -37,7 +38,7 @@
         (ail-fn x)
         (ail-if x)
         (ail-call x)
-        (ail-namespace-var x))))
+        (ail-topvar x))))
 
 (def validate-ail (x)
   (unless (ail-expr x)

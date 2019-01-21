@@ -8,7 +8,8 @@
         $fn      '$fn--xVrP8JItk2Ot
         $assign  '$assign--xVrP8JItk2Ot
         $if      '$if--xVrP8JItk2Ot
-        $call    '$call--xVrP8JItk2Ot))))
+        $call    '$call--xVrP8JItk2Ot
+        $topvar  '$topvar--xVrP8JItk2Ot))))
 
 (mac $ail body
   `(do ,@(rename-$ail body)))

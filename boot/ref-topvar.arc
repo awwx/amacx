@@ -1,3 +1,5 @@
+(provides topvar)
+
 ; Bootstrap!
 ;
 ; (mac topvar (var)

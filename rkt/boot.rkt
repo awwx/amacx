@@ -9,10 +9,9 @@
 (require "../arc/runtime.rkt")
 (require "symtab.rkt")
 
-(provide phase1 new-container munch)
+(provide phase1 make-container populate-builtins new-container munch)
 
-(define expanded-boot-path (build-path rootdir "xboot/compiler.nail"))
-(define test-boot-path     (build-path rootdir "xboot/compiler-test.nail"))
+(define xboot-path (build-path rootdir "xboot"))
 
 ;; Phase one
 
@@ -41,6 +40,11 @@
             ,((runtimef runtime 'quote-this)
                (inject runtime container (cadr x)))))
 
+        ((caris x '$topvar--xVrP8JItk2Ot)
+         `($topvar--xVrP8JItk2Ot
+            ,(inject runtime container (second x))
+            ,(third x)))
+
         ((pair? x)
          (cons (demunch runtime container (car x))
                (demunch runtime container (cdr x))))
@@ -49,7 +53,9 @@
 
 (define (exec1 runtime container x)
   (let ((a (demunch runtime container x)))
-    (eval a (hash-ref default-namespaces runtime)))
+    (eval a (if (namespace? container)
+                 container
+                 (hash-ref default-namespaces runtime))))
   (void))
 
 (define (file-each path f)
@@ -61,24 +67,60 @@
             (f x)
             (loop)))))))
 
-(define (phase1 runtime (inline-tests #f))
-  (let ((container (new-symtab (runtime-builtins runtime))))
-    (file-each (if inline-tests test-boot-path expanded-boot-path)
+(define (boot-file options)
+  (build-path xboot-path
+    (string-append
+      "boot"
+      (if (hash-ref options 'inline-tests #f) ".test" "")
+      "."
+      (symbol->string (hash-ref options 'topvar))
+      "-topvar.nail")))
+
+(define (make-container options)
+  (case (hash-ref options 'topvar)
+    ((ail) (construct-ail-ns (hash-ref options 'runtime)))
+    ((ref) (new-symtab))
+    (else
+     (error "unknown topvar option" (hash-ref options 'topvar)))))
+
+(define (populate-builtins options container)
+  (define runtime (hash-ref options 'runtime))
+  (define sref (runtimef runtime 'sref))
+  (hash-for-each (runtime-builtins runtime)
+    (λ (k v)
+      (sref container k v)))
+  (void))
+
+(define (boot-container options)
+  (define runtime (hash-ref options 'runtime))
+  (define container (make-container options))
+  (populate-builtins options container)
+  container)
+
+(define (phase1 options)
+  (define runtime (hash-ref options 'runtime))
+  (let ((container (boot-container options)))
+    (file-each (boot-file options)
                (λ (x)
                  (exec1 runtime container x)))
     container))
 
-(define (new-container runtime (container1 (phase1 runtime)))
+(define (new-container options (container1 (phase1 options)))
+  (define runtime (hash-ref options 'runtime))
   (((runtimef runtime 'ref) container1 'provision-container)
-   (new-symtab)
+   (make-container options)
    (hash 'builtins (runtime-builtins runtime)
+         'topvar   (hash-ref options 'topvar)
          'compiler ((runtimef runtime 'ref)
                      container1
-                     'compile--xVrP8JItk2Ot))))
+                     'compile--xVrP8JItk2Ot)
+         'validate-ail ((runtimef runtime 'tnil)
+                        (hash-ref options 'validate-ail #f)))))
 
 (define (munch runtime xs)
-  (define container1 (phase1 runtime #f))
+  (define options (hash 'runtime runtime 'topvar 'ail))
+  (define container1 (phase1 options))
   (define aeval ((runtimef runtime 'ref) container1 'eval))
-  (define container (new-container runtime container1))
+  (define container (new-container options container1))
   (for ((x (syntax->list xs)))
     (aeval x container)))

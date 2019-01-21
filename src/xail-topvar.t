@@ -1,7 +1,4 @@
-(use arcbase ail-topvar equals eval load)
-
-(equals (ail-topvar-ac (obj) '($topvar--xVrP8JItk2Ot foo))
-        '($topvar--xVrP8JItk2Ot foo))
+(use arcbase xail-topvar equals eval load)
 
 (let container (ail-topvar-container)
   (equals (eval '(+ 1 2) container)

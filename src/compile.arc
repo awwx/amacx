@@ -1,4 +1,4 @@
-(use arcbase aif quasiquote when)
+(use arcbase aif quasiquote when complex-fn validate-ail ret)
 
 ; Note that at this point in the load process we don’t have ssyntax
 ; (which is implemented as an extension to the compiler), and
@@ -37,18 +37,22 @@
             (match-compiler-rule (cdr rules) context e)))))
 
 (def compile (context e)
-  (heuristic-loc e
-    (or (match-compiler-rule (context 'rules) context e)
-        (err "invalid expression" e))))
+  (ret ail
+       (heuristic-loc e
+         (or (match-compiler-rule (context 'rules) context e)
+             (err "invalid expression" e)))
+    (when (context 'validate-ail)
+      (validate-ail ail))))
 
 (def gen-compiler (rule-names)
   (let rules (map1 (fn (rule-name)
                      (or (compiler-rules rule-name)
                          (err "compiler rule not found" rule-name)))
                    rule-names)
-    (fn (container e)
-      (let context (obj rules      rules
-                        rule-names rule-names
-                        container  container
-                        env        '())
+    (fn (container e (o options))
+      (let context (obj rules        rules
+                        rule-names   rule-names
+                        container    container
+                        env          '()
+                        validate-ail (and options (options 'validate-ail)))
         (compile context e)))))

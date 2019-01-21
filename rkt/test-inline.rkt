@@ -1,37 +1,43 @@
 #lang racket
 
+(require "ail-ns.rkt")
 (require "builtins.rkt")
 (require "boot.rkt")
 (require "prefix.rkt")
 (require "readtables.rkt")
 (require "../arc/runtime.rkt")
-(require "symtab.rkt")
 
-(print-hash-table #f)
+(define (test-inline options)
+  (define runtime (hash-ref options 'runtime))
 
-(define (test-inline runtime)
   (define container1
-    (w/prefix (format "~a phase one " runtime)
+    (w/prefix (format "~a ~a: phase one: " runtime (hash-ref options 'topvar))
       (λ ()
-        (phase1 runtime #t))))
+        (phase1 options))))
 
   (newline)
 
-  (define container2
-    (w/prefix (format "~a phase two " runtime)
-      (λ ()
-        (((runtimef runtime 'ref) container1 'provision-container)
-         (new-symtab)
-         (hash 'builtins      (runtime-builtins runtime)
-               'compiler      ((runtimef runtime 'ref)
-                                container1
-                                'compile--xVrP8JItk2Ot)
-               'inline-tests  ((runtimef runtime 'tnil) #t)
-               'start         'container)))))
+  (define container2 (make-container options))
+  (populate-builtins options container2)
 
-  (symtab-rm container2 '*inline-tests*)
+  (w/prefix (format "~a ~a: phase two: " runtime (hash-ref options 'topvar))
+    (λ ()
+      (((runtimef runtime 'ref) container1 'provision-container)
+       container2
+       (hash 'builtins      (runtime-builtins runtime)
+             'topvar        (hash-ref options 'topvar)
+             'compiler      ((runtimef runtime 'ref)
+                              container1
+                              'compile--xVrP8JItk2Ot)
+             'inline-tests  ((runtimef runtime 'tnil) #t)
+             'start         'container))))
+
   (void))
 
 (void
   (for ((runtime runtimes))
-    (test-inline runtime)))
+    (for ((topvar '(ail ref)))
+      (let ((options (hash 'runtime runtime
+                           'topvar topvar
+                           'inline-tests #t)))
+        (test-inline options)))))

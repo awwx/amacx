@@ -13,23 +13,26 @@
 
 (define root (simplify-path (build-path here 'up 'up)))
 
-(define (runtest runtime container1 src)
+(define (runtest options container1 src)
+  (define runtime (hash-ref options 'runtime))
   (w/prefix (format "~a ~a " runtime src)
     (λ ()
       (printf "~a~n" src)
-      (let ((container (new-container runtime container1)))
+      (let ((container (new-container options container1)))
         ((runtimef runtime 'aload)
           (path->string (build-path root src))
           container
           container1)))))
 
-(define (run-tests runtime container1 srcs)
+(define (run-tests options container1 srcs)
   (for ((src srcs))
-    (runtest runtime container1 src)))
+    (runtest options container1 src)))
 
 (define (run-tests-in-runtime runtime srcs)
-  (let ((container1 (phase1 runtime)))
-    (run-tests runtime container1 srcs)))
+  (define options (hash 'runtime runtime
+                        'topvar 'ail))
+  (define container1 (phase1 options))
+  (run-tests options container1 srcs))
 
 (define (run-all-tests-in-runtime runtime)
   (run-tests-in-runtime runtime (all-tests)))

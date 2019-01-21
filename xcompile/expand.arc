@@ -82,6 +82,8 @@
 
 (mac use args)
 
+(def w/prefix (prefix thunk) (thunk))
+
 (load "../src/asfilename.arc")
 (load "../src/asfilename.t")
 
@@ -105,8 +107,10 @@
 (load "../src/macro.t")
 (load "../arc/install-ac.arc")
 
+(system "rm -r ../xboot")
+(ensure-dir "../xboot")
+
 (each bootfile (dir "../boot")
-  (ensure-dir "../xboot")
   (let in (readfile (+ "../boot/" bootfile))
     (let out (rename-$ail in)
       (w/outfile o (+ "../xboot/" bootfile)
@@ -126,6 +130,7 @@
            $fn     `(fn ,(x 1) ,@(map ailarc (cddr x)))
            $if     `(if ,@(map ailarc (cdr x)))
            $call   (map ailarc (cdr x))
+           $topvar `(',(x 1) ',(x 2))
                    (err "don't recognize ail expr" x))
 
          (err "don't recognize ail expr" x)))
@@ -295,7 +300,8 @@
       (disp "\n\n" out)
       (write (munch container m) out)
       (disp "\n\n" out))
-    (eval (ailarc m))))
+    (let a (ailarc m)
+      (eval a))))
 
 (def use-feature (inline-tests container out feature)
   (unless (mem feature container!*features*)
@@ -346,16 +352,26 @@
   (when inline-tests
     (runtest inline-tests container out name)))
 
-(let container (create-boot-container)
-  (w/outfile out "../xboot/compiler-test.nail"
-    (runtest t container out 'ail)
-    (runtest t container out '$quote)
-    (runtest t container out '$if)
-    (xload t container out 'container)
-    (xload t container out 'install-ac)))
+(def generate (topvar-option)
+  (let container (create-boot-container)
+    (w/outfile out (+ "../xboot/boot.test." topvar-option ".nail")
+      (runtest t container out 'ail)
 
-(let container (create-boot-container)
-  (w/outfile out "../xboot/compiler.nail"
-    (xload nil container out 'container)
-    (xload t container out 'install-ac)
-    (xload nil container out 'repl)))
+      (xload t container out topvar-option)
+      (runtest t container out 'topvar)
+
+      (runtest t container out '$quote)
+      (runtest t container out '$if)
+
+      (xload t container out 'container)
+      (xload t container out 'install-ac)))
+
+  (let container (create-boot-container)
+    (w/outfile out (+ "../xboot/boot." topvar-option ".nail")
+      (xload t container out topvar-option)
+      (xload nil container out 'container)
+      (xload t container out 'install-ac)
+      (xload nil container out 'repl))))
+
+(generate 'ail-topvar)
+(generate 'ref-topvar)

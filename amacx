@@ -5,6 +5,7 @@
 #
 # amacx                   start a REPL with the default runtime
 # amacx -r mpair          start a REPL with the mpair runtime
+# amacx -v ail|ref        specify topvar implementation
 # amacx foo.arc           load foo.arc (with the default runtime)
 # amacx -r mpair foo.arc  load foo.arc (with the mpair runtime)
 # amacx -i foo.arc        load foo.arc, then start a REPL
@@ -97,15 +98,22 @@ And here's the end of the Racket block comment:
 (require (only-in "rkt/boot.rkt" phase1 new-container))
 
 (define runtime #f)
+(define topvar #f)
+(define validate-ail #f)
 (define repl #f)
 (define no-repl #f)
 (define timings #f)
 (define program #f)
 (define args '())
+(define options #f)
 
 (define (default-runtime)
   (unless runtime
-    (set! runtime 'srcloc)))
+    (set! runtime 'mpair)))
+
+(define (default-topvar)
+  (unless topvar
+    (set! topvar 'ail)))
 
 (define boot-container #f)
 (define container #f)
@@ -126,8 +134,17 @@ And here's the end of the Racket block comment:
 (define (init-container)
   (unless container
     (default-runtime)
-    (ptime "phase1" (set! boot-container (phase1 runtime)))
-    (set! container (new-container runtime boot-container))))
+    (default-topvar)
+    (set! options
+      (hash 'runtime      runtime
+            'topvar       topvar
+            'validate-ail validate-ail))
+    (ptime "phase1"
+      (set! boot-container
+        (phase1 options)))
+    (ptime "phase2"
+      (set! container
+        (new-container options boot-container)))))
 
 (define (use feature)
   (let ((feature (string->symbol feature)))
@@ -175,6 +192,19 @@ And here's the end of the Racket block comment:
                             runtime-sym runtime)))
            (set! runtime runtime-sym)))
       ("Specify runtime: \"mpair\" or \"srcloc\"" "runtime"))
+
+     (("-v" "--topvar")
+      ,(λ (flag topvar-impl)
+         (let ((topvar-sym (string->symbol topvar-impl)))
+           (unless (memq topvar-sym '(ail ref))
+             (error "Unknown topvar implementation" topvar-sym))
+           (set! topvar topvar-sym)))
+      ("Specify topvar implementation: \"ail\" or \"ref\" (defaults to ail)" "topvar"))
+
+     (("--validate-ail")
+      ,(λ (flag)
+         (set! validate-ail #t))
+      ("Validate the output of the compiler"))
 
      (("-i" "--repl")
       ,(λ (flag)

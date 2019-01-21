@@ -82,6 +82,9 @@
   (compiler-rule topvar (isa e 'sym)
     (compile context `(,(topvar-macro context e) ,e)))
 
+  (compiler-rule ail-topvar (caris e '$topvar)
+    `($topvar ,(context 'container) ,(cadr e)))
+
   (compiler-rule quote (caris e '$quote)
     `($quote ,(cadr e)))
 
@@ -118,5 +121,5 @@
 
 (assign ac-rules
   '(nil-sym ssyntax-sym ssyntax-form this-container lexvar topvar
-    quote assign-lexvar assign-topvar fn if explicit-call macro
-    implicit-call default-quote))
+    ail-topvar quote assign-lexvar assign-topvar fn if explicit-call
+    macro implicit-call default-quote))
