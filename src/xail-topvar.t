@@ -10,6 +10,3 @@
           10)
 
   (load "arctests/len.t" container))
-
-; (let container (ail-topvar-container)
-;   (load "perftest.arc" container))

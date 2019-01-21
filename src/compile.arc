@@ -1,9 +1,8 @@
 (use arcbase aif quasiquote when complex-fn validate-ail ret)
 
-; Note that at this point in the load process we don’t have ssyntax
-; (which is implemented as an extension to the compiler), and
-; in addition, this code also needs to run in Arc 3.2 for
-; bootstrapping.
+; TODO check if we do have ssyntax now.
+;
+; Note this code also runs in Arc 3.2 for bootstrapping.
 
 (def functional-extend (g nk nv)
   (fn (k)
