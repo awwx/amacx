@@ -1,15 +1,122 @@
-# Amacx: Compiling by Macros
+# Amacx
 
-Amacx is a compiler for [Arc](http://arclanguage.org/) and Arc
-inspired languages.
+I’m experimenting with taking an axiomatic approach to adding
+features to Lisp, using [Arc](http://arclanguage.org/) as a starting
+point:
 
-Currently, about 50% of `arc.arc` is implemented, various details
-are messy, and there are a lot of TODO’s.  This is a work in progress.
+* Containers for top level variables.
+
+* Source location tracking for profiling and showing the location of
+  errors.
+
+* Automatically persisting a program’s data.
+
+These experiments may not work out.  The result may be too
+inefficient, impractical, or ugly to be useful.
+
+While naturally a successful experiment is more exciting than a failed
+one, the failures may still be interesting: if something *can’t* be
+done within the constraints, *why* can’t it be done?  What, exactly,
+is the trade-off in language design that turns out to be necessary?
 
 
-## Features
+## Motivation
 
-* Source location tracking to show the location of errors.
+I push the implementation in one dimension until I can make no further
+progress without work on a different dimension.
+
+For example, I have a sketch of an implementation (not yet included
+here) for automatically persisting a program’s data.  Which is slow.
+Too slow to be usable.  Optimization may make it faster, but it’s
+unlikely to ever be as fast as an existing language that doesn’t
+automatically persist data.
+
+Slow though might be OK for high level scripting code, if there’s a
+way to run at full speed the parts of the program that don’t need to
+be persisted.
+
+Maybe we add to the compiler a special form, perhaps we call it
+`fast`, which would compile the enclosed expression in “fast” mode
+which generated code which ran quickly but couldn’t be automatically
+persisted.
+
+Now suppose we want to use a function defined in `arc.arc` like
+`memo`.  `memo` maintains a cache of previous calls to a function and
+what it returned, so that if you call the function with the same
+arguments again you get the cached value.  Would we like to be able to
+have the cache automatically persisted?
+
+Persumably yes, we’d like to have that option, if we can.  We could
+restart the program and still have the previously cached values.
+Which could be useful if the function is very expensive.  (Suppose,
+for example, the function was making an API call to an external
+service).
+
+On the other hand, if the function is only moderately expensive, and
+if we don’t particularly need to have the cache persisted, running a
+slow version of `memo` could easily swamp any performance improvements
+that we might get from caching the function call in the first place.
+
+So we’d like to have a choice.  To be able to use the standard, fast
+version of `memo` for when that makes sense, or the slower, enhanced
+version of `memo` when that would be useful.
+
+Which kind of `memo` we get depends where it’s loaded.
+
+```
+(def memo (f)
+  (with (cache (table) nilcache (table))
+    ...
+```
+
+If `memo` is loaded in a place where `table` is the ordinary fast
+in-memory kind of table, then we get the standard, fast version of
+memo.
+
+Or, if `memo` is loaded in a place where `table` is the slower,
+enhanced version of `table` which can automatically persist its data,
+we get the slower but enhanced version of `memo`.
+
+I call these places “containers” because they contain the top level
+variables into which code can be loaded.
+
+(Scheme uses the term “environment” and in Racket the analogous object
+is called a “namespace”).
+
+Containers by themselves don’t implement a module system (though it
+might be possible to build a module system on top of containers), but
+containers also allow modification of how code loaded into them work,
+which isn’t something modules typically do.
+
+Given that we want containers (or, at least I think we want
+containers), how should they work?
+
+To take an axiomatic approach, I suggest that a container should be
+able to be treated as an ordinary Arc table.  That you should be able
+to use an Arc table as a container if you wanted to.  `(obj + +)` is a
+container that maps the top level variable `+` to the plus function.
+
+Behind the scenes, when implementing Arc in Racket, we want to use a
+Racket namespace because that’s what Racket is optimized for.
+
+In terms of the *interface*, how the container should appear in Arc,
+we want it to look like an Arc table.
+
+That’s a hypothesis.  An experiment.  Containers might turn out to be a
+terrible idea, or a poor choice for allowing code to be compiled
+differently.  So I explore along the container dimension to find out.
+
+Meanwhile, if we do end up mixing slow code and fast code, it would be
+especially useful to have good profiler.  So another dimension is
+source location tracking.
+
+
+## Hoped-for Features
+
+(If the various experiments work out).
+
+* Source location tracking for profiling and to show the location of
+  errors.
 
 * Different code can be loaded into different containers, where each
   container has its own set of top level variables (a.k.a. “global
