@@ -195,7 +195,7 @@ arc` option isn’t necessary.
 Use `-r` to specify which runtime to use:
 
 ```
-$ amacx -r srcloc foo.arc
+$ amacx -r srcloc -u arc foo.arc
 ```
 
 `-I path` adds a directory to the search path that `use` loads features
