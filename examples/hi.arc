@@ -1,0 +1,3 @@
+(use arc)
+
+(prn "Hi")

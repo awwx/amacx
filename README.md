@@ -166,13 +166,21 @@ First, you’ll need to bootstrap:
 ```
 $ cd xcompile
 $ racket -f expand.scm
+$ cd ..
 ```
 
 This only needs to be done once (unless you modify the source code of
 the compiler which is cross compiled), and creates an `xboot`
 subdirectory.
 
-Then, if you have a source code file `foo.arc`:
+Try running Amacs:
+
+```
+$ ./amacx examples/hi.arc
+Hi
+```
+
+`hi.arc` contains:
 
 ```
 (use arc)
@@ -180,16 +188,9 @@ Then, if you have a source code file `foo.arc`:
 (prn "Hi")
 ```
 
-you can type:
-
-```
-$ amacx foo.arc
-Hi
-```
-
 `(use x)` means `(load "x.arc")` from your library path, unless
-"x.arc" has already been loaded with `use`.  Thus the `(use arc)`
-loads “arc.arc”.
+"x.arc" has already been loaded before with `use`.  Thus the
+`(use arc)` line loads “arc.arc” for you.
 
 If you don’t include a program to run, you’ll get a REPL:
 
@@ -207,8 +208,8 @@ $ amacx
 Error: "prn: undefined;\n cannot reference an identifier before its definition\n  in module: top-level"
 ```
 
-At the REPL you can first type `(use arc)` to load "arc.arc", or, the
-`-u` command line option will also do the same thing:
+At the REPL you could first type `(use arc)` to load "arc.arc", or, the
+`-u` command line option will also do the same thing for you:
 
 ```
 $ amacx -u arc
@@ -223,6 +224,11 @@ builtins), and you can use `-r` to specify which runtime to use:
 ```
 $ amacx -r srcloc foo.arc
 ```
+
+The default `mpair` runtime is similar to Arc<sub>3.2</sub>’s runtime
+(though it implements Arc lists using Racket’s mutable pairs), while
+the more experimental `srcloc` runtime allows forms read from a source
+file file to be labeled with source location information.
 
 `-I path` adds a directory to the search path that `use` loads features
 from.  In a program you can also say `(use lib
