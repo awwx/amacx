@@ -1580,6 +1580,11 @@ block strings:
 * TODO’s: pick a TODO from here or in the source code and see if
   that’s something you might like to tackle! :-)
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to sign off on
+contributions.
+
+Thank you!
+
 
 ## Donate
 
