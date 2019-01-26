@@ -228,7 +228,7 @@ $ amacx -r srcloc foo.arc
 The default `mpair` runtime is similar to Arc<sub>3.2</sub>’s runtime
 (though it implements Arc lists using Racket’s mutable pairs), while
 the more experimental `srcloc` runtime allows forms read from a source
-file file to be labeled with source location information.
+file to be labeled with source location information.
 
 `-I path` adds a directory to the search path that `use` loads features
 from.  In a program you can also say `(use lib
