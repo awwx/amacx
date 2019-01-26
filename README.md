@@ -172,27 +172,53 @@ This only needs to be done once (unless you modify the source code of
 the compiler which is cross compiled), and creates an `xboot`
 subdirectory.
 
-Then, `amacx -u arc` will drop you into a REPL with Arc loaded:
+Then, if you have a source code file `foo.arc`:
 
 ```
-$ amacx -u arc
+(use arc)
+
+(prn "Hi")
+```
+
+you can type:
+
+```
+$ amacx foo.arc
+Hi
+```
+
+`(use x)` means `(load "x.arc")` from your library path, unless
+"x.arc" has already been loaded with `use`.  Thus the `(use arc)`
+loads “arc.arc”.
+
+If you don’t include a program to run, you’ll get a REPL:
+
+```
+$ amacx
 >
 ```
 
-`-u` stands for “use”: it loads a feature, unless that feature has
-already been loaded.  In this case, it’ll load `arc.arc` from the
-`arc` subdirectory.
-
-You can load and run a program:
+At this point though nothing but the builtins have been loaded yet
+("arc.arc" isn’t loaded automatically).
 
 ```
-$ amacx -u arc foo.arc
+$ amacx
+> (prn "Hi")
+Error: "prn: undefined;\n cannot reference an identifier before its definition\n  in module: top-level"
 ```
 
-The source file can also start with `(use arc)`, in which case the `-u
-arc` option isn’t necessary.
+At the REPL you can first type `(use arc)` to load "arc.arc", or, the
+`-u` command line option will also do the same thing:
 
-Use `-r` to specify which runtime to use:
+```
+$ amacx -u arc
+> (prn "Hi")
+Hi
+
+```
+
+Amacx supports different runtimes (different implementations of the
+builtins), and you can use `-r` to specify which runtime to use:
 
 ```
 $ amacx -r srcloc foo.arc
