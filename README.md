@@ -20,6 +20,15 @@ done within the constraints, *why* can’t it be done?  What, exactly,
 is the trade-off in language design that turns out to be necessary?
 
 
+## Release
+
+The current release is 0.0.2.
+
+* Only parts of Arc are implemented so far.
+
+* As I’m focused on trying experiments, the code is very messy.
+
+
 ## Motivation
 
 I push the implementation in one dimension until I can make no further

@@ -1,4 +1,4 @@
-## v.NEXT
+## v0.0.2, 2019-01-26
 
 ### Amacx command line
 
@@ -40,6 +40,6 @@
 * Roughly 55% of arc.arc is implemented.
 
 
-## v0.0.1, 1019-01-04
+## v0.0.1, 2019-01-04
 
 Initial release.
